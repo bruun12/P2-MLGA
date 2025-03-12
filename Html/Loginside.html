@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
+    <script src="/JS/Login.js"></script>
 </head>
 <body>
     <center>
@@ -15,13 +16,14 @@
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required> <br> <br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required> <br> <br>
+        <input type="password" id="password" name="password" minlength="8" required> <br> <br>
         <label for="Husk mig">Husk mig</label>
         <input type="checkbox" value="Husk mig">
-        <input type="submit" value="Login"> <br> <br>
-        <input type="submit" value="Glemt password"> <br> <br>
-        <input type="submit" value="Opret profil"> 
+        <button type="submit" onclick="validate()">Login</button> <br> <br>
+        <input type="submit" id="glemtpassword" value="Glemt password"> <br> <br>
+        <input type="submit" id="addprofil" value="Opret profil"> 
       </form>
     </center>
 </body>
 </html>
+//<input onclick="validate()" type="submit" id="login" value="Login"> <br> <br>

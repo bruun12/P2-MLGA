@@ -2,9 +2,12 @@ aside {
     width: 40%;
     padding-left: 15px;
     margin-left: 15px;
+    margin-right: 65px;
+    height: 525px;
     float: right;
     background-color: rgb(175, 173, 173);
   }
+ 
   .dropbtn {
             background-color: #04AA6D;
             color: white;

@@ -18,7 +18,7 @@ document.querySelector("form").addEventListener("submit", function(event) {
         } else {
             attempt--;
             alert("Du har kun " + attempt + "forsøg tilbage")
-            if (attempt == 0) {
+            if (attempt === 0) {
             document.getElementById("username").disabled = true;
             document.getElementById("password").disabled = true; 
             document.getElementById("login").disabled = true;

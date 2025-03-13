@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ByHjerte</title>
-    <script src="/JS/Frontpage.js"></script>
+    <script type="module" src="/JS/Frontpage.js"></script>
     <link rel="stylesheet" href="/CSS/Design.css">
     <!-- Font used to have icons in nav bar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,7 +13,26 @@
     <!-- Navigation -->
     <nav class="topnav">
         <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
-        <a href="https://www.amazon.com/">Produkter</a>
+        <a href="https://www.amazon.com/" class="product">Produkter</a>
+        <a href="https://www.disney.dk/">Events</a>
+        <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
+        
+        <!-- Div used to box elements -->
+        <div class="nav-icons">
+            <a href="https://www.youtube.com/"><i class="fa-solid fa-circle-user"></i></a>
+            <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
+            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+
+        <!-- Div used to box search container elements -->
+        <form action="https://www.google.com/" class ="search-container">
+            <input type="text" placeholder="Search.." name="q">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </nav>
+
+    <!-- Subnav til products -->
+    <div class="product-link">
         <ul>
             <li><a href="https://www.zalando.dk/">Tøj</a>
                 <ul>
@@ -43,22 +62,7 @@
                 </ul>
             </li>
         </ul>
-        <a href="https://www.disney.dk/">Events</a>
-        <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
-        
-        <!-- Div used to box elements -->
-        <div class="nav-icons">
-            <a href="https://www.youtube.com/"><i class="fa-solid fa-circle-user"></i></a>
-            <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
-            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
-        </div>
-
-        <!-- Div used to box search container elements -->
-        <form action="https://www.google.com/" class ="search-container">
-            <input type="text" placeholder="Search.." name="q">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-    </nav>
+    </div>
  
     <!-- STJÅLET FRA W3S -->
      <!-- Slideshow container -->
@@ -67,19 +71,19 @@
         <!-- Full-width images with number and caption text -->
         <div class="mySlides fade">
             <div class="numbertext">1 / 3</div>
-            <img src="/Images/slideplh1.jpg" style="width:20%">
+            <img src="/Images/slideplh1.jpg">
             <div class="text">Placeholder image of minions</div>
         </div>
     
         <div class="mySlides fade">
             <div class="numbertext">2 / 3</div>
-            <img src="/Images/slideplh2.jpg" style="width:20%">
+            <img src="/Images/slideplh2.jpg">
             <div class="text">Placeholder image of minions</div>
         </div>
     
         <div class="mySlides fade">
             <div class="numbertext">3 / 3</div>
-            <img src="/Images/slideplh3.jpg" style="width:20%">
+            <img src="/Images/slideplh3.jpg">
             <div class="text">Placeholder image of minions</div>
         </div>
     

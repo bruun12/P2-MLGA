@@ -1,4 +1,13 @@
-let topnav = document.querySelector(".topnav");
+let productLink = document.querySelector(".product-link");
+let product = document.querySelector(".product");
+
+product.addEventListener("mouseenter", function(){
+    productLink.style.display = "block";
+});
+
+productLink.addEventListener("mouseleave", function(){
+    productLink.style.display = "none";
+})
 
 
 /* STJÅLET FRA W3S TIL TESTING, SKAL LAVES OM TIL QUERYSELECTOR! */

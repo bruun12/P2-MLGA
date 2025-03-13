@@ -11,7 +11,7 @@ document.querySelector("form").addEventListener("submit", function(event) {
   //Lille test funktion
   var attempt = 4;
   function validate(){
-        if (undername == "ElskerNorskeMænd" && password == "12345678") {
+        if (undername === "ElskerNorskeMænd" && password === "12345678") {
             alert("Login succesfully");
             window.location = "Brugerprofil.html"; // Dette skal ændres når de andre sider er færdige
             return false;

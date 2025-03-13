@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>      
+    <link rel="stylesheet" href="/CSS/checkout.css">
+    <script src="/JS/Checkout.js" defer></script>
+</head>
+
+
+
+
+<body>
+    <h1>*Checkout*</h1>
+    
+    <h2>Faktureringsoplysninger</h1>
+    
+        <aside>
+            <h2>Oversigt</h2>
+            <p>Samlet pris</p> <br> <br>
+            <p>Fragt</p> <br> <br>
+            <label for="rabat">Rabatkode:</label> <br> <br>
+            <input type="text" id="rabat"> <button type="submit" onclick="rabat()">Indløs</button>
+    
+        </aside>
+    
+    <h4>Udfyld oplysninger: </h4>
+    <form>
+        
+            <label for="email">E-mail:</label> <br> <br>
+            <input type="text" id="email"> <br> <br>
+            <label for="fname">Fornavn:</label> <br> <br>
+            <input type="text" id="fname"> <br> <br>
+            <label for="lname">Efternavn:</label> <br> <br>
+            <input type="text" id="lname"> <br> <br>
+            <label for="adresse">Vej/gade & husnummer:</label> <br> <br>
+            <input type="text" id="adresse"> <br> <br>
+            <label for="postnummer">Postnummer:</label> <br> <br>
+            <input type="text" id="postnummer"> <br> <br>
+            <label for="by">By:</label> <br> <br>
+            <input type="text" id="by"> <br> <br>
+            
+                                      
+              <div class="dropdown">
+                <button class="dropbtn">Vælg land</button>
+                <div class="dropdown-content">
+                  <a href="https://svindlere.dk/den-danske-metode-en-sikker-vej-til-at-tabe-sine-penge/">Danmark</a>
+                  <a href="https://www.hrw.org/news/2010/12/15/iran-discrimination-and-violence-against-sexual-minorities">Iran</a>
+                  <a href="https://www.google.com/search?sca_esv=1d2540407750373b&sxsrf=AHTn8zp5xPfr4y25AyUB8aHByHqVZ_w14A:1741864615054&q=hairy+turkish+men&udm=2&fbs=ABzOT_DDfJxgmsKFIwrWKcoyw2RfJqGkkqki750M79P4CCNPfXbeGzIDsAfWa9j6SnfDZGWBMbeDo42co4ZiX8k7evYZLsXg1aeHkO_Gv2U1jv3k8XsUC0ayTk2GJNJjzZtNcKekolep6U_h7fnIC60W8R9SifUTHrnNNcjznkaxokB5NewS0xH4PER1ypEDxqhcUzRX5dyg&sa=X&ved=2ahUKEwiF64Gt94aMAxVr-QIHHTf-KoQQtKgLegQIEhAB&biw=1536&bih=791&dpr=2">Tyrkiet</a>
+                  <a href="https://www.google.com/search?sca_esv=32ae3e4c27749343&sxsrf=AHTn8zojGcbMMBhBE77nTx43bGRS5wmsyg:1741861215076&q=bosnian+spongebob&udm=2&fbs=ABzOT_DDfJxgmsKFIwrWKcoyw2RfJqGkkqki750M79P4CCNPfXbeGzIDsAfWa9j6SnfDZGWBMbeDo42co4ZiX8k7evYZ8sApttQNq0CznssUS36H7S2ux5rKWzp8f7RAH4Ku-YKHFPwYqBbUdmeaJTU6NlBLIFHERoWuE1UzRLqMHTad0XvWr0fiLSfmVQs8JD-zSyT51A5drv1SXYU6gwp582vvq1uM7w&sa=X&ved=2ahUKEwjuyePX6oaMAxUvBNsEHVp1EwQQtKgLegQIGhAB&biw=1536&bih=791&dpr=2">Bosnien</a>
+                </div>
+              </div> <br> <br>
+            
+
+
+            <label for="nummer">Mobil nr:</label> <br> <br>
+            <input type="text" id="nummer"> <br> <br>
+            <button type="submit"  onclick="">Fortsæt til betaling</button> <br> <br> 
+    </form>
+
+    <p>Efter fortsæt knappen burde siden update og fjerne gamle form
+    hvorefter den nye betalingsform fra Stripe eller viva.com kommer i action.</p>
+
+   
+</body>
+</html>

@@ -1,3 +1,19 @@
+document.querySelector("info").addEventListener("submit", function(event) {
+    var email = document.getElementById("email").value;
+    var fname = document.getElementById("fname").value;
+    var lname = document.getElementById("lname").value;
+    var adresse = document.getElementById("adresse").value;
+    var postnummer = document.getElementById("postnummer").value;
+    var by = document.getElementById("by").value;
+
+    if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
+      alert("Udfyld dette felt!");
+      event.preventDefault();
+    }
+  });
+
+
+
 function rabat() {
     const rabatInput = document.getElementById("rabat").value; // Get the value of the input field
     if (rabatInput === "NorskSnack")

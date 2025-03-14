@@ -9,15 +9,15 @@ document.querySelector("form").addEventListener("submit", function(event) {
   });
 
   //Lille test funktion
-  var attempt = 4;
+  window.attempt = 4;
   function validate(){
         if (username === "ElskerNorskeMænd" && password === "12345678") {
             alert("Login succesfully");
             window.location = "Brugerprofil.html"; // Dette skal ændres når de andre sider er færdige
             return false;
         } else {
-            attempt--;
-            alert("Du har kun " + attempt + "forsøg tilbage")
+            window.attempt--;
+            alert("Du har kun " + window.attempt + "forsøg tilbage")
             if (attempt === 0) {
             document.getElementById("username").disabled = true;
             document.getElementById("password").disabled = true; 

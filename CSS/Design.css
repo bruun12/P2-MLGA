@@ -249,3 +249,40 @@ html {
   }
   
 /* Frontpage end */
+
+/* Productpage Start*/
+
+.productIMG {
+  width: 20rem;
+  height: 20rem;
+}
+
+#productDisplayer {
+  display: flex;
+  flex-direction: row;
+  background-color: #f7f7f7;
+  width: 90%;
+  margin: auto;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+}
+
+.productDiv{
+  width: 30rem;
+  height: 30rem;
+  margin: 3rem;
+  
+}
+
+.productInfoDiv{
+  margin: 3rem;
+  P{
+    display: inline-block; /* Ensure paragraphs stay on the same line */
+    size: 24;
+  }
+  .productPrice{
+    float: right;
+  }
+}
+
+
+

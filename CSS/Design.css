@@ -238,13 +238,13 @@ html {
     overflow: hidden;
     height: 175px;
     width: 100%;
-    position: absolute;
+    position: relative;
     bottom: 0;
     color: white;
+    /* Alle links i footeren er altid blå, også selvom de er besøgt før */
+    a { 
+      color: #0000EE;
+    }
   }
-
-  /* Alle links i footeren er altid blå, også selvom de er besøgt før */
-  footer a { 
-    color: #0000EE;
-  }
+  
 

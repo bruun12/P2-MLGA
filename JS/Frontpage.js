@@ -30,25 +30,28 @@ fetchEventData();
 
 
 /* Declare variables */
-let slides = document.querySelectorAll('.mySlides');
 let i = 0;
+let slides = document.querySelectorAll('.mySlides');
 let prevBtn = document.querySelector('.prev');
 let nextBtn = document.querySelector('.next');
+let dots = document.querySelectorAll('.dot');
+
 
 /* Interval */
 let changeSlide;
 const intervalDuration = 8000; /* ms */
 
 /* Hides all slides */
-let hideAll = () => {
-    slides.forEach(slide =>{
-        slide.style.display ="none";
+let hideAll = (n) => {
+    n.forEach(n =>{
+        n.style.display ="none";
     })
 }
 
 /* Show the first image on load, afterwards slideshow functions are used */
-hideAll();
+hideAll(slides);
 slides[0].style.display = "block";
+updateDots();
 
 /* Hide all slides, then show the next slide*/
 let nextSlide = () => {
@@ -57,8 +60,9 @@ let nextSlide = () => {
         i = 0;
     }
 
-    hideAll();
+    hideAll(slides);
     slides[i].style.display = "block";
+    updateDots();
 
     /* Reset interval to avoid switching after button change */
     clearInterval(changeSlide);
@@ -72,8 +76,9 @@ let prevSlide = () => {
         i = slides.length - 1;
     }
     
-    hideAll();
+    hideAll(slides);
     slides[i].style.display = "block"
+    updateDots();
 
     /* Reset interval to avoid switching after button change */
     clearInterval(changeSlide);
@@ -87,7 +92,28 @@ changeSlide = setInterval(nextSlide, intervalDuration);
 nextBtn.addEventListener("click", nextSlide);
 prevBtn.addEventListener("click", prevSlide);
 
-/* Interactive dots below images */
-let dots = querySelectorAll('.dot')
+/* Change dot color below images */
+function updateDots(){
+    dots.forEach((dot, index) => {
+        if(index === i) {
+            dot.style.backgroundColor = "#717171";
+        } else {
+            dot.style.backgroundColor = "#bbb";
+        }
+    })
+}
+
+/* Make dots clickable */
+dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+        i = index;
+        hideAll(slides);
+        slides[i].style.display = "block";
+        updateDots();
+        clearInterval(changeSlide);
+        changeSlide = setInterval(nextSlide, intervalDuration);
+    });
+});
+
 
 /* ------ Slideshow END ------ */

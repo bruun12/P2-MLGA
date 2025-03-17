@@ -21,6 +21,7 @@ html {
     overflow: hidden;
     height: 80px;
     width: 100%;
+    position: fixed;
   }
   
   /* Style the links inside the navigation bar */
@@ -258,29 +259,58 @@ html {
 }
 
 #productDisplayer {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   background-color: #f7f7f7;
-  width: 90%;
-  margin: auto;
   flex-wrap: wrap; /* Allows items to wrap to the next line */
+  width: 80%;
 }
 
 .productDiv{
   width: 30rem;
   height: 30rem;
-  margin: 3rem;
-  
+  display: flex;
 }
 
 .productInfoDiv{
-  margin: 3rem;
+  margin-left: 6rem;
+  margin-right: 6rem;
+  margin-bottom: 2rem;
   P{
     display: inline-block; /* Ensure paragraphs stay on the same line */
     size: 24;
   }
   .productPrice{
     float: right;
+  }
+}
+
+#categoriOverview{
+  background-color: lightblue;
+  width: auto;
+  height: 15rem;
+  h1{
+    text-align: center;
+    padding: 7rem;
+    size: 10rem;
+    font-size: 4rem;
+  }
+}
+
+
+#categoriSelector{
+display: inline-block;
+width: 19%;
+background-color: black;
+  a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+  a:hover {
+    color: #f1f1f1;
   }
 }
 

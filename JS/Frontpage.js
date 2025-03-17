@@ -88,5 +88,6 @@ nextBtn.addEventListener("click", nextSlide);
 prevBtn.addEventListener("click", prevSlide);
 
 /* Interactive dots below images */
+let dots = querySelectorAll('.dot')
 
 /* ------ Slideshow END ------ */

@@ -1,3 +1,5 @@
+
+/* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
 
@@ -7,11 +9,80 @@ product.addEventListener("mouseenter", function(){
 
 productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
-})
+});
+
+
+/* JS for slideshow */
+let slides = document.querySelectorAll('.mySlides');
+let i = 0;
+let prevBtn = document.querySelector('.prev');
+let nextBtn = document.querySelector('.next');
+
+/* Interval */
+let changeSlide;
+const intervalDuration = 8000; /* ms */
+
+/* Hides all slides */
+let hideAll = () => {
+    slides.forEach(slide =>{
+        slide.style.display ="none";
+    })
+}
+
+/* Show the first image afterwards slideshow functions are used */
+hideAll();
+slides[0].style.display = "block";
+
+/* Hide all slides, then show the next slide*/
+let nextSlide = () => {
+    hideAll();
+    slides[i].style.display = "block";
+    i++;
+
+    if(i === slides.length) {
+        i = 0;
+    }
+
+    /* Reset interval to avoid switching after button change */
+    clearInterval(changeSlide);
+    changeSlide = setInterval(nextSlide, intervalDuration)
+}
+
+let prevSlide = () => {
+    hideAll();
+    slides[i].style.display = "block"
+    i--;
+
+    if(i === -1) {
+        i = slides.length - 1;
+    }
+
+    /* Reset interval to avoid switching after button change */
+    clearInterval(changeSlide);
+    changeSlide = setInterval(nextSlide, intervalDuration)
+}
+
+/* Set up timer to change slides automatically */
+changeSlide = setInterval(nextSlide, intervalDuration);
+
+/* Interactive buttons on slides */
+nextBtn.addEventListener("click", nextSlide);
+prevBtn.addEventListener("click", prevSlide);
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* STJÅLET FRA W3S TIL TESTING, SKAL LAVES OM TIL QUERYSELECTOR! */
-document.addEventListener("DOMContentLoaded", function() {
+/* document.addEventListener("DOMContentLoaded", function() {
     let slideIndex = 1;
     showSlides(slideIndex);
 
@@ -65,13 +136,13 @@ document.addEventListener("DOMContentLoaded", function() {
             currentSlide(index + 1);
             resetTimer();
         });
-    });
+    }); */
 
     // Function to reset the auto-slide timer when user interacts
-    function resetTimer() {
+/*     function resetTimer() {
         clearInterval(slideInterval); // Stop the current interval
         slideInterval = setInterval(autoSlide, 10000); // Restart the timer
     }
-});
+}); */
 
 /* STJÅLET FRA W3S TIL TESTING, SKAL LAVES OM TIL QUERYSELECTOR SLUT!  */

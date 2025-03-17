@@ -3,9 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/CSS/OpretprofilDesign.css">
+    <title>Opret profil</title>
+    <script src="/JS/Login.js" defer></script>
 </head>
 <body>
-    
+    <div class="header">
+        <h1> Opret profil </h1>
+        <h2>Forside/Opret profil</h2>
+    </div>
+    <form>
+        <div class="input-container">
+            <label for="username">Email:</label>
+            <input type="text" id="username" name="username" required>
+            <img src="/Billeder/mail_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Email icon">
+        </div>
+        <div class="input-container">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <img src="/Billeder/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+        </div>
+        <div class="input-container">
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" minlength="8" required> <br> <br>
+            <img src="/Billeder/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+        </div> 
+        <div class="input-container">
+            <label for="password"> Gentag Password: </label>
+            <input type="password" id="password" name="password" minlength="8" required> <br> <br>
+            <img src="/Billeder/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+        </div>
+        <button type="submit" onclick="saveFile()">Login
+            <img src="/Billeder/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+        </button> <br> <br>
+        <input type="submit" id="glemtpassword" value="Glemt password"> <br> <br>
+        <div class="profil">
+            <h3>Har du allerede en profil? <a href="Loginside.html">Log ind her</a></h3>
+        </div>
+    </form>
 </body>
 </html>
+

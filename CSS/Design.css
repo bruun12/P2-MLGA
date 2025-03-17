@@ -285,7 +285,7 @@ html {
   }
 }
 
-#categoriOverview{
+#categoryOverview{
   background-color: lightblue;
   width: auto;
   height: 15rem;
@@ -298,7 +298,7 @@ html {
 }
 
 
-#categoriSelector{
+#categorySelector{
 display: inline-block;
 width: 19%;
 background-color: black;

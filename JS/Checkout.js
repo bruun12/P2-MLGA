@@ -1,4 +1,4 @@
-document.querySelector("info").addEventListener("submit", function(event) {
+document.querySelector("#info").addEventListener("submit", function(event) {
     var email = document.getElementById("email").value;
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
@@ -7,7 +7,7 @@ document.querySelector("info").addEventListener("submit", function(event) {
     var by = document.getElementById("by").value;
 
     if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
-      alert("Udfyld dette felt!");
+      alert("Udfyld alle felterne!");
       event.preventDefault();
     }
   });

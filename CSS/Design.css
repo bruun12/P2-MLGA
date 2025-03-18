@@ -180,7 +180,10 @@ html {
     text-align: center;
   }
 
-  
+  .dot-container {
+    text-align: center;
+  }
+
   /* The dots/bullets/indicators */
   .dot {
     cursor: pointer;

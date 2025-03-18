@@ -15,7 +15,6 @@ productLink.addEventListener("mouseleave", function(){
 
 /* ------ Slideshow START ------ */
 /* Fetch slideshow.json data for slideshow */
-let slidesContainer = document.querySelector('.slideshow-container');
 
 const eventTmpl = (event) =>
     `
@@ -25,6 +24,15 @@ const eventTmpl = (event) =>
     </div>
     `;
 
+
+const eventTmp2 = (event) =>
+    `
+    <span class="dot"></span>
+    `;
+
+
+let slidesContainer = document.querySelector('.slideshow-container');
+let dotContainer = document.querySelector('.dot-container')
 async function fetchEventData() {
     try {
         const response = await fetch('../database/slideshow.json');
@@ -33,6 +41,7 @@ async function fetchEventData() {
 
         events.forEach((event) => {
             slidesContainer.insertAdjacentHTML('beforeend', eventTmpl(event));
+            dotContainer.insertAdjacentHTML('beforeend', eventTmp2(event));
         });
 
         setupSlideshow();

@@ -63,10 +63,6 @@ function productDisplay(name, price, img){
     
     productName.innerText = `${name}:`;
     productPrice.innerText = `${price} kr.`;
-
-
-
-
 }
 
 
@@ -76,7 +72,6 @@ fetch("../database/products.json")
 .then(data=>{
     //Vi løber igennem forløkken for alle 
     for (const i in data.products) {
-        //console.log(data.products[i]);
 
         productDisplay(data.products[i].product, data.products[i].price, data.products[i].img);
         subCategoryDisplay( data.products[i].subCategory, subCategoryArr);

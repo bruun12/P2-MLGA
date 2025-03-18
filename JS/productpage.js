@@ -1,10 +1,36 @@
 const hostname = '127.0.0.1';
 const port = 3000;
+let subCategoryArr = [];
+
 
 //const fs = require('fs');
+function newSubCategoryChecker(subCategory, subCategoryArr){
+    for (const i in subCategoryArr){
+        if (subCategory === subCategoryArr[i]){
+            return false;
+        } 
+    }
+    subCategoryArr.push(subCategory);
+    return true;
+}
 
+function subCategoryDisplay(subCategory, subCategoryArr){
+    if(newSubCategoryChecker(subCategory, subCategoryArr)){
+        console.log("subCat: " + subCategory);
+
+        let subCategoryTopA = document.createElement("a");
+        document.querySelector("#categoryBox").appendChild(subCategoryTopA);
+        subCategoryTopA.innerText = subCategory;
+
+
+        let subCategoryA = document.createElement("a");
+        document.querySelector("#categorySelector").appendChild(subCategoryA);
+        subCategoryA.innerText = subCategory;
+    }
+}
 
 function productDisplay(name, price, img){
+
     //Make div and put it under the productDisplayer
     let productDiv = document.createElement("div");
     productDiv.setAttribute("class", "productDiv")
@@ -50,10 +76,10 @@ fetch("../database/products.json")
 .then(data=>{
     //Vi løber igennem forløkken for alle 
     for (const i in data.products) {
-        console.log(data.products[i]);
+        //console.log(data.products[i]);
 
         productDisplay(data.products[i].product, data.products[i].price, data.products[i].img);
-
+        subCategoryDisplay( data.products[i].subCategory, subCategoryArr);
     }
     })
 

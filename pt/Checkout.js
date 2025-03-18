@@ -49,3 +49,18 @@ stripe.initCheckout({clientSecret}).then((checkout) => {
     });
   });
 });
+
+
+const fetchClientSecret = () => {
+  return fetch('/create-checkout-session', {method: 'POST'})
+    .then((response) => response.json())
+    .then((json) => json.checkoutSessionClientSecret);
+};
+stripe.initCheckout({fetchClientSecret})
+  .then((checkout) => {
+    const checkoutContainer = document.getElementById('checkout-container');
+    checkoutContainer.append(JSON.stringify(checkout.lineItems, null, 2));
+    checkoutContainer.append(document.createElement('br'));
+    checkoutContainer.append(`Currency: ${checkout.session().currency}`);
+    checkoutContainer.append(`Total: ${checkout.session().total.total.amount}`);
+  });

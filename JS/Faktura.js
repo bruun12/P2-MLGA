@@ -7,12 +7,17 @@ document.querySelector("#info").addEventListener("submit", function(event) {
     var by = document.getElementById("by").value;
 
     if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
-      alert("Udfyld alle felterne!");
-      event.preventDefault();
-    }
+        alert("Udfyld alle felterne!");
+        event.preventDefault();
+      } else {
+        saveEmail(email);
+      }
   });
 
-
+function saveEmail(email) {
+    localStorage.setItem("email", email);
+    window.location.href = "checkout.html";
+}
 
 function rabat() {
     const rabatInput = document.getElementById("rabat").value; // Get the value of the input field

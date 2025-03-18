@@ -20,6 +20,7 @@ html {
     overflow: hidden;
     height: 80px;
     width: 100%;
+    z-index: 1;
   }
   
   /* Style the links inside the navigation bar */
@@ -122,11 +123,15 @@ html {
   /* Hide the images by default */
   .mySlides {
     display: none;
+    span {
+      background-color: black;
+    }
   }
+
 
   .mySlides .text {
     text-align: center;
-    color: gray;
+    color: white;
   }
   
 

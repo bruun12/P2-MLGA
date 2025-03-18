@@ -21,7 +21,7 @@ const eventTmpl = (event) =>
     `
     <div class="mySlides fade">
         <img class="slide-image" src="${event.img}">
-        <p class="text">${event.event}</p>
+        <p class="text"><span>${event.event}</span></p>
     </div>
     `;
 

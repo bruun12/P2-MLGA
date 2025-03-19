@@ -1,68 +1,54 @@
-const hostname = '127.0.0.1';
-const port = 3000;
-let subCategoryArr = [];
+function pathDisplay(path){
+    let productPath = document.createElement("P");
+    productPath.setAttribute("id", "path");
 
+    let pathNImg = document.querySelector("#pathNImg");
+    pathNImg.appendChild(productPath);
 
-//const fs = require('fs');
-function newSubCategoryChecker(subCategory, subCategoryArr){
-    for (const i in subCategoryArr){
-        if (subCategory === subCategoryArr[i]){
-            return false;
-        } 
-    }
-    subCategoryArr.push(subCategory);
-    return true;
-}
+    productPath.innerText = path;
+} 
 
-function subCategoryDisplay(subCategory, subCategoryArr){
-    if(newSubCategoryChecker(subCategory, subCategoryArr)){
-        console.log("subCat: " + subCategory);
-
-        let subCategoryTopA = document.createElement("a");
-        document.querySelector("#categoryBox").appendChild(subCategoryTopA);
-        subCategoryTopA.innerText = subCategory;
-
-
-        let subCategoryA = document.createElement("a");
-        document.querySelector("#categorySelector").appendChild(subCategoryA);
-        subCategoryA.innerText = subCategory;
-    }
-}
-
-function productDisplay(name, price, img){
-
-    //Make div and put it under the productDisplayer
-    let productDiv = document.createElement("div");
-    productDiv.setAttribute("class", "productDiv")
-    document.querySelector("#productDisplayer").appendChild(productDiv);
-
-    //Create IMG and put it to product div
-    
+function imgDisplay(img){
     let productImg = document.createElement("img");
     productImg.setAttribute("src", img);
-    productImg.setAttribute("class", "productIMG");
+    productImg.setAttribute("class", "mainIMG");
     productImg.setAttribute("alt", "productPicture");
-
-    productDiv.appendChild(productImg);
     
-    let productInfoDiv = document.createElement("div");
-    productDiv.setAttribute("class", "productInfoDiv")
+    let pathNImg = document.querySelector("#pathNImg");
+    pathNImg.appendChild(productImg);
 
-    productDiv.appendChild(productInfoDiv);
+    return productImg;
+}
 
-
+function nameDisplay(name){
     let productName = document.createElement("P");
-    productInfoDiv.appendChild(productName);
-    productName.setAttribute("class", "productName")
-
-
-    let productPrice = document.createElement("P");
-    productInfoDiv.appendChild(productPrice);
-    productPrice.setAttribute("class", "productPrice")
-
+    productName.setAttribute("id", "name");
     
+    let productAttributes = document.querySelector("#productAttributes");
+    productAttributes.appendChild(productName);
+
     productName.innerText = `${name}:`;
-    productPrice.innerText = `${price} kr.`;
+}
+
+function priceDisplay(price){
+    let productPrice = document.createElement("P");
+    productPrice.setAttribute("id", "price");
+    
+    let productAttributes = document.querySelector("#productAttributes");
+    productAttributes.appendChild(productPrice);
+
+    productPrice.innerText = `${price}kr.`;
+}
+
+
+function infoDisplay(info){
+    let productInfoP = document.createElement("P");
+    productInfoP.setAttribute("id", "info");
+    
+    let productInfo = document.querySelector("#productInfo");
+    productInfo.appendChild(productInfoP);
+
+    productInfoP.innerText = info;
 }
 
 
@@ -70,11 +56,13 @@ fetch("../database/products.json")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
-    //Vi løber igennem forløkken for alle 
-    for (const i in data.products) {
+    let i = 2;
+    //Vi løber igennem forløkken for alle   
+        pathDisplay(data.products[i].subCategory);
+        imgDisplay(data.products[i].img);
 
-        productDisplay(data.products[i].product, data.products[i].price, data.products[i].img);
-        subCategoryDisplay( data.products[i].subCategory, subCategoryArr);
-    }
-    })
+        nameDisplay(data.products[i].product);
+        priceDisplay(data.products[i].price);
 
+        infoDisplay(data.products[i].info);
+     })

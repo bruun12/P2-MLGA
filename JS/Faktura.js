@@ -1,10 +1,10 @@
 document.querySelector("#info").addEventListener("submit", function(event) {
-    var email = document.getElementById("email").value;
-    var fname = document.getElementById("fname").value;
-    var lname = document.getElementById("lname").value;
-    var adresse = document.getElementById("adresse").value;
-    var postnummer = document.getElementById("postnummer").value;
-    var by = document.getElementById("by").value;
+    let email = document.getElementById("email").value;
+    let fname = document.getElementById("fname").value;
+    let lname = document.getElementById("lname").value;
+    let adresse = document.getElementById("adresse").value;
+    let postnummer = document.getElementById("postnummer").value;
+    let by = document.getElementById("by").value;
 
     if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
         alert("Udfyld alle felterne!");
@@ -29,3 +29,13 @@ function rabat() {
         alert("1 forsøg tilbage eller du bliver data scraped");
     }
 }
+
+function change(event) {
+    event.preventDefault();
+    
+    let infobox = document.querySelector("#info");
+    infobox.style.display = "none"   
+}
+
+
+document.querySelector("#fortnite").addEventListener("click", change);

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>      
     <link rel="stylesheet" href="/CSS/Faktura.css">
-    <script src="/JS/Checkout.js" defer></script>
     <script src="/pt/Checkout.js" defer></script>
+    <script src="/JS/Faktura.js" defer></script>
 
 </head>
 
@@ -28,7 +28,7 @@
         </aside>
     
     
-    <form id="info" action="check2.html" method="post">
+    <form id="info">
         
       <h2>Faktureringsoplysninger</h2> <br>
 
@@ -61,12 +61,13 @@
 
             <label for="nummer">Mobil nr:</label> <br> <br>
             <input type="text" id="nummer"> <br> <br>
-            <button type="submit"  onclick="">Fortsæt til betaling</button> <br> <br> 
+            <button id="fortnite">Fortsæt til betaling</button> <br> <br> 
     </form>
 
     <p>Efter fortsæt knappen burde siden update og fjerne gamle form
     hvorefter den nye betalingsform fra Stripe eller viva.com kommer i action.</p>
 
-   
+    <script src="/JS/Checkout.js" defer></script>
 </body>
+
 </html>

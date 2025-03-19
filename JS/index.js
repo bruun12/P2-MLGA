@@ -11,7 +11,7 @@ const fs = require('fs');
 
 function makeGet(){
     //Her indlæser vi "databasen" i dette tilfælde en jason fil.
-    fetch("database/db.json")
+    fetch("../database/db.json")
     //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
     .then(response => {return response.json()})
     .then(data=>{

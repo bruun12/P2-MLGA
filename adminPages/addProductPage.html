@@ -27,20 +27,18 @@
     </form>
 </nav>
 
-
-    <table id="table"> <tr><th>Firstname</th><th>Surname</th></tr> </table>
-    <button id="getter" > knap</button>
-
-
-    <div>
-        <h1>Upload Names</h1>
-
-        <input id="firstName" type="text" placeholder="First Name">
-        <input id="lastName" type="text" placeholder="Last Name">
-        <button id="poster" > knap</button>
+    <form id="productForm" class="form">
+        <p>Name:</p>
+        <input name="name" id="inputName" type="text">
+        <p>Price:</p>
+        <input name="price" id="inputPrice" type="number">
+        <p>IMG source</p>
+        <input name="IMG" id="inputIMG" type="text"> <br> <br> 
+        <button id="submitProduct">press to upload item</button>
+    </form>
 
 
-    </div>
-    <script type="module" src = "../JS/index.js"> </script>    
+
+    <script type="module" src = "../adminJS/addProducts.js"> </script>    
 </body>    
 </html>  

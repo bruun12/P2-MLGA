@@ -1,3 +1,5 @@
+/* ------ Navbar START ------ */
+/* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
 
@@ -7,71 +9,136 @@ product.addEventListener("mouseenter", function(){
 
 productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
-})
+});
+/* ------ Navbar END ------ */
 
 
-/* STJÅLET FRA W3S TIL TESTING, SKAL LAVES OM TIL QUERYSELECTOR! */
-document.addEventListener("DOMContentLoaded", function() {
-    let slideIndex = 1;
-    showSlides(slideIndex);
+/* ------ Slideshow START ------ */
+/* Fetch slideshow.json data for slideshow */
 
-    // Function to change slides automatically every 10 seconds
-    function autoSlide() {
-        plusSlides(1); // Move to the next slide
+const eventTmpl = (event) =>
+    `
+    <div class="mySlides fade">
+        <img class="slide-image" src="${event.img}">
+        <p class="text"><span>${event.event}</span></p>
+    </div>
+    `;
+
+
+const eventTmp2 = (event) =>
+    `
+    <span class="dot"></span>
+    `;
+
+
+let slidesContainer = document.querySelector('.slideshow-container');
+let dotContainer = document.querySelector('.dot-container')
+async function fetchEventData() {
+    try {
+        const response = await fetch('../database/slideshow.json');
+        const data = await response.json();
+        const events = data.slides
+
+        events.forEach((event) => {
+            slidesContainer.insertAdjacentHTML('beforeend', eventTmpl(event));
+            dotContainer.insertAdjacentHTML('beforeend', eventTmp2(event));
+        });
+
+        setupSlideshow();
+    } catch (error) {
+        console.error('Error fetching or parsing data:', error)
+    }
+}
+
+fetchEventData();
+
+/* Declare variables */
+function setupSlideshow(){
+    let i = 0;
+    let slides = document.querySelectorAll('.mySlides');
+    let prevBtn = document.querySelector('.prev');
+    let nextBtn = document.querySelector('.next');
+    let dots = document.querySelectorAll('.dot');
+    
+    
+    /* Interval */
+    let changeSlide;
+    const intervalDuration = 8000; /* ms */
+    
+    /* Hides all slides */
+    let hideAll = (n) => {
+        n.forEach(n =>{
+            n.style.display ="none";
+        })
     }
     
-    let slideInterval = setInterval(autoSlide, 10000); // 10,000ms = 10 seconds
-
-    // Next/previous controls
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    // Thumbnail image controls
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-        let i;
-        let slides = document.getElementsByClassName("mySlides");
-        let dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+    /* Show the first image on load, afterwards slideshow functions are used */
+    hideAll(slides);
+    slides[0].style.display = "block";
+    updateDots();
+    
+    /* Hide all slides, then show the next slide*/
+    let nextSlide = () => {
+        i++;
+        if(i >= slides.length) {
+            i = 0;
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active";
+    
+        hideAll(slides);
+        slides[i].style.display = "block";
+        updateDots();
+    
+        /* Reset interval to avoid switching after button change */
+        clearInterval(changeSlide);
+        changeSlide = setInterval(nextSlide, intervalDuration)
     }
-
-    // Attach event listeners to buttons
-    document.querySelector(".prev").addEventListener("click", function() {
-        plusSlides(-1);
-        resetTimer();
-    });
-
-    document.querySelector(".next").addEventListener("click", function() {
-        plusSlides(1);
-        resetTimer();
-    });
-
-    let dots = document.querySelectorAll(".dot");
+    
+    /* Hide all slides, then show the previous slide*/
+    let prevSlide = () => {
+        i--;
+        if(i < 0) {
+            i = slides.length - 1;
+        }
+        
+        hideAll(slides);
+        slides[i].style.display = "block"
+        updateDots();
+    
+        /* Reset interval to avoid switching after button change */
+        clearInterval(changeSlide);
+        changeSlide = setInterval(nextSlide, intervalDuration)
+    }
+    
+    /* Set up timer to change slides automatically */
+    changeSlide = setInterval(nextSlide, intervalDuration);
+    
+    /* Interactive buttons on slides */
+    nextBtn.addEventListener("click", nextSlide);
+    prevBtn.addEventListener("click", prevSlide);
+    
+    /* Change dot color below images */
+    function updateDots(){
+        dots.forEach((dot, index) => {
+            if(index === i) {
+                dot.style.backgroundColor = "#717171";
+            } else {
+                dot.style.backgroundColor = "#bbb";
+            }
+        })
+    }
+    
+    /* Make dots clickable */
     dots.forEach((dot, index) => {
-        dot.addEventListener("click", function() {
-            currentSlide(index + 1);
-            resetTimer();
+        dot.addEventListener("click", () => {
+            i = index;
+            hideAll(slides);
+            slides[i].style.display = "block";
+            updateDots();
+            clearInterval(changeSlide);
+            changeSlide = setInterval(nextSlide, intervalDuration);
         });
     });
+}
 
-    // Function to reset the auto-slide timer when user interacts
-    function resetTimer() {
-        clearInterval(slideInterval); // Stop the current interval
-        slideInterval = setInterval(autoSlide, 10000); // Restart the timer
-    }
-});
 
-/* STJÅLET FRA W3S TIL TESTING, SKAL LAVES OM TIL QUERYSELECTOR SLUT!  */
+/* ------ Slideshow END ------ */

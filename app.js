@@ -1,9 +1,8 @@
 import mysql from "mysql";
 import express from 'express';
-// ændre måske til at importe frem for at require
-//const express = require("express");
+
 const app = express();
-//const mysql = require('mysql');
+const port = 3350;
 
 //Connection Pooling is a mechanism to maintain a cache of database connection so that the connection can be reused after releasing it.
 //Support connection pooling, avoid server crash concurrent requests
@@ -15,6 +14,8 @@ const pool = mysql.createPool({
 });
 
 app.get("/", (req, res) => {
+    res.send("index.html")
+    console.log("Hello World")
     pool.getConnection((err, connection) => {
         if (err) throw err;
         console.log('connected as id'+ connection.threadId);
@@ -26,7 +27,6 @@ app.get("/", (req, res) => {
     });
 });
 
-const port = 3350;
 app.listen(port, () => {
     console.log(`Server is running at port ${port}`);
 });

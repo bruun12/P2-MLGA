@@ -9,7 +9,7 @@ const port = 3350;
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'cs-25-sw-2-05@student.aau.dk',
-    password: 'FKmPu3CC@2CbPPPj',
+    password: '',
     database: 'cs_25_sw_2_05'
 });
 

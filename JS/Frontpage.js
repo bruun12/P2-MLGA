@@ -1,6 +1,3 @@
-
-
-
 /* ------ Slideshow START ------ */
 /* Fetch slideshow.json data for slideshow */
 

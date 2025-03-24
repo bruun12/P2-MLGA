@@ -1,5 +1,3 @@
-/* Templates */
-
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `

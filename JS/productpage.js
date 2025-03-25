@@ -56,7 +56,7 @@ fetch("../database/products.json")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
-    let i = 2;
+    let i = 3;
     //Vi løber igennem forløkken for alle   
         pathDisplay(data.products[i].subCategory);
         imgDisplay(data.products[i].img);

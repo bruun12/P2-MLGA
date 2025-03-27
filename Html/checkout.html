@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8" />
-    <title>Accept a payment</title>
-    <meta name="description" content="A demo of a payment on Stripe" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style.css" />
+    <title>Buy cool new product</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="checkout.js" defer></script>
   </head>
   <body>
-    <!-- Display a payment form -->
-      <div id="checkout">
-        <!-- Checkout will insert the payment form here -->
+    <section>
+      <div class="product">
+        <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
+        <div class="description">
+          <h3>Norsk TA</h3>
+          <h5>500,00 DKK</h5>
+        </div>
       </div>
+      <form action="/create-checkout-session" method="POST">
+        <button type="submit" id="checkout-button">Checkout</button>
+      </form>
+    </section>
   </body>
 </html>

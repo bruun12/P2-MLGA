@@ -20,7 +20,7 @@ let slidesContainer = document.querySelector('.slideshow-container');
 let dotContainer = document.querySelector('.dot-container')
 async function fetchEventData() {
     try {
-        const response = await fetch('../database/slideshow.json');
+        const response = await fetch('../../database/slideshow.json');
         const data = await response.json();
         const events = data.slides
 

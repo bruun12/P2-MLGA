@@ -2,14 +2,14 @@
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="productPage.html" class="product">Produkter <i class="fa fa-caret-down"></i></a>
         <a href="https://www.disney.dk/">Events</a>
         <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
-            <a href="Loginside.html"><i class="fa-solid fa-circle-user"></i></a>
+            <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
             <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>

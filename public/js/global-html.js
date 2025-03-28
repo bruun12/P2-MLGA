@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ByHjerte</title>
-    <script type="module" src="/JS/Frontpage.js"></script>
-    <link rel="stylesheet" href="/CSS/Design.css">
-    <!-- Font used to have icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <!-- Navigation -->
+/* HTML Navbar Template */
+const navTmpl = (event) =>
+    `
     <nav class="topnav">
-        <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="productPage.html" class="product">Produkter <i class="fa fa-caret-down"></i></a>
         <a href="https://www.disney.dk/">Events</a>
         <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
-            <a href="Loginside.html"><i class="fa-solid fa-circle-user"></i></a>
+            <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
             <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
@@ -63,32 +53,11 @@
             </li>
         </ul>
     </div>
- 
-    
-     <!-- Slideshow container -->
-    <div class="slideshow-container">
+    `
 
-        <!-- SLIDE CONTENT INSERTED BY JS FUNCTION fetchEventData -->
-    
-        <!-- Next and previous buttons -->
-        <a class="prev">&#10094;</a>
-        <a class="next">&#10095;</a>
-        <br>
-    </div>
-    
-  
-    <!-- The dots/circles -->
-    <div class ="dot-container">
-       <!-- CONTENT INSERTED BY JS FUNCTION fetchEventData -->
-    </div> 
-    
-     
-    <div class="front-buttons">
-        <a href="productPage.html">Produkter</a>
-        <a href="https://www.disney.dk/">Events</a>
-        <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
-    </div>
-
+    /* HTML Footer Template */
+const footTmpl = (event) =>
+    `
     <footer>
         <p>Author: Biggie Cheese</p>
         <ul>
@@ -101,6 +70,28 @@
         </ul>
         <a href="https://chatgpt.com/">Om os</a>
     </footer>
+    `
 
-</body>
-</html>
+    /* JS inserting footer and navbar */
+let body = document.querySelector("body");
+
+function insGlb() {
+    body.insertAdjacentHTML('beforebegin', navTmpl(event));
+    body.insertAdjacentHTML('beforeend', footTmpl(event));
+}
+
+insGlb()
+
+/* ------ Navbar START ------ */
+/* JS to show product drop down on mouseenter and hide on mouseleave */
+let productLink = document.querySelector(".product-link");
+let product = document.querySelector(".product");
+
+product.addEventListener("mouseenter", function(){
+    productLink.style.display = "block";
+});
+
+productLink.addEventListener("mouseleave", function(){
+    productLink.style.display = "none";
+});
+/* ------ Navbar END ------ */

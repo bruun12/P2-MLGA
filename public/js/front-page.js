@@ -1,18 +1,3 @@
-/* ------ Navbar START ------ */
-/* JS to show product drop down on mouseenter and hide on mouseleave */
-let productLink = document.querySelector(".product-link");
-let product = document.querySelector(".product");
-
-product.addEventListener("mouseenter", function(){
-    productLink.style.display = "block";
-});
-
-productLink.addEventListener("mouseleave", function(){
-    productLink.style.display = "none";
-});
-/* ------ Navbar END ------ */
-
-
 /* ------ Slideshow START ------ */
 /* Fetch slideshow.json data for slideshow */
 
@@ -30,12 +15,12 @@ const eventTmp2 = (event) =>
     <span class="dot"></span>
     `;
 
-
+/* Fetch slideshow.json data */
 let slidesContainer = document.querySelector('.slideshow-container');
 let dotContainer = document.querySelector('.dot-container')
 async function fetchEventData() {
     try {
-        const response = await fetch('../database/slideshow.json');
+        const response = await fetch('../../database/slideshow.json');
         const data = await response.json();
         const events = data.slides
 

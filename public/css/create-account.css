@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    background-image: url('/Billeder/Mr.grey.jpg'); /* Baggrundsbillede */
+    background-image: url('../images/Mr.grey.jpg'); /* Baggrundsbillede */
     background-size: cover; /* Sørg for, at billedet dækker hele baggrunden */
     background-position: center; /* Centrer baggrundsbilledet */
     margin: 0;

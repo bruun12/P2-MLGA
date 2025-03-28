@@ -1,0 +1,38 @@
+#productDiv{
+    padding-left: auto;
+}
+
+#pathNImg{
+    margin-left: 5rem;
+    padding-top: 6rem;
+    background-color: linen;
+    display: inline-block;
+    
+    P{
+        font-size: large;
+        margin-left: 2rem;
+    }
+
+    img{
+        width: 40rem;
+        height: 40rem; 
+    }
+
+}
+
+#productAttributes{
+    margin: 5rem;
+    padding-top: 7rem;
+    display: inline-block;
+    width: 65rem;
+    height: 40rem;
+    background-color: antiquewhite;
+    position: absolute;
+    P{
+        display: inline-block;
+        font-size: 4rem;
+    }
+    #price{
+        float: right;
+    }
+}

@@ -3,12 +3,14 @@
 <head>
   <title>IWP Demo</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/CSS/Design.css">
+  <link rel="stylesheet" href="../css/Productpage.css">
+  <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/CSS/productPage.css">
 </head>
 <body>   
   <nav class="topnav">
-    <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+    <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
     <a href="https://www.amazon.com/" class="product">Produkter <i class="fa fa-caret-down"></i></a>
     <a href="https://www.disney.dk/">Events</a>
     <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
@@ -27,20 +29,16 @@
     </form>
 </nav>
 
-
-    <table id="table"> <tr><th>Firstname</th><th>Surname</th></tr> </table>
-    <button id="getter" > knap</button>
+    <div id = "categoryOverview"> <h1>Kategori</h1> </div>
 
 
-    <div>
-        <h1>Upload Names</h1>
+    <div id = "categorySelector"></div>
 
-        <input id="firstName" type="text" placeholder="First Name">
-        <input id="lastName" type="text" placeholder="Last Name">
-        <button id="poster" > knap</button>
-
-
+    <!-- This div contains the products-->
+    <div id = "productDisplayer"> 
+      <div id = "categoryBox"> </div>
     </div>
-    <script type="module" src = "../JS/index.js"> </script>    
+    <script type="module" src = "../JS/productOverviewpage.js"> </script>    
+
 </body>    
 </html>  

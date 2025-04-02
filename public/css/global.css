@@ -19,6 +19,13 @@
     flex-direction: column;
   }
 
+  /* Moves whole page when shoping cart is displayed */
+  body.cart-open {
+    transform: translateX(-400px);
+    transition: transform 0.3s ease-in-out;
+    overflow-x: hidden;
+}
+
   main {
     flex: 1; /* Pushes footer to the bottom. */
     margin-top: 80px; /* Same as navbar */
@@ -140,13 +147,19 @@ footer {
     }
   }
 
+  /* Shopping cart */
   .cartTab{
+    display: none;
     width: 400px;
     background-color: #353432;
     color: #eee;
     position: fixed;
     inset: 0 -400px 0 auto;
     grid-template-rows: 70px 1fr 70px;
+    transition: inset 0.3s ease-in-out;
+    z-index: 1000;
+    
+
     h2{
       padding: 20px;
       margin: 0;

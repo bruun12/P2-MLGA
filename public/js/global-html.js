@@ -11,7 +11,7 @@ const navTmpl = (event) =>
         <div class="nav-icons">
             <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
-            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp" class="basket"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Div used to box search container elements -->
@@ -55,7 +55,7 @@ const navTmpl = (event) =>
     </div>
     `
 
-    /* HTML Footer Template */
+/* HTML Footer Template */
 const footTmpl = (event) =>
     `
     <footer>
@@ -72,34 +72,8 @@ const footTmpl = (event) =>
     </footer>
     `
 
-    /* JS inserting footer and navbar */
-let body = document.querySelector("body");
-
-function insGlb() {
-    body.insertAdjacentHTML('beforebegin', navTmpl(event));
-    body.insertAdjacentHTML('beforeend', footTmpl(event));
-}
-
-insGlb()
-
-/* ------ Navbar START ------ */
-/* JS to show product drop down on mouseenter and hide on mouseleave */
-let productLink = document.querySelector(".product-link");
-let product = document.querySelector(".product");
-
-product.addEventListener("mouseenter", function(){
-    productLink.style.display = "block";
-});
-
-productLink.addEventListener("mouseleave", function(){
-    productLink.style.display = "none";
-});
-/* ------ Navbar END ------ */
-
-
-/* ------ Cart/Basket START ------ */
 /* ------ HTML Tmpl Cart/Basket ------ */
-https://www.youtube.com/watch?v=gXWohFYrI0M 12:38
+//https://www.youtube.com/watch?v=gXWohFYrI0M 12:38
 const cartTmpl = (event) =>
     `
     <div class="cartTab">
@@ -107,17 +81,17 @@ const cartTmpl = (event) =>
         <div class="listCart">
             <div class="item">
                 <div class="image">
-                    ${INSERT_IMAGE_HERE}
+                    <p>INDÆST IMAGE HER</p>
                 </div>
                 <div class="name">
-                    ${INSERT_NAME_HERE}
+                    <p>INDÆST NAME HER</p>
                 </div>
                 <div class="totalPrice">
-                    ${INSERT_TOTAL_HERE}
+                    <p>INDÆST PRIS HER</p>
                 </div>
                 <div class="quantity">
                     <span class="minus"><</span>
-                    ${INSERT_QUANTITY_HERE}
+                    <p>INDÆST QUANTITY HER</p>
                     <span class="plus">></span>
                 </div>
             </div>
@@ -129,4 +103,57 @@ const cartTmpl = (event) =>
     </div>
     `
 
+
+let body = document.body; /* Same as querySelector, but more efficient. */
+
+/* JS inserting global content */
+function insGlb() {
+    body.insertAdjacentHTML('afterbegin', navTmpl());
+    body.insertAdjacentHTML('beforeend', footTmpl());
+    
+    let nav = document.querySelector(".topnav");
+    nav.insertAdjacentHTML('beforeend', cartTmpl());
+}
+
+insGlb();
+
+
+/* ------ Navbar START ------ */
+/* JS to show product drop down on mouseenter and hide on mouseleave */
+let productLink = document.querySelector(".product-link");
+let product = document.querySelector(".product");
+
+/* Show drop down of product categories */
+product.addEventListener("mouseenter", function(){
+    productLink.style.display = "block";
+});
+
+/* Hide drop down of product categories */
+productLink.addEventListener("mouseleave", function(){
+    productLink.style.display = "none";
+});
+
+/* ------ Navbar END ------ */
+
+
+/* ------ Cart/Basket START ------ */
+document.addEventListener("DOMContentLoaded", function(){
+    let basket = document.querySelector(".basket");
+    let cartTab = document.querySelector(".cartTab");
+    let closeBtn = document.querySelector(".btn .close");
+
+    basket.addEventListener("mouseenter", function(){
+        cartTab.style.display = "grid"; /* Show cart */
+        cartTab.style.inset = "0 0 0 auto"; /* Bring cart into view */
+        body.classList.add("cart-open"); /* Add class cart-open to body */
+    });
+
+    closeBtn.addEventListener("click", function(){
+        cartTab.style.inset = "0 -400px 0 auto"; /* hide cart */
+        setTimeout(() => { /* remove display of cart after 300 ms */
+            cartTab.style.display = "none";
+        }, 300);
+        body.classList.remove("cart-open"); /* remove body class */
+    });
+});
 /* ------ Cart/Basket END ------ */

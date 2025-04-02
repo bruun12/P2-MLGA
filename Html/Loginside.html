@@ -12,22 +12,22 @@
         <h1> Login </h1>
         <h2>Forside/Login</h2>
     </div>
-    <form>
+    <form id="loginForm">
         <div class="input-container">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text" id="loginUsername" name="username" required>
             <img src="/Billeder/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </div>
         <div class="input-container">
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password" minlength="8" required> <br> <br>
+            <input type="password" id="loginPassword" name="password" minlength="8" required> <br> <br>
             <img src="/Billeder/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
         </div> 
         <div class="checkbox-container">
             <label for="Husk mig">Husk mig</label>
             <input type="checkbox" id="husk-mig" value="Husk mig">
         </div>
-        <button type="submit" onclick="validate()">Login
+        <button type="submit">Login
             <img src="/Billeder/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
         <input type="submit" id="glemtpassword" value="Glemt password"> <br> <br>

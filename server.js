@@ -1,4 +1,10 @@
 import express from 'express';
+import path from 'path';
+import url from 'url';
+import htmlRoutes from './routes/html-routes.js';
+
+// Get the directory name from the current file's URL
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 //node0 port
 const port = process.env.NODE0 || 3350;
@@ -6,8 +12,13 @@ const port = process.env.NODE0 || 3350;
 //Initialize express
 const app = express();
 
+// built-in middleware for json
+app.use(express.json());
+
 //Use static files 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '/public')));
+
+app.use('/', htmlRoutes);
 
 //Reveal error if any
 app.use((error, request, response, next) => {
@@ -16,9 +27,10 @@ app.use((error, request, response, next) => {
 });
 
 // Route test
-app.get("/", (request, response) => {
+/* app.get("/", (request, response) => {
+    
     response.send("Hello world");
-});
+}); */
 
 //Start the server & listen on a port
 app.listen(port, () => {

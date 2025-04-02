@@ -12,7 +12,7 @@
         <h1> Opret profil </h1>
         <h2>Forside/Opret profil</h2>
     </div>
-    <form id="registerForm">
+    <form id="registerForm" onsubmit="event.preventDefault(); registerUser();">
         <div class="input-container">
             <label for="username">Email:</label>
             <input type="text" id="username" name="username" required>

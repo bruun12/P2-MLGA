@@ -1,38 +1,35 @@
 // New user (brugernavnet og password i local storage)
-function registerUser(username, password) {
-    let users = Jason.parse(localStorage.getItem("users")) || []; 
-    // Check if the username already exists
+async function registerUser() {
+    const username = document.getElementById("registerUsername").value;
+    const password = document.getElementById("registerPassword").value;
 
-    if (!username || !password) {
-        alert("Please enter a username and password.");
-        return;
-    }
+    const response = await fetch("http://localhost:3000/Opretprofil.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
 
-    // Check if the user already exists
-    const existingUser = localStorage.getItem(username);
-    if (existingUser) {
-        alert("Username already exists. Please choose a different username.");
-        return;
-    }
-
-    users.push({ username, password });
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("User registered successfully!");
-    return true;
-
+    const data = await response.json();
+    alert(data.message);
 }
 
-function loginUser(username, password) {
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+async function loginUser(username, password) {
+   const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    // Check if the username and password are correct
-    const validUser = users.find(user => user.username === username && user.password === password);
-    if (validUser) {
-        alert("Login successful!");
-        sessionStorage.setItem("loggedInUser", JSON.stringify(validUser));
-        window.location.href = "frontpage.html"; // Redirect to Frontpage.html
+    const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+        alert(data.message);
+        sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
+        window.location.href = "frontpage.html"; 
     } else {
-        alert("Invalid username or password.");
+        alert(data.message);
     }
 }
 

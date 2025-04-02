@@ -12,7 +12,7 @@
         <h1> Login </h1>
         <h2>Forside/Login</h2>
     </div>
-    <form id="loginForm">
+    <form id="loginForm" onsubmit="event.preventDefault(); loginUser();">
         <div class="input-container">
             <label for="username">Username:</label>
             <input type="text" id="loginUsername" name="username" required>

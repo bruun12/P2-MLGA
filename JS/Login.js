@@ -27,7 +27,7 @@ async function loginUser(username, password) {
     if (response.ok) {
         alert(data.message);
         sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
-        window.location.href = "frontpage.html"; 
+        window.location.href = "front-page.html"; 
     } else {
         alert(data.message);
     }

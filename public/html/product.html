@@ -3,13 +3,12 @@
 <head>
   <title>IWP Demo</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../css/product.css">
-  <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/product.css">
 </head>
 <body>   
   <nav class="topnav">
-    <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+    <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
     <a href="https://www.amazon.com/" class="product">Produkter <i class="fa fa-caret-down"></i></a>
     <a href="https://www.disney.dk/">Events</a>
     <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
@@ -27,16 +26,12 @@
         <button type="submit"><i class="fa fa-search"></i></button>
     </form>
 </nav>
-
-    <div id = "categoryOverview"> <h1>Kategori</h1> </div>
-
-
-    <div id = "categorySelector"></div>
-
     <!-- This div contains the products-->
-    <div id = "productDisplayer"> 
-      <div id = "categoryBox"> </div>
+    <div id = "productDiv"> 
+        <div id = "pathNImg"></div>
+        <aside id = "productAttributes"></aside>
+        <div id = "productInfo"></div>
     </div>
-    <script type="module" src = "../js/product-overview.js"> </script>    
+    <script type="module" src = "../js/product.js"> </script>    
 </body>    
 </html>  

@@ -98,15 +98,15 @@ CREATE TABLE IF NOT EXISTS favorite (
 CREATE TABLE IF NOT EXISTS customer (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(255) NOT NULL, /* type reviewed */
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
-  address_id INT NOT NULL,
-  phone VARCHAR(15) NOT NULL, /* type reviewed, 15 digits is a worldwide standard */
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  address_id INT,
+  phone VARCHAR(15), /* type reviewed, 15 digits is a worldwide standard */
   is_member BOOLEAN DEFAULT FALSE NOT NULL,
   `password` VARCHAR(255) NOT NULL, /* type reviewed, hash password before storing here */
   favorite_id INT NOT NULL,
   FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
-  FOREIGN KEY (favorite_id) REFERENCES favorite(id) ON DELETE SET RESTRICT
+  FOREIGN KEY (favorite_id) REFERENCES favorite(id)
 );
 
 /* customer order */
@@ -153,9 +153,9 @@ CREATE TABLE IF NOT EXISTS `event` (
   title VARCHAR(50) NOT NULL,
   `description` TEXT NOT NULL, /* type reviewed */
   `date` DATETIME NOT NULL, /* or TIMESTAMP type */
-  address_id INT NOT NULL,
-  customer_id INT NOT NULL,
-  FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE SET CASCADE,
+  address_id INT,
+  customer_id INT, /*registrants, participants*/
+  FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
   FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
   FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE SET NULL
 );

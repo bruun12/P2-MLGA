@@ -12,7 +12,7 @@
         <h1> Login </h1>
         <h2>Forside/Login</h2>
     </div>
-    <form>
+    <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
         <div class="input-container">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -27,13 +27,13 @@
             <label for="Husk mig">Husk mig</label>
             <input type="checkbox" id="husk-mig" value="Husk mig">
         </div>
-        <button type="submit" onclick="validate()">Login
+        <button type="submit">Login
             <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
-        <input type="submit" id="glemtpassword" value="Glemt password"> <br> <br>
+        <input type="submit" id="glemtpassword" onclick="window.location.href='create-account.html'" value="Glemt password"> <br> <br>
         <div class="profil">
             <h3>Har du ikke en profil?</h3>
-            <button type="submit" id="opretprofil" onclick="window.location.href='create-account.html'">
+            <button type="submit" id="opretprofil" onclick="window.location.href='forgot-password.html'">
                 Opret profil
                 <img src="../images/person_add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Add person icon"> 
             </button>

@@ -1,0 +1,26 @@
+{
+  "name": "p2-mlga",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch --env-file=.env server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bruun12/P2-MLGA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bruun12/P2-MLGA/issues"
+  },
+  "homepage": "https://github.com/bruun12/P2-MLGA#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql": "^2.18.1"
+  }
+}

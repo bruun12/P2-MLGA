@@ -11,7 +11,7 @@ const navTmpl = (event) =>
         <div class="nav-icons">
             <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
-            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp" class="basket"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="basket"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Div used to box search container elements -->
@@ -103,7 +103,7 @@ const cartTmpl = (event) =>
     </div>
     `
 
-
+/* Define body used in multiple places below */
 let body = document.body; /* Same as querySelector, but more efficient. */
 
 /* JS inserting global content */
@@ -114,7 +114,7 @@ function insGlb() {
     let nav = document.querySelector(".topnav");
     nav.insertAdjacentHTML('beforeend', cartTmpl());
 }
-
+/* Call function to insert code */
 insGlb();
 
 
@@ -137,12 +137,16 @@ productLink.addEventListener("mouseleave", function(){
 
 
 /* ------ Cart/Basket START ------ */
+/* When content is loaded, make it possible to display shopping cart */
 document.addEventListener("DOMContentLoaded", function(){
+    /* Basket icon */
     let basket = document.querySelector(".basket");
+    /* Cart tab div */
     let cartTab = document.querySelector(".cartTab");
-    let closeBtn = document.querySelector(".btn .close");
+    /* Close button in Cart tab */
+    let closeBtn = document.querySelector(".cartTab .btn .close");
 
-    basket.addEventListener("mouseenter", function(){
+    basket.addEventListener("click", function(){
         cartTab.style.display = "grid"; /* Show cart */
         cartTab.style.inset = "0 0 0 auto"; /* Bring cart into view */
         body.classList.add("cart-open"); /* Add class cart-open to body */
@@ -156,4 +160,10 @@ document.addEventListener("DOMContentLoaded", function(){
         body.classList.remove("cart-open"); /* remove body class */
     });
 });
+
+/* Empty array for items in basket */
+let cartArr = [];
+function addToCart(name, img, price, id, category){
+    
+}
 /* ------ Cart/Basket END ------ */

@@ -1,214 +1,215 @@
-/* Standard hjemmeside css lort, lav altid */
+/* Standard CSS for all webpages */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  /* Alt Font på siden laves til nedenstående font, medmindre noget specifikt sættes på linket */
-  html {
-    font-family: Arial, Helvetica, sans-serif;
-    height: 100%;
-    margin: 0;
-  }
-
-  body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Moves whole page when shoping cart is displayed */
-  body.cart-open {
-    transform: translateX(-400px);
-    transition: transform 0.3s ease-in-out;
-    overflow-x: hidden;
-}
-
-  main {
-    flex: 1; /* Pushes footer to the bottom. */
-    margin-top: 80px; /* Same as navbar */
-  }
-  
-  /* Add a black background color to the top navigation */
-  .topnav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 80px;
-    width: 100%;
-    background-color: #333;
-    z-index: 1000;
 }
   
-  /* Style the links inside the navigation bar */
-  .topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
-  
-  /* Change the color of links on hover */
-  .topnav a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  /* Add a color to the active/current link */
-  .topnav a.active {
-    background-color: #04AA6D;
-    color: white;
-  }
-  
-  .product-link {
-    display: none;
-    position: absolute;
-    top: 80px; /* same as navbar height */
-    left: 0;
-    width: 100%;
-    background-color: #3a3a3a;
-    padding: 10px 0;
-    z-index: 999; /* slightly lower than navbar but above content */
+/* Entire page follows below specifications unless otherwise specified on specific properties */
+html {
+  font-family: Arial, Helvetica, sans-serif; /* Font used on webpage */
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
 }
-  
-  .product-link ul {
-    display: flex; /* Make categories align horizontally */
-    gap: 30px; /* Adds space between main categories */
-    padding: 10px;
-    list-style: none;
+
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Moves whole page when shoping cart is displayed */
+body.cart-open {
+  transform: translateX(-400px);
+  transition: transform 0.3s ease-in-out;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1; /* Pushes footer to the bottom. */
+  margin-top: 80px; /* Same as navbar */
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 80px;
+  width: 100%;
+  background-color: #333;
+  z-index: 1000; /* higher z index than everything else, ensuring navbar is always on visible */
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Product-link general specifications unless otherwise specified */
+.product-link {
+  display: none;
+  position: absolute;
+  top: 80px; /* Same as navbar height */
+  left: 0;
+  width: 100%;
+  background-color: #3a3a3a;
+  padding: 10px 0;
+  z-index: 999; /* Slightly lower than navbar but above content */
+}
+
+.product-link ul {
+  display: flex; /* Make categories align horizontally */
+  gap: 30px; /* Adds space between main categories */
+  padding: 10px;
+  list-style: none;
+}
+
+.product-link ul > li {
+  display: flex;
+  flex-direction: column; /* Stack subcategories below */
+  align-items: center; /* Center align text */
+  position: relative;
+}
+
+.product-link ul > li ul {
+  display: flex;
+  flex-direction: column; /* Keeps subcategories stacked */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.topnav .nav-icons {
+  float: right; /* Position nav icons in right side of nav bar */
+  cursor: pointer; /* change cursor to pointer, when on nav icons. */
+}
+
+
+.topnav .search-container {
+  float: right; /* Position search bar in right side of nav bar */
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+/* Footer beautyfication */
+footer {
+  background-color: #333;
+  height: 175px;
+  width: 100%;
+  /* Ikke sikker på om disse er nødvendige eller ej.
+  overflow: hidden;
+  position: relative;
+  bottom: 0;
+  */
+  color: white;
+  /* All links in the footer are always blue */
+  a { 
+    color: #0000EE;
   }
-  
-  .product-link ul > li {
-    display: flex;
-    flex-direction: column; /* Stack subcategories below */
-    align-items: center; /* Center align text */
-    position: relative;
-  }
-  
-  .product-link ul > li ul {
-    display: flex;
-    flex-direction: column; /* Keeps subcategories stacked */
-    padding: 0;
+}
+
+/* Shopping cart */
+.cartTab{
+  display: none;
+  width: 400px;
+  background-color: #353432;
+  color: #eee;
+  position: fixed;
+  inset: 0 -400px 0 auto;
+  grid-template-rows: 70px 1fr 70px;
+  transition: inset 0.3s ease-in-out;
+  z-index: 1000;
+  /* Properties of different children of .cartTab*/
+  h2{
+    padding: 20px;
     margin: 0;
-    list-style: none;
+    font-weight: 300;
   }
-  
-  .topnav .nav-icons {
-    float: right;
+  .btn{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  
-  .topnav .search-container {
-    float: right;
-  }
-  
-  .topnav input[type=text] {
-    padding: 6px;
-    margin-top: 8px;
-    font-size: 17px;
-    border: none
-  }
-  
-  .topnav .search-container button {
-    float: right;
-    padding: 6px 10px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #ddd;
-    font-size: 17px;
+  .btn button{
+    background-color: #E8BC0E;
     border: none;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 500;
     cursor: pointer;
   }
-  
-  .topnav .search-container button:hover {
-    background: #ccc;
+  .btn .close{
+    background-color: #eee;
   }
-  
-  * {box-sizing:border-box}
-
-  /* Footer smukifisering */
-footer {
-    background-color: #333;
-    height: 175px;
-    width: 100%;
-    /* Ikke sikker på om disse er nødvendige eller ej.
-    overflow: hidden;
-    position: relative;
-    bottom: 0;
-    */
-    color: white;
-    /* Alle links i footeren er altid blå, også selvom de er besøgt før */
-    a { 
-      color: #0000EE;
-    }
-  }
-
-  /* Shopping cart */
-  .cartTab{
-    display: none;
-    width: 400px;
-    background-color: #353432;
-    color: #eee;
-    position: fixed;
-    inset: 0 -400px 0 auto;
-    grid-template-rows: 70px 1fr 70px;
-    transition: inset 0.3s ease-in-out;
-    z-index: 1000;
-    
-
-    h2{
-      padding: 20px;
-      margin: 0;
-      font-weight: 300;
-    }
-    .btn{
+  .listCart{
+    overflow: auto;
+    .item{
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 70px 150px 50px 1fr;
+      gap: 10px;
+      text-align: center;
+      align-items: center;
+      img{
+        width: 100%;
+      }
     }
-    .btn button{
-      background-color: #E8BC0E;
-      border: none;
-      font-family:'Courier New', Courier, monospace;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .btn .close{
+    .quantity span{
+      display: inline-block;
+      width: 25px;
+      height: 25px;
       background-color: #eee;
+      color: #555;
+      border-radius: 50%;
+      cursor: pointer;
+      :nth-child(2){
+        background-color: transparent;
+        color: #eee;
+      }
+      :nth-child(even){
+        background-color: #eee1;
+      }
     }
-    .listCart{
-      overflow: auto;
-      .item{
-        display: grid;
-        grid-template-columns: 70px 150px 50px 1fr;
-        gap: 10px;
-        text-align: center;
-        align-items: center;
-        img{
-          width: 100%;
-        }
-      }
-      .quantity span{
-        display: inline-block;
-        width: 25px;
-        height: 25px;
-        background-color: #eee;
-        color: #555;
-        border-radius: 50%;
-        cursor: pointer;
-        :nth-child(2){
-          background-color: transparent;
-          color: #eee;
-        }
-        :nth-child(even){
-          background-color: #eee1;
-        }
-      }
-      ::-webkit-scrollbar{
-        width: 0;
-      }
+    ::-webkit-scrollbar{
+      width: 0;
     }
   }
+}

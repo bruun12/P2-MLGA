@@ -1,3 +1,4 @@
+/* CODE BY STRIPE FOR API */
 initialize();
 
 async function initialize() {

@@ -161,9 +161,16 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 });
 
-/* Empty array for items in basket */
-let cartArr = [];
-function addToCart(name, img, price, id, category){
+/* Create empty array for items in basket if one doesn't already exist. */
+if(!cartArr){
+    let cartArr = [];
+}
+let addCart = document.querySelectorAll(".addCart");
+
+/* Function adding item to cart */
+function addToCart(){
     
 }
+
+addCart.addEventListener("click", addToCart());
 /* ------ Cart/Basket END ------ */

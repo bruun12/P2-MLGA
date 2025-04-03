@@ -73,7 +73,6 @@ const footTmpl = (event) =>
     `
 
 /* ------ HTML Tmpl Cart/Basket ------ */
-//https://www.youtube.com/watch?v=gXWohFYrI0M 12:38
 const cartTmpl = (event) =>
     `
     <div class="cartTab">
@@ -161,15 +160,43 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 });
 
-/* Create empty array for items in basket if one doesn't already exist. */
-if(!cartArr){
-    let cartArr = [];
-}
+/* TODO: read cart array from database */
+
 let addCart = document.querySelectorAll(".addCart");
 
 /* Function adding item to cart */
 function addToCart(){
+    let productDiv = addCart.closest(".productDiv"); /* find closest product container */
+    let productID = productDiv.querySelector(".productID").innerText; /* find product id */
+    let productName = productDiv.querySelector(".productName").innerText; /* find name of product */
+    let productPrice = productDiv.querySelector(".productPrice").innerText; /* find price of product */
+    let productImg = productDiv.querySelector(".productIMG").src; /* find img src of product */
+    let storeID = productDiv.querySelector(".storeID").innerText; /* find store id */
+
+    let existingItem = cartArr.find(item => item.productID === productID); /* find item in cart */
+
+    if (existingItem) { /* if in cart, increment quantity */
+        existingItem.quantity++; /* increment quantity of item in cart */
+    } else { /* else add item to cart */
+        cartArr.push({
+            productID: productID,
+            product: productName,
+            price: productPrice,
+            img: productImg,
+            storeID: storeID,
+            quantity: 1
+        });
+    }
+
+    /* Save cart to local storage/cookie whatever */
     
+    /* Update the cart ui to display current cart to user */
+    updateCartUI();
+}
+
+/* Function updating cart ui to display current items in basket */
+function updateCartUI(){
+
 }
 
 addCart.addEventListener("click", addToCart());

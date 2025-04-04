@@ -52,7 +52,7 @@ function infoDisplay(info){
 }
 
 
-fetch("../../database/products.json")
+fetch("../database/products.json")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{

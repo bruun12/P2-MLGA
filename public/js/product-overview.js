@@ -5,6 +5,7 @@ let subCategoryArr = [];
 
 //const fs = require('fs');
 function newSubCategoryChecker(subCategory, subCategoryArr){
+    //Goes through all already created subCats 
     for (const i in subCategoryArr){
         if (subCategory === subCategoryArr[i]){
             return false;
@@ -15,14 +16,16 @@ function newSubCategoryChecker(subCategory, subCategoryArr){
 }
 
 function subCategoryDisplay(subCategory, subCategoryArr){
+    //This checks if there is an existing subCat with the same name  
     if(newSubCategoryChecker(subCategory, subCategoryArr)){
         console.log("subCat: " + subCategory);
 
+        //This makes the subCat appear on the top of the page
         let subCategoryTopA = document.createElement("a");
         document.querySelector("#categoryBox").appendChild(subCategoryTopA);
         subCategoryTopA.innerText = subCategory;
 
-
+        //This makes the subCat appear on the side of the page 
         let subCategoryA = document.createElement("a");
         document.querySelector("#categorySelector").appendChild(subCategoryA);
         subCategoryA.innerText = subCategory;

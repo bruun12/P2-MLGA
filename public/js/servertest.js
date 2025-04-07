@@ -28,42 +28,44 @@ db.connect((err) => {
 app.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try{
+        const hashedPassword = await bcrypt.hash(password, 10); // hash the password using bcrypt
 
-    const query = "INSERT INTO Users (username, password) VALUES (?, ?)";
-    db.query(query, [username, hashedPassword], (err, result) => {
-        if (err) {
-            if (err.code === "ER_DUP_ENTRY") {
-                return res.status(400).json({ message: "Brugernavn er allerede taget!" });
-            }
-            return res.status(500).json({ message: "Fejl ved registrering!" });
-        }
-        res.status(201).json({ message: "Bruger registreret!" });
-    });
+        const [result] = await db.query( // insert the new user into the database
+            "INSERT INTO Users (username, password) VALUES (?, ?)",
+            [username, hashedPassword]
+        );
+        res.status(201).json({ message: "User registered successfully!"});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error registering user!" });
+    }
 });
 
+
 // Log ind som bruger
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
-    const query = "SELECT * FROM Users WHERE username = ?";
-    db.query(query, [username], async (err, results) => {
-        if (err) return res.status(500).json({ message: "Fejl ved login!" });
+    try { 
+        const [rows] = await db.query("SELECT * FROM Users WHERE username = ?", [username]);
 
-        if (results.length === 0) {
-            return res.status(400).json({ message: "Brugernavn eller adgangskode er forkert!" });
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        const user = results[0];
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const user = rows[0];
 
-        if (!isPasswordValid) {
-            return res.status(400).json({ message: "Brugernavn eller adgangskode er forkert!" });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        res.status(200).json({ message: "Login succesfuldt!", user: { id: user.id, username: user.username } });
-    });
+        res.status(200).json({ message: "Login successful", user: { id: user.id, username: user.username } });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error logging in" });
+    }
 });
 
 // Start serveren

@@ -78,22 +78,7 @@ const cartTmpl = (event) =>
     <div class="cartTab">
         <h2>Shopping Cart</h2>
         <div class="listCart">
-            <div class="item">
-                <div class="image">
-                    <p>INDÆST IMAGE HER</p>
-                </div>
-                <div class="name">
-                    <p>INDÆST NAME HER</p>
-                </div>
-                <div class="totalPrice">
-                    <p>INDÆST PRIS HER</p>
-                </div>
-                <div class="quantity">
-                    <span class="minus"><</span>
-                    <p>INDÆST QUANTITY HER</p>
-                    <span class="plus">></span>
-                </div>
-            </div>
+      
         </div>
         <div class=btn>
             <button class="close">Close</button>
@@ -161,8 +146,10 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 /* TODO: read cart array from database */
+let cartArr = [];
 
 let addCart = document.querySelectorAll(".addCart");
+addCart.addEventListener("click", addToCart());
 
 /* Function adding item to cart */
 function addToCart(){
@@ -191,13 +178,98 @@ function addToCart(){
     /* Save cart to local storage/cookie whatever */
     
     /* Update the cart ui to display current cart to user */
-    updateCartUI();
+    updateCartUI(cartArr);
 }
 
 /* Function updating cart ui to display current items in basket */
-function updateCartUI(){
+function updateCartUI(cartArr){
+    /* Select basket list containing items */
+    let listCart = document.querySelector(".listCart");
 
+    /* Remove all existing items to prevent duplicates*/
+    while(listCart.firstChild){
+        listCart.removeChild(listCart.firstChild);
+    }
+
+    /* Create list of items */
+    for(let item of cartArr){
+        /* Create div container for item */
+        let itemDiv = document.createElement("div");
+        itemDiv.setAttribute("class", "item");
+        listCart.appendChild(itemDiv);
+
+        /* Create div container for item image */
+        let imgDiv = document.createElement("div");
+        itemDiv.setAttribute("class", "itemImg");
+        listCart.appendChild(imgDiv);
+
+        /* Create div container for item name */
+        let nameDiv = document.createElement("div");
+        itemDiv.setAttribute("class", "itemName");
+        itemDiv.appendChild(nameDiv);
+
+        /* Create div container for total price */
+        let priceTotDiv = document.createElement("div");
+        itemDiv.setAttribute("class", "totalPrice");
+        itemDiv.appendChild(priceTotDiv);
+
+        /* Create div container for quantity */
+        let qtyDiv = document.createElement("div");
+        itemDiv.setAttribute("class", "quantity");
+        itemDiv.appendChild(qtyDiv);
+        
+        /* Insert product image in item image div */
+        let productImg = document.createElement("img");
+        productImg.setAttribute("src", cartArr.img[item]);
+        productImg.setAttribute("alt", "Image of product");
+        imgDiv.appendChild(productImg);
+
+        /* Insert product name in product name div */
+        let productName = document.createElement("p");
+        productName.innerText = `${cartArr.product[item]}`;
+        nameDiv.appendChild(productName);
+
+        /* Insert total price of product based on quantity of product in cart */
+        let productPrice = document.createElement("p");
+        productPrice.innerText = `${cartArr.price[item] * cartArr.quantity[item]} DKK`;
+        priceTotDiv.appendChild(productPrice);
+
+        /* Insert decrement button for quantity */
+        let spanMinus = document.createElement("span");
+        spanPlus.setAttribute("class", "Minus");
+        spanPlus.innerText = '<'
+        qtyDiv.appendChild(spanMinus);
+
+        /* Insert quantity */
+        let productQty = document.createElement("p");
+        productQty.innerText = `${cartArr.quantity[item]}`;
+        qtyDiv.appendChild(productQty);
+
+        /* Insert increment button for quantity */
+        let spanPlus = document.createElement("span");
+        spanPlus.setAttribute("class", "plus");
+        spanPlus.innerText = '>'
+        qtyDiv.appendChild(spanPlus);
+    }
 }
 
-addCart.addEventListener("click", addToCart());
+
 /* ------ Cart/Basket END ------ */
+
+/*       <div class="item">
+                <div class="image">
+                    <p>INDÆST IMAGE HER</p>
+                </div>
+                <div class="name">
+                    <p>INDÆST NAME HER</p>
+                </div>
+                <div class="totalPrice">
+                    <p>INDÆST PRIS HER</p>
+                </div>
+                <div class="quantity">
+                    <span class="minus"><</span>
+                    <p>INDÆST QUANTITY HER</p>
+                    <span class="plus">></span>
+                </div>
+            </div>
+             */

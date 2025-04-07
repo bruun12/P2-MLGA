@@ -1,36 +1,28 @@
-import express from 'express';
-import path from 'path';
-import url from 'url';
-import htmlRoutes from './routes/html-routes.js';
+const express = require("express");
+const mysql = require("mysql");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
+const cors = require("cors");
 
-// Get the directory name from the current file's URL
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-
-//node0 port
-const port = process.env.NODE0 || 3350;
-
-//Initialize express
 const app = express();
+const port = 3000;
 
-// built-in middleware for json
-app.use(express.json());
 
-//Use static files 
-app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
+app.use(cors());
 
-app.use('/', htmlRoutes);
-
-//Reveal error if any
-app.use((error, request, response, next) => {
-    console.error(error.stack);
-    response.status(500).send('Something broke! Check logs');
+// Opret forbindelse til MySQL
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root", 
+    password: "", 
+    database: "UserDatabase",
 });
 
-// Route test
-/* app.get("/", (request, response) => {
-    
-    response.send("Hello world");
-}); */
+db.connect((err) => {
+    if (err) throw err;
+    console.log("Forbundet til MySQL-databasen!");
+});
 
 // Registrer en ny bruger
 app.post("/register", async (req, res) => {
@@ -76,8 +68,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-
-//Start the server & listen on a port
+// Start serveren
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server kører på http://localhost:${port}`);
 });

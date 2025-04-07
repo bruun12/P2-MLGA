@@ -148,12 +148,17 @@ document.addEventListener("DOMContentLoaded", function(){
 /* TODO: read cart array from database */
 let cartArr = [];
 
-let addCart = document.querySelectorAll(".addCart");
-addCart.addEventListener("click", addToCart());
+let addCartButtons = document.querySelectorAll(".addCart");
+
+addCartButtons.forEach(button => {
+    button.addEventListener("click", function() {
+        addToCart(this); // 'this' refers to the clicked button
+    });
+});
 
 /* Function adding item to cart */
-function addToCart(){
-    let productDiv = addCart.closest(".productDiv"); /* find closest product container */
+function addToCart(button){
+    let productDiv = button.closest(".productDiv"); /* find closest product container */
     let productID = productDiv.querySelector(".productID").innerText; /* find product id */
     let productName = productDiv.querySelector(".productName").innerText; /* find name of product */
     let productPrice = productDiv.querySelector(".productPrice").innerText; /* find price of product */
@@ -176,7 +181,8 @@ function addToCart(){
     }
 
     /* Save cart to local storage/cookie whatever */
-    
+    //saveCart();
+
     /* Update the cart ui to display current cart to user */
     updateCartUI(cartArr);
 }
@@ -186,12 +192,12 @@ function updateCartUI(cartArr){
     /* Select basket list containing items */
     let listCart = document.querySelector(".listCart");
 
-    /* Remove all existing items to prevent duplicates*/
+    /* Remove all existing items from html to prevent duplicates*/
     while(listCart.firstChild){
         listCart.removeChild(listCart.firstChild);
     }
 
-    /* Create list of items */
+    /* Create list of items in html */
     for(let item of cartArr){
         /* Create div container for item */
         let itemDiv = document.createElement("div");
@@ -200,49 +206,49 @@ function updateCartUI(cartArr){
 
         /* Create div container for item image */
         let imgDiv = document.createElement("div");
-        itemDiv.setAttribute("class", "itemImg");
+        imgDiv.setAttribute("class", "itemImg");
         listCart.appendChild(imgDiv);
 
         /* Create div container for item name */
         let nameDiv = document.createElement("div");
-        itemDiv.setAttribute("class", "itemName");
+        nameDiv.setAttribute("class", "itemName");
         itemDiv.appendChild(nameDiv);
 
         /* Create div container for total price */
         let priceTotDiv = document.createElement("div");
-        itemDiv.setAttribute("class", "totalPrice");
+        priceTotDiv.setAttribute("class", "totalPrice");
         itemDiv.appendChild(priceTotDiv);
 
         /* Create div container for quantity */
         let qtyDiv = document.createElement("div");
-        itemDiv.setAttribute("class", "quantity");
+        qtyDiv.setAttribute("class", "quantity");
         itemDiv.appendChild(qtyDiv);
         
         /* Insert product image in item image div */
         let productImg = document.createElement("img");
-        productImg.setAttribute("src", cartArr.img[item]);
+        productImg.setAttribute("src", item.img);
         productImg.setAttribute("alt", "Image of product");
         imgDiv.appendChild(productImg);
 
         /* Insert product name in product name div */
         let productName = document.createElement("p");
-        productName.innerText = `${cartArr.product[item]}`;
+        productName.innerText = item.product;
         nameDiv.appendChild(productName);
 
         /* Insert total price of product based on quantity of product in cart */
         let productPrice = document.createElement("p");
-        productPrice.innerText = `${cartArr.price[item] * cartArr.quantity[item]} DKK`;
+        productPrice.innerText = `${parseFloat(item.price) * item.quantity} DKK`; /* Ensure price is a float and not a string */
         priceTotDiv.appendChild(productPrice);
 
         /* Insert decrement button for quantity */
         let spanMinus = document.createElement("span");
-        spanPlus.setAttribute("class", "Minus");
-        spanPlus.innerText = '<'
+        spanMinus.setAttribute("class", "Minus");
+        spanMinus.innerText = '<'
         qtyDiv.appendChild(spanMinus);
 
         /* Insert quantity */
         let productQty = document.createElement("p");
-        productQty.innerText = `${cartArr.quantity[item]}`;
+        productQty.innerText = item.quantity;
         qtyDiv.appendChild(productQty);
 
         /* Insert increment button for quantity */
@@ -253,10 +259,11 @@ function updateCartUI(cartArr){
     }
 }
 
-
 /* ------ Cart/Basket END ------ */
 
-/*       <div class="item">
+
+/*  How items should look when inserted into listCart
+            <div class="item">
                 <div class="image">
                     <p>INDÆST IMAGE HER</p>
                 </div>
@@ -272,4 +279,4 @@ function updateCartUI(cartArr){
                     <span class="plus">></span>
                 </div>
             </div>
-             */
+ */

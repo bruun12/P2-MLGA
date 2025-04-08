@@ -1,11 +1,9 @@
-/* ------ Slideshow START ------ */
-/* Fetch slideshow.json data for slideshow */
-
+/* Slideshow event templates */
 const eventTmpl = (event) =>
     `
     <div class="mySlides fade">
-        <img class="slide-image" src="${event.img}">
-        <p class="text"><span>${event.event}</span></p>
+    <img class="slide-image" src="${event.img}">
+    <p class="text"><span>${event.event}</span></p>
     </div>
     `;
 
@@ -15,6 +13,9 @@ const eventTmp2 = (event) =>
     <span class="dot"></span>
     `;
 
+
+/* ------ Slideshow START ------ */
+/* Fetch slideshow.json data for slideshow */
 /* Fetch slideshow.json data */
 let slidesContainer = document.querySelector('.slideshow-container');
 let dotContainer = document.querySelector('.dot-container')

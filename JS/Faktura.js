@@ -1,3 +1,4 @@
+// This script handles the form submission and validation for the information page
 document.querySelector("#info").addEventListener("submit", function(event) {
     let email = document.getElementById("email").value;
     let fname = document.getElementById("fname").value;
@@ -6,6 +7,7 @@ document.querySelector("#info").addEventListener("submit", function(event) {
     let postnummer = document.getElementById("postnummer").value;
     let by = document.getElementById("by").value;
 
+// Validation to check if all fields are filled, if not, alert the user, if yes, save the email and redirect to Faktuah.html
     if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
         alert("Udfyld alle felterne!");
         event.preventDefault();
@@ -14,11 +16,13 @@ document.querySelector("#info").addEventListener("submit", function(event) {
       }
   });
 
+// Function to save and redirect to Faktuah.html
 function saveEmail(email) {
     localStorage.setItem("email", email);
-    window.location.href = "checkout.html";
+    window.location.href = "Faktuah.html";
 }
 
+// Promo code function
 function rabat() {
     const rabatInput = document.getElementById("rabat").value; // Get the value of the input field
     if (rabatInput === "NorskSnack")
@@ -29,6 +33,7 @@ function rabat() {
         alert("1 forsøg tilbage eller du bliver data scraped");
     }
 }
+
 
 function change(event) {
     event.preventDefault();

@@ -3,7 +3,7 @@ async function registerUser() {
     const username = document.getElementById("registerUsername").value; //Gets input from the user
     const password = document.getElementById("registerPassword").value; //Gets input from the user
 
-    const response = await fetch("http://localhost:3000/create-account.html", { // Sends the data to the server
+    const response = await fetch("/create-account.html", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -17,7 +17,7 @@ async function loginUser(username, password) {
    const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
 
-    const response = await fetch("http://localhost:3000/login.html", { // Sends the data to the server
+    const response = await fetch("/login.html", { // Sends the data to the server (https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/login)
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -65,7 +65,7 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
     e.preventDefault();
     const email = document.getElementById("showPasswordEmail").value;
 
-    fetch("http://localhost:3000/show-password", {
+    fetch("/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })

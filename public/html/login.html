@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="css/login.css">
     <title>Login page</title>
-    <script src="../js/login.js" defer></script>
+    <script src="js/login.js" defer></script>
 </head>
 <body>
     <div class="header">
         <h1> Login </h1>
         <h2>Forside/Login</h2>
     </div>
-    <form>
+    <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
         <div class="input-container">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -27,15 +27,15 @@
             <label for="Husk mig">Husk mig</label>
             <input type="checkbox" id="husk-mig" value="Husk mig">
         </div>
-        <button type="submit" onclick="validate()">Login
+        <button type="submit">Login
             <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
-        <input type="submit" id="glemtpassword" value="Glemt password"> <br> <br>
+        <input type="submit" id="glemtpassword" onclick="window.location.href='forgot-password.html'" value="Glemt password"> <br> <br>
         <div class="profil">
             <h3>Har du ikke en profil?</h3>
             <button type="submit" id="opretprofil" onclick="window.location.href='create-account.html'">
                 Opret profil
-                <img src="../images/person_add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Add person icon"> 
+                <img src="images/person_add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Add person icon"> 
             </button>
         </div>
     </form>

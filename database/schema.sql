@@ -1,147 +1,161 @@
--- Subject to changes, missing aspects: types, IF NOT EXIST, some FOREIGN KEYS, other constraints
-CREATE TABLE `product` (
-  `id` INT AUTO_INCREMENT,
-  `category_id` <type>,
-  `prod_name` <type>,
-  `prod_descr` <type>,
-  `prod_img` <type>,
-  PRIMARY KEY (`id`)
+/* Subject to changes, missing aspects: type review, enum values, other constraints, referential actions, etc.
+   A Referential Action tells the DBMS what to do when an update or delete operation effects the parent-child relationship columns. 
+   So what happens if the primary key gets updated or deleted. restrict, cascade, set null, set default. */
+
+/* SQL script that creates the database schema for our e-commerce application.
+   Order of creation is important, as some tables depend on others (Foreign-Keys).
+   Reserved words are in `backticks` to avoid conflicts with SQL syntax. */
+
+/* country */
+CREATE TABLE IF NOT EXISTS country (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE `store` (
-  `id` <type>,
-  `name` <type>,
-  `img` <type>,
-  `address_id` <type>,
-  `phone` <type>,
-  PRIMARY KEY (`id`)
+/* address */
+CREATE TABLE IF NOT EXISTS `address` (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  street VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  zip VARCHAR(4) NOT NULL,
+  country_id INT NOT NULL,
+  FOREIGN KEY (country_id) REFERENCES country(id)
 );
 
-CREATE TABLE `country` (
-  `id` <type>,
-  `country_name` <type>,
-  PRIMARY KEY (`id`)
+/* store */
+CREATE TABLE IF NOT EXISTS store (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  img VARCHAR(255) NOT NULL, /* url */
+  address_id INT NOT NULL,
+  phone VARCHAR(15) NOT NULL, /* type reviewed, 15 digits is a worldwide standard */
+  FOREIGN KEY (address_id) REFERENCES `address`(id)
 );
 
-CREATE TABLE `address` (
-  `id` <type>,
-  `address_type` <type>,
-  `street` <type>,
-  `city` <type>,
-  `zip` <type>,
-  `country_id` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`country_id`) REFERENCES `country`(`id`)
+/* category ('Clothing', 'Shoes', 'Electronics'...) */
+CREATE TABLE IF NOT EXISTS category (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  parent_id INT NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (parent_id) REFERENCES category(id)
 );
 
-CREATE TABLE `category` (
-  `id` <type>,
-  `parent_id` <type>,
-  `cat_name` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`id`) REFERENCES `category`(`parent_id`)
+/* variation ('Size', 'Color', 'Storage-capacity', 'Screen Size' ...) */
+CREATE TABLE IF NOT EXISTS variation (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  category_id INT NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE `variation` (
-  `id` <type>,
-  `category_id` <type>,
-  `variation_name` <type>,
-  PRIMARY KEY (`id`)
+/* variation options ('Large', 'Midnight Black', '16 GB' ...) */
+CREATE TABLE IF NOT EXISTS variation_opt (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  variation_id INT NOT NULL,
+  `value` VARCHAR(50) NOT NULL,
+  FOREIGN KEY (variation_id) REFERENCES variation(id)
 );
 
-CREATE TABLE `variation_opt` (
-  `id` <type>,
-  `variation_id` <type>,
-  `opt_value` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`variation_id`) REFERENCES `variation`(`id`)
+/* product (Those shown on a products overview list page - only once despite multiple variations of product, 'Galaxy S25') */
+CREATE TABLE IF NOT EXISTS product (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  category_id INT NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `description` TEXT NOT NULL, /* type reviewed */
+  img VARCHAR(255) NOT NULL, /* url */
+  FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE `product_item` (
-  `id` <type>,
-  `product_id` <type>,
-  `SKU` <type>,
-  `stock_qty` <type>,
-  `prod_item_img` <type>,
-  `price` <type>,
-  `store_id` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`product_id`) REFERENCES `product`(`id`)
+/* product item (Instance of product with all specific variations options - 'Galaxy S25, Midnight Black - 16 GB') */
+CREATE TABLE IF NOT EXISTS product_item (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  product_id INT NOT NULL,
+  SKU VARCHAR(50) NOT NULL,
+  stock_qty INT NOT NULL,
+  img VARCHAR(255) NOT NULL, /* url */
+  price DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
+  store_id INT NOT NULL,
+  FOREIGN KEY (product_id) REFERENCES product(id),
+  FOREIGN KEY (store_id) REFERENCES store(id)
 );
 
-CREATE TABLE `item_variation_mapping` (
-  `product_item_id` <type>,
-  `variation_opt_id` <type>,
-  FOREIGN KEY (`variation_opt_id`) REFERENCES `variation_opt`(`id`),
-  FOREIGN KEY (`product_item_id`) REFERENCES `product_item`(`id`)
+/* product-item & variation mapping (Joining table that associates product items with their variations) */
+CREATE TABLE IF NOT EXISTS item_variation_mapping (
+  product_item_id INT NOT NULL,
+  variation_opt_id INT NOT NULL,
+  FOREIGN KEY (product_item_id) REFERENCES product_item(id),
+  FOREIGN KEY (variation_opt_id) REFERENCES variation_opt(id)
 );
 
-CREATE TABLE `event` (
-  `id` <type>,
-  `store_id` <type>,
-  `img` <type>,
-  `title` <type>,
-  `description` <type>,
-  `date` <type>,
-  `address_id` <type>,
-  `customer_id//tilmeldte` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`address_id`) REFERENCES `address`(`id`)
+/* favorite items */
+CREATE TABLE IF NOT EXISTS favorite (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  product_item_id INT NOT NULL,
+  FOREIGN KEY (product_item_id) REFERENCES product_item(id)
 );
 
-CREATE TABLE `customer` (
-  `id` <type>,
-  `email` <type>,
-  `first_name` <type>,
-  `last_name` <type>,
-  `address_id` <type>,
-  `phone` <type>,
-  `isMember` <type>,
-  `password` <type>,
-  `favorite_id` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`address_id`) REFERENCES `address`(`id`)
+/* customer */
+CREATE TABLE IF NOT EXISTS customer (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(255) NOT NULL, /* type reviewed */
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
+  address_id INT,
+  phone VARCHAR(15), /* type reviewed, 15 digits is a worldwide standard */
+  is_member BOOLEAN DEFAULT FALSE NOT NULL,
+  `password` VARCHAR(255) NOT NULL, /* type reviewed, hash password before storing here */
+  favorite_id INT NOT NULL,
+  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
+  FOREIGN KEY (favorite_id) REFERENCES favorite(id)
 );
 
-CREATE TABLE `store_order` (
-  `id` <type>,
-  `order_line_id` <type>,
-  `customer_id` <type>,
-  `store_id` <type>,
-  `total` <type>,
-  `status` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`store_id`) REFERENCES `store`(`id`),
-  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`)
+/* customer order */
+CREATE TABLE IF NOT EXISTS customer_order (
+  order_number INT PRIMARY KEY AUTO_INCREMENT,
+  customer_id INT NOT NULL,
+  first_name VARCHAR(255) NOT NULL, /* fakturerings navn */
+  last_name VARCHAR(255) NOT NULL, /* fakturerings navn */
+  address_id INT NOT NULL,
+  `date` DATETIME NOT NULL, /* or TIMESTAMP type */
+  total DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
+  FOREIGN KEY (customer_id) REFERENCES customer(id),
+  FOREIGN KEY (address_id) REFERENCES `address`(id)
 );
 
-CREATE TABLE `customer_order` (
-  `order_number` <type>,
-  `customer_id` <type>,
-  `first_name` <type>,
-  `last_name` <type>,
-  `address_id //fakturering` <type>,
-  `date` <type>,
-  `total` <type>,
-  PRIMARY KEY (`order_number`),
-  FOREIGN KEY (`address_id //fakturering`) REFERENCES `address`(`id`),
-  FOREIGN KEY (`customer_id`) REFERENCES `customer`(`id`)
+/* order line */
+CREATE TABLE IF NOT EXISTS order_line (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_number INT NOT NULL,
+  product_item_id INT NOT NULL,
+  `status` ENUM('pending', 'accepted', 'rejected', 'pickup_ready', 'complete', 'incomplete') NOT NULL,
+  FOREIGN KEY (order_number) REFERENCES customer_order(order_number),
+  FOREIGN KEY (product_item_id) REFERENCES product_item(id)
 );
 
-CREATE TABLE `order_line` (
-  `id` <type>,
-  `order_number` <type>,
-  `product_item_id` <type>,
-  `status` <type>,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`product_item_id`) REFERENCES `product_item`(`id`),
-  FOREIGN KEY (`id`) REFERENCES `store_order`(`order_line_id`),
-  FOREIGN KEY (`order_number`) REFERENCES `customer_order`(`order_number`)
+/* store order */
+CREATE TABLE IF NOT EXISTS store_order (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_line_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  store_id INT NOT NULL,
+  total DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
+  `status` ENUM('pending', 'accepted', 'rejected', 'pickup_ready', 'completed', 'incomplete') NOT NULL,
+  FOREIGN KEY (order_line_id) REFERENCES order_line(id),
+  FOREIGN KEY (customer_id) REFERENCES customer(id),
+  FOREIGN KEY (store_id) REFERENCES store(id)
 );
 
-CREATE TABLE `favorite` (
-  `id` <type>,
-  `product_item_id` <type>,
-  PRIMARY KEY (`id`)
+/* event */
+CREATE TABLE IF NOT EXISTS `event` (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  store_id INT NOT NULL,
+  img VARCHAR(255) NOT NULL, /* url */
+  title VARCHAR(50) NOT NULL,
+  `description` TEXT NOT NULL, /* type reviewed */
+  `date` DATETIME NOT NULL, /* or TIMESTAMP type */
+  address_id INT,
+  customer_id INT, /*registrants, participants*/
+  FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
+  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
+  FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE SET NULL
 );
-

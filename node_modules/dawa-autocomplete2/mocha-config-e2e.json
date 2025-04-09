@@ -1,4 +1,0 @@
-{
-  "spec": ["test-e2e"],
-  "timeout": 240000
-}

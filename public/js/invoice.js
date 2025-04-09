@@ -19,7 +19,7 @@ document.querySelector("#info").addEventListener("submit", function(event) {
 // Function to save and redirect to Faktuah.html
 function saveEmail(email) {
     localStorage.setItem("email", email);
-    window.location.href = "Faktuah.html";
+    window.location.href = "faktuah.html";
 }
 
 // Promo code function

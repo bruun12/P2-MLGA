@@ -1,26 +1,27 @@
 // New user (brugernavnet og password i local storage)
 async function registerUser() {
-    const username = document.getElementById("registerUsername").value; //Gets input from the user
-    const password = document.getElementById("registerPassword").value; //Gets input from the user
+    const email = document.getElementById("registerEmail").value; // Gets input from the user
+    const username = document.getElementById("registerUsername").value; // Gets input from the user
+    const password = document.getElementById("registerPassword").value; // Gets input from the user
 
-    const response = await fetch("/create-account.html", { // Sends the data to the server
+    const response = await fetch("http://localhost:3000/create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, username, password })
     });
 
     const data = await response.json(); // Converts the response to JSON
     alert(data.message);
 }
 
-async function loginUser(username, password) {
-   const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
+async function loginUser() {
+    const email = document.getElementById("loginEmail").value; // Gets input from the user
+    const password = document.getElementById("loginPassword").value; // Gets input from the user
 
-    const response = await fetch("/login.html", { // Sends the data to the server (https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/login)
+    const response = await fetch("http://localhost:3000/login", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
     });
 
     const data = await response.json();
@@ -36,17 +37,13 @@ async function loginUser(username, password) {
 // Make user login
 document.getElementById("registerForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    const username = document.getElementById("registerUsername").value; // Gets input from the user
-    const password = document.getElementById("registerPassword").value;
-    registerUser(username, password);
+    registerUser();
 });
 
 // Let user login
 document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    const username = document.getElementById("loginUsername").value; // Gets input from the user
-    const password = document.getElementById("loginPassword").value;
-    loginUser(username, password);
+    loginUser();
 });
 
 // Check if user repeated password is the same as the first password
@@ -65,7 +62,7 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
     e.preventDefault();
     const email = document.getElementById("showPasswordEmail").value;
 
-    fetch("/forgot-password", {
+    fetch("http://localhost:3000/show-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
@@ -149,3 +146,12 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
         subject: "Your Temporary Password",
         text: `Your temporary password is: ${tempPassword}`
     };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: "Temporary password sent successfully." });
+    } catch (error) {
+        console.error("Error sending email:", error);
+        res.status(500).json({ message: "Failed to send temporary password." });
+    }
+}); */

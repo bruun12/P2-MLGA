@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>Login page</title>
+    <script src="js/login.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <h1> Login </h1>
+        <h2>Forside/Login</h2>
+    </div>
+    <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
+        <div class="input-container">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" name="email" required>
+            <img src="../images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+        </div>
+        <div class="input-container">
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" minlength="8" required> <br> <br>
+            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+        </div> 
+        <div class="checkbox-container">
+            <label for="Husk mig">Husk mig</label>
+            <input type="checkbox" id="husk-mig" value="Husk mig">
+        </div>
+        <button type="submit">Login
+            <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+        </button> <br> <br>
+        <input type="submit" id="glemtpassword" onclick="window.location.href='forgot-password.html'" value="Glemt password"> <br> <br>
+        <div class="profil">
+            <h3>Har du ikke en profil?</h3>
+            <button type="submit" id="opretprofil" onclick="window.location.href='create-account.html'">
+                Opret profil
+                <img src="images/person_add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Add person icon"> 
+            </button>
+        </div>
+    </form>
+</body>
+</html>
+

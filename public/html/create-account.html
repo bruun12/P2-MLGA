@@ -12,28 +12,28 @@
         <h1> Opret profil </h1>
         <h2>Forside/Opret profil</h2>
     </div>
-    <form id="registerform" onsubmit="event.preventDefault(); registerUser();">
+    <form id="registerForm" onsubmit="event.preventDefault(); registerUser();">
         <div class="input-container">
-            <label for="username">Email:</label>
-            <input type="text" id="username" name="username" required>
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" name="email" required>
             <img src="images/mail_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Email icon">
         </div>
         <div class="input-container">
-            <label for="username">Username:</label>
+            <label for="registerUsername">Username:</label>
             <input type="text" id="registerUsername" name="username" required>
             <img src="../images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </div>
         <div class="input-container">
-            <label for="password">Password: </label>
-            <input type="password" id="registerPassword" name="password" minlength="8" required> <br> <br>
-            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
-        </div> 
-        <div class="input-container">
-            <label for="password"> Gentag Password: </label>
-            <input type="password" id="repeatPassword" name="password" minlength="8" required> <br> <br>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" name="password" minlength="8" required>
             <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
         </div>
-        <button type="submit">Login
+        <div class="input-container">
+            <label for="repeatPassword">Repeat Password:</label>
+            <input type="password" id="repeatPassword" name="password" minlength="8" required>
+            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+        </div>
+        <button type="submit">Create Account
             <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
         <div class="profil">

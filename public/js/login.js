@@ -1,26 +1,27 @@
 // New user (brugernavnet og password i local storage)
 async function registerUser() {
-    const username = document.getElementById("registerUsername").value; //Gets input from the user
-    const password = document.getElementById("registerPassword").value; //Gets input from the user
+    const email = document.getElementById("registerEmail").value; // Gets input from the user
+    const username = document.getElementById("registerUsername").value; // Gets input from the user
+    const password = document.getElementById("registerPassword").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/create-account.html", { // Sends the data to the server
+    const response = await fetch("http://localhost:3000/create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, username, password })
     });
 
     const data = await response.json(); // Converts the response to JSON
     alert(data.message);
 }
 
-async function loginUser(username, password) {
-   const username = document.getElementById("loginUsername").value;
-    const password = document.getElementById("loginPassword").value;
+async function loginUser() {
+    const email = document.getElementById("loginEmail").value; // Gets input from the user
+    const password = document.getElementById("loginPassword").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/login.html", { // Sends the data to the server
+    const response = await fetch("http://localhost:3000/login", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ email, password })
     });
 
     const data = await response.json();
@@ -36,17 +37,13 @@ async function loginUser(username, password) {
 // Make user login
 document.getElementById("registerForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    const username = document.getElementById("registerUsername").value; // Gets input from the user
-    const password = document.getElementById("registerPassword").value;
-    registerUser(username, password);
+    registerUser();
 });
 
 // Let user login
 document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    const username = document.getElementById("loginUsername").value; // Gets input from the user
-    const password = document.getElementById("loginPassword").value;
-    loginUser(username, password);
+    loginUser();
 });
 
 // Check if user repeated password is the same as the first password

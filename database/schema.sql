@@ -5,7 +5,7 @@
 /* SQL script that creates the database schema for our e-commerce application.
    Order of creation is important, as some tables depend on others (Foreign-Keys).
    Reserved words are in `backticks` to avoid conflicts with SQL syntax
-. */
+v2222222222222222222222222222222222222222 */
 
 /* country */
 CREATE TABLE IF NOT EXISTS country (

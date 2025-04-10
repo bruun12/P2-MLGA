@@ -18,6 +18,53 @@ const dbPool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();    //promise() allows use promise API version of mysql
 
-const result = await dbPool.query("SELECT street FROM address")
+// Route to handle account creation
+app.post('/create-account', async (req, res) => {
+    const { email, username, password } = req.body;
 
-console.log(result);
+    try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert user into the database
+        const [result] = await db.execute(
+            'INSERT INTO customer (email, first_name, password) VALUES (?, ?, ?)',
+            [email, username, hashedPassword]
+        );
+        res.status(201).json({ message: 'Account created successfully!' });
+    } catch (error) {
+        console.error('Error saving user:', error);
+        res.status(500).json({ message: 'Failed to create account.' });
+    }
+});
+
+// Route to handle user login
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Fetch user from the database
+        const [rows] = await db.execute(
+            'SELECT * FROM customer WHERE email = ?',
+            [email]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const user = rows[0];
+
+        // Compare the provided password with the hashed password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials.' });
+        }
+
+        res.status(200).json({ message: 'Login successful!', user: { id: user.id, email: user.email, first_name: user.first_name } });
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({ message: 'Failed to log in.' });
+    }
+});

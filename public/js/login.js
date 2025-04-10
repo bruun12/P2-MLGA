@@ -1,13 +1,13 @@
 // New user (brugernavnet og password i local storage)
 async function registerUser() {
     const email = document.getElementById("registerEmail").value; // Gets input from the user
-    const username = document.getElementById("registerUsername").value; // Gets input from the user
     const password = document.getElementById("registerPassword").value; // Gets input from the user
+    const firstname = document.getElementById("registerFirstname").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/create-account", { // Sends the data to the server
+    const response = await fetch("http://localhost:3350/create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password })
+        body: JSON.stringify({ email, password, firstname })
     });
 
     const data = await response.json(); // Converts the response to JSON
@@ -18,7 +18,7 @@ async function loginUser() {
     const email = document.getElementById("loginEmail").value; // Gets input from the user
     const password = document.getElementById("loginPassword").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/login", { // Sends the data to the server
+    const response = await fetch("http://localhost:3350/login", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -62,7 +62,7 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
     e.preventDefault();
     const email = document.getElementById("showPasswordEmail").value;
 
-    fetch("http://localhost:3000/show-password", {
+    fetch("http://localhost:3350/show-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })

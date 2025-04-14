@@ -18,11 +18,32 @@ const dbPool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();    //promise() allows use promise API version of mysql
 
+/*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
+  i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
+// Select all products from the database - overview, potentially limit
+export async function getAllProducts() {
+    // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
+    const [rows] = await dbPool.query("Select * FROM product");
+    return rows;
+}
 
+export async function getProductItem(id) {
+    const [rows] = await dbPool.query("SELECT * FROM product_item WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
+    return rows[0];                                                                     //Only return the element, not the array
+}
 
+// Select all events from a particular store
+export async function getStoreEvents(store_id) {
+    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE store_id = ?", [store_id]);
+    return rows;
+}
 
-
+//Select one particular event
+export async function getEvent(id){
+    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
+    return rows[0];                                                                //Only return the element, not the array
+}
 
 /* // Route to handle account creation
 app.post('/create-account', async (req, res) => {

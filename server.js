@@ -23,6 +23,16 @@ app.use(express.static(__dirname + '/public'));
 
 app.use('/', htmlRoutes);
 
+const password = 'password123';
+bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
+        console.error('Error hashing password:', err);
+    } else {
+        console.log('Hashed password:', hash);
+    }
+});
+
+
 // Route to handle account creation
 app.post('/create-account', async (req, res) => {
     const { email, password, firstname } = req.body;
@@ -48,22 +58,30 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        console.log("Login attempt:", { email, password });
+
         // Fetch user from the database
-        const [rows] = await db.execute(
+        const [rows] = await dbPool.execute(
             'SELECT * FROM customer WHERE email = ?',
             [email]
         );
 
+        console.log("Query result:", rows);
+
         if (rows.length === 0) {
+            console.log("User not found for email:", email);
             return res.status(404).json({ message: 'User not found.' });
         }
 
         const user = rows[0];
+        console.log("User found:", user);
 
         // Compare the provided password with the hashed password
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log("Password comparison result:", isPasswordValid);
 
         if (!isPasswordValid) {
+            console.log("Invalid credentials for user:", email);
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
 
@@ -101,3 +119,4 @@ app.use((error, request, response, next) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+

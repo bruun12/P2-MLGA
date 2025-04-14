@@ -33,6 +33,10 @@ dbPool.getConnection((err, connection) => {
     }
 });
 
+const result = await dbPool.query("SELECT * FROM customer")
+
+console.log(result);
+
 console.log('Environment Variables:', {
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,

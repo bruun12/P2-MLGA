@@ -25,6 +25,7 @@ async function loginUser() {
     });
 
     const data = await response.json();
+    
     if (response.ok) { // If the response is ok, it means the login was successful
         alert(data.message);
         sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
@@ -155,3 +156,6 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
         res.status(500).json({ message: "Failed to send temporary password." });
     }
 }); */
+
+
+

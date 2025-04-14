@@ -18,7 +18,13 @@ const dbPool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();    //promise() allows use promise API version of mysql
 
-// Route to handle account creation
+
+
+
+
+
+
+/* // Route to handle account creation
 app.post('/create-account', async (req, res) => {
     const { email, username, password } = req.body;
 
@@ -67,4 +73,4 @@ app.post('/login', async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Failed to log in.' });
     }
-});
+}); */

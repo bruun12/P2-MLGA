@@ -137,11 +137,9 @@ footer {
 background-color: #333;
 height: 175px;
 width: 100%;
-/* Ikke sikker på om disse er nødvendige eller ej.
 overflow: hidden;
-position: relative;
+position: fixed;
 bottom: 0;
-*/
 color: white;
 /* All links in the footer are always blue */
 a { 

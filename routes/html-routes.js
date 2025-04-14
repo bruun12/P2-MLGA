@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import url from 'url';
+//Importing database functions
+import {getAllProducts} from '../database/database.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -18,8 +20,16 @@ router.get("/product", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'))
 });
 
+
+
 router.get("/product-overview", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'));
+});
+
+router.get("/data", async (request, response) => {
+    //Get list of products to show
+    const products = await getAllProducts();
+    response.json(products);
 });
 
 //account administration 

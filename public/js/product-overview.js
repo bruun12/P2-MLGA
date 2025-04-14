@@ -70,15 +70,22 @@ function productDisplay(name, price, img){
     productPrice.innerText = `${price} kr.`;
 }
 
+async function testing() {
+    const products = await getAllProducts();
+    console.log(products);
+}
 
-fetch("../../database/products.json")
+//testing();
+
+
+fetch("/data")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
+    console.log(data);
     //Vi løber igennem forløkken for alle 
-    for (const i in data.products) {
-
-        productDisplay(data.products[i].product, data.products[i].price, data.products[i].img);
-        subCategoryDisplay( data.products[i].subCategory, subCategoryArr);
+    for (const product of data) {
+        productDisplay(product.name, 100, product.img);
+       //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
     }
-})
+});

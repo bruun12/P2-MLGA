@@ -4,7 +4,8 @@
 
 /* SQL script that creates the database schema for our e-commerce application.
    Order of creation is important, as some tables depend on others (Foreign-Keys).
-   Reserved words are in `backticks` to avoid conflicts with SQL syntax. */
+   Reserved words are in `backticks` to avoid conflicts with SQL syntax
+*/
 
 /* country */
 CREATE TABLE IF NOT EXISTS country (
@@ -26,16 +27,17 @@ CREATE TABLE IF NOT EXISTS `address` (
 CREATE TABLE IF NOT EXISTS store (
   id INT PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
-  img VARCHAR(255) NOT NULL, /* url */
+  img VARCHAR(255) NOT NULL,   /* url */
   address_id INT NOT NULL,
-  phone VARCHAR(15) NOT NULL, /* type reviewed, 15 digits is a worldwide standard */
+  phone VARCHAR(15) NOT NULL,  /* type reviewed, 15 digits is a worldwide standard */
   FOREIGN KEY (address_id) REFERENCES `address`(id)
 );
+
 
 /* category ('Clothing', 'Shoes', 'Electronics'...) */
 CREATE TABLE IF NOT EXISTS category (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  parent_id INT NOT NULL,
+  parent_id INT,                       /* allow NULL for top-level categories */
   `name` VARCHAR(50) NOT NULL,
   FOREIGN KEY (parent_id) REFERENCES category(id)
 );
@@ -61,8 +63,8 @@ CREATE TABLE IF NOT EXISTS product (
   id INT PRIMARY KEY AUTO_INCREMENT,
   category_id INT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
-  `description` TEXT NOT NULL, /* type reviewed */
-  img VARCHAR(255) NOT NULL, /* url */
+  `description` TEXT NOT NULL,   /* type reviewed */
+  img VARCHAR(255) NOT NULL,     /* url */
   FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
@@ -70,9 +72,9 @@ CREATE TABLE IF NOT EXISTS product (
 CREATE TABLE IF NOT EXISTS product_item (
   id INT PRIMARY KEY AUTO_INCREMENT,
   product_id INT NOT NULL,
-  SKU VARCHAR(50) NOT NULL,
+  SKU VARCHAR(50),
   stock_qty INT NOT NULL,
-  img VARCHAR(255) NOT NULL, /* url */
+  img VARCHAR(255) NOT NULL,    /* url */
   price DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
   store_id INT NOT NULL,
   FOREIGN KEY (product_id) REFERENCES product(id),
@@ -94,31 +96,46 @@ CREATE TABLE IF NOT EXISTS favorite (
   FOREIGN KEY (product_item_id) REFERENCES product_item(id)
 );
 
-/* customer */
-CREATE TABLE IF NOT EXISTS customer (
+/*account*/
+CREATE TABLE IF NOT EXISTS account (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  email VARCHAR(255) NOT NULL, /* type reviewed */
+  email VARCHAR(255) NOT NULL UNIQUE, /* type reviewed */
+  `password` VARCHAR(255) NOT NULL,   /* type reviewed, hash password before storing here */
+  phone VARCHAR(15),                  /* type reviewed, 15 digits is a worldwide standard */
   first_name VARCHAR(255),
-  last_name VARCHAR(255),
-  address_id INT,
-  phone VARCHAR(15), /* type reviewed, 15 digits is a worldwide standard */
-  is_member BOOLEAN DEFAULT FALSE NOT NULL,
-  `password` VARCHAR(255) NOT NULL, /* type reviewed, hash password before storing here */
+  last_name VARCHAR(255)
+);
+
+/*admin*/
+CREATE TABLE IF NOT EXISTS `admin` (
+  account_id INT PRIMARY KEY,
+  store_id INT NOT NULL,
+  FOREIGN KEY (account_id) REFERENCES account(id) ON DELETE CASCADE,
+  FOREIGN KEY (store_id) REFERENCES store(id)
+);
+
+/*member, who has created an account*/
+CREATE TABLE IF NOT EXISTS `member` (
+  account_id INT PRIMARY KEY,
   favorite_id INT NOT NULL,
-  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
-  FOREIGN KEY (favorite_id) REFERENCES favorite(id)
+  address_id INT,
+  FOREIGN KEY (account_id) REFERENCES account(id) ON DELETE CASCADE,
+  FOREIGN KEY (favorite_id) REFERENCES favorite(id),
+  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL
 );
 
 /* customer order */
 CREATE TABLE IF NOT EXISTS customer_order (
   order_number INT PRIMARY KEY AUTO_INCREMENT,
-  customer_id INT NOT NULL,
-  first_name VARCHAR(255) NOT NULL, /* fakturerings navn */
-  last_name VARCHAR(255) NOT NULL, /* fakturerings navn */
+  member_id INT,                    /*Allow NULL, guest purchases, otherwise get information from that*/
+  email VARCHAR(255) NOT NULL,      
+  phone VARCHAR(15),                /* type reviewed, 15 digits is a worldwide standard */
+  first_name VARCHAR(255) NOT NULL, /* faktura name */
+  last_name VARCHAR(255) NOT NULL,  /* faktura name */
   address_id INT NOT NULL,
   `date` DATETIME NOT NULL, /* or TIMESTAMP type */
   total DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
-  FOREIGN KEY (customer_id) REFERENCES customer(id),
+  FOREIGN KEY (member_id) REFERENCES `member`(account_id), /* updated from customer(id) */
   FOREIGN KEY (address_id) REFERENCES `address`(id)
 );
 
@@ -136,12 +153,12 @@ CREATE TABLE IF NOT EXISTS order_line (
 CREATE TABLE IF NOT EXISTS store_order (
   id INT PRIMARY KEY AUTO_INCREMENT,
   order_line_id INT NOT NULL,
-  customer_id INT NOT NULL,
+  order_number INT NOT NULL, /* references customer_order(order_number) */
   store_id INT NOT NULL,
   total DECIMAL(8, 2) NOT NULL, /* 8 digits total, 2 after decimal. Range: -999,999.99 to 999,999.99 */
   `status` ENUM('pending', 'accepted', 'rejected', 'pickup_ready', 'completed', 'incomplete') NOT NULL,
   FOREIGN KEY (order_line_id) REFERENCES order_line(id),
-  FOREIGN KEY (customer_id) REFERENCES customer(id),
+  FOREIGN KEY (order_number) REFERENCES customer_order(order_number), 
   FOREIGN KEY (store_id) REFERENCES store(id)
 );
 
@@ -154,8 +171,8 @@ CREATE TABLE IF NOT EXISTS `event` (
   `description` TEXT NOT NULL, /* type reviewed */
   `date` DATETIME NOT NULL, /* or TIMESTAMP type */
   address_id INT,
-  customer_id INT, /*registrants, participants*/
+  member_id INT, /* updated from customer_id */
   FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
   FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
-  FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE SET NULL
+  FOREIGN KEY (member_id) REFERENCES `member`(account_id) ON DELETE SET NULL
 );

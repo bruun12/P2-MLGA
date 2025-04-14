@@ -1,6 +1,7 @@
+/*
 let form = document.querySelector(".form");
 
-let submit = document.querySelector("#submitProduct").addEventListener("click", (event)=>{
+let submit = document.querySelector("btnSubmitProduct").addEventListener("click", (event)=>{
     event.preventDefault()
 
     const formData = new FormData(form);
@@ -21,6 +22,8 @@ let submit = document.querySelector("#submitProduct").addEventListener("click", 
         }
     }).then(res => res.json()).then(data => console.log(data))
 });
+*/
+
 
 
 

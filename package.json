@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch --env-file=.env server"
+    "dev": "node --watch--env-file=.env server"
   },
   "repository": {
     "type": "git",

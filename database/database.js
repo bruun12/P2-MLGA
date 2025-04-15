@@ -18,7 +18,16 @@ const dbPool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise();    //promise() allows use promise API version of mysql
 
+export async function getAllProducts() {
+    // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
+    const [rows] = await dbPool.query("Select * FROM product LIMIT 10");
+    return rows;
+}
+
+
+
 // Route to handle account creation
+/*
 app.post('/create-account', async (req, res) => {
     const { email, username, password } = req.body;
 
@@ -37,6 +46,7 @@ app.post('/create-account', async (req, res) => {
         res.status(500).json({ message: 'Failed to create account.' });
     }
 });
+
 
 // Route to handle user login
 app.post('/login', async (req, res) => {
@@ -68,3 +78,4 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Failed to log in.' });
     }
 });
+*/

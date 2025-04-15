@@ -1,14 +1,14 @@
 import express from 'express';
 import path from 'path';
 import url from 'url';
-
+import { getAllProducts } from '../database/database.js';
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const router = express.Router();
 
 // Frontpage
-router.get("/", (request, response) => {
+router.get("/", async (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'front-page.html'))
 });
 
@@ -31,5 +31,10 @@ router.get("/create-account", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'))
 });
 
+
+//Lavet af Asta til admin addProductPage
+router.get("/addProductPage", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'))
+});
 
 export default router;

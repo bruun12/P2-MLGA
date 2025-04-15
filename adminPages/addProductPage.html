@@ -23,7 +23,7 @@
 
         <!-- Div used to box search container elements -->
         <form action="https://www.google.com/" class ="search-container">
-            <input type="text" placeholder="Search.." name="q">
+            <input type="text" placeholder="Search..." name="q">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
     </nav>
@@ -36,16 +36,31 @@
         <input name="description" id="inputDescription" type="text">
         <p>Price:</p>
         <input name="price" id="inputPrice" type="number">
-        <!--make drop dow/pup-up to search for exiting categories-->
+        <!--make drop dow/pop-up to search for exiting categories-->
         <p>Category:</p>
         <button id="btnCategorySelect">Select category</button>
-        <p>Image of product</p>
+        <p>Main image of product</p>
         <input name="IMG" id="inputIMG" type="text"> <br> <br> 
-        <button id="btnSubmitProduct">Press to add item</button>
+
+        <button id="addItem">Press to add specific product</button> <br> <br> 
+
+        <!-- description to make the specific items-->
+        <p>Change price (if needed):</p>
+        <input name="priceItem" id="inputPriceItem" type="number">
+        <p>Stock keeping unit:</p>
+        <button id="btnSKUselect">Select SKU</button>
+        <p>Amount of products:</p>
+        <input name="stock_qty" id="inputStock" type="number">
+        <!--Gør så der kan tilføjes mere end to billeder-->
+        <p>Image of specific product</p>
+        <input name="IMGItem" id="inputIMGItem" type="text"> <br> <br>
+
+        <button id="btnSubmitProduct">Press to add items</button>
+ 
     </form>
 
 
 
-    <!--<script type="module" src = "../adminJS/addProducts.js"> </script>    --->
+    <script type="module" src = "../adminJS/addProducts.js"> </script>
 </body>    
 </html>  

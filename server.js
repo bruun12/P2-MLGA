@@ -35,7 +35,7 @@ bcrypt.hash(password, 10, (err, hash) => {
 
 // Route to handle account creation
 app.post('/create-account', async (req, res) => {
-    const { email, password, firstname } = req.body;
+    const { email, password, firstname, lastname, phone } = req.body;
 
     try {
         // Hash the password
@@ -43,13 +43,18 @@ app.post('/create-account', async (req, res) => {
 
         // Insert user into the database
         const [result] = await dbPool.execute(
-            'INSERT INTO customer (email, first_name, password) VALUES (?, ?, ?)',
-            [email, firstname, hashedPassword]
+            'INSERT INTO customer (email, first_name, last_name, phone, password) VALUES (?, ?, ?, ?, ?)',
+            [email, firstname, lastname, phone, hashedPassword]
         );
         res.status(201).json({ message: 'Account created successfully!' });
     } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+        console.error('Duplicate email error:', error);
+        res.status(400).json({ message: 'Email is already in use. Please use a different email.' });
+        } else {
         console.error('Error saving user:', error);
         res.status(500).json({ message: 'Failed to create account.' });
+        }
     }
 });
 
@@ -62,7 +67,7 @@ app.post('/login', async (req, res) => {
 
         // Fetch user from the database
         const [rows] = await dbPool.execute(
-            'SELECT * FROM customer WHERE email = ?',
+            'SELECT * FROM login WHERE email = ?',
             [email]
         );
 
@@ -100,6 +105,41 @@ app.post('/login', async (req, res) => {
         console.error('Database connection test failed:', err);
     }
 })();
+
+app.post("/send-temp-password", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        // Generer et midlertidigt password
+        const tempPassword = Math.random().toString(36).slice(-8);
+
+        // Hash det midlertidige password og gem det i databasen
+        const hashedPassword = await bcrypt.hash(tempPassword, 10);
+        await dbPool.execute("UPDATE customer SET password = ? WHERE email = ?", [hashedPassword, email]);
+
+        // Send det midlertidige password via e-mail
+        const transporter = nodemailer.createTransport({
+            service: "Yahoo",
+            auth: {
+                user: "Byhjerte@yahoo.dk",
+                pass: ""
+            }
+        });
+
+        const mailOptions = {
+            from: "Byhjerte@yahoo.dk",
+            to: email,
+            subject: "Your Temporary Password",
+            text: `Your temporary password is: ${tempPassword}`
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: "Temporary password sent successfully." });
+    } catch (error) {
+        console.error("Error sending temporary password:", error);
+        res.status(500).json({ message: "Failed to send temporary password." });
+    }
+});
 
 
 //Reveal error if any

@@ -31,5 +31,9 @@ router.get("/create-account", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'))
 });
 
+router.get("/forgot-password", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'forgot-password.html'))
+});
+
 
 export default router;

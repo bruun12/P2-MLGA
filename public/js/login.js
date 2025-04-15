@@ -3,11 +3,13 @@ async function registerUser() {
     const email = document.getElementById("registerEmail").value; // Gets input from the user
     const password = document.getElementById("registerPassword").value; // Gets input from the user
     const firstname = document.getElementById("registerFirstname").value; // Gets input from the user
+    const lastname = document.getElementById("registerLastname").value; // Gets input from the user
+    const phone = document.getElementById("registerPhone").value; // Gets input from the user
 
     const response = await fetch("http://localhost:3350/create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, firstname })
+        body: JSON.stringify({ email, password, firstname, lastname, phone })
     });
 
     const data = await response.json(); // Converts the response to JSON
@@ -59,9 +61,9 @@ document.getElementById("registerPassword").addEventListener("input", function (
 });
 
 // Viser bare passwordet til brugeren (hvis brugeren har glemt sit password) (Dette er blot et eksampel fundet på nettet)
-document.getElementById("forgotpassword").addEventListener("submit", function (e) {
+document.getElementById("forgotPassword").addEventListener("submit", function (e) {
     e.preventDefault();
-    const email = document.getElementById("showPasswordEmail").value;
+    const email = document.getElementById("email").value;
 
     fetch("http://localhost:3350/show-password", {
         method: "POST",

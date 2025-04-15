@@ -23,19 +23,10 @@ router.get("/product", (request, response) => {
 });
 
 router.get("/overview", (request, response) => {
-    if (request.query.i === "product"){
-        response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'));
-    } else {
-        response.send("NEEEJ!");
-    }
-
-    
-});
-
-router.get("/event-overview", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'));
-    console.log("Dette er " + request.originalUrl);
 });
+
+
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);

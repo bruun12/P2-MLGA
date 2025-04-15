@@ -2,8 +2,14 @@ const hostname = '127.0.0.1';
 const port = 3000;
 let subCategoryArr = [];
 
+//uses the query set in the URL
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
 
-//const fs = require('fs');
+// if the query in the URL is product. make it a product page.
+if (urlParams.get('page') === "product"){
+
+    //const fs = require('fs');
 function newSubCategoryChecker(subCategory, subCategoryArr){
     //Goes through all already created subCats 
     for (const i in subCategoryArr){
@@ -91,3 +97,6 @@ fetch("/allProducts")
        //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
     }
 });
+
+}
+

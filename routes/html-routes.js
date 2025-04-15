@@ -1,5 +1,6 @@
-/* Defines the API endpoints and maps them to the appropriate controller functions */
-/* Responsible for routing HTTP methods (GET, POST, PUT, DELETE, etc.) to their corresponding handlers */
+/* Routers:
+    - Defines the API endpoints and maps them to the appropriate controller functions
+    - Responsible for routing HTTP methods (GET, POST, PUT, DELETE, etc.) to their corresponding handlers */
 import express from 'express';
 import path from 'path';
 import url from 'url';
@@ -25,9 +26,6 @@ router.get("/product", (request, response) => {
 router.get("/product-overview", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'));
 });
-
-//Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
-router.get("/allProducts", getProducts);
 
 //account administration 
 router.get("/login", (request, response) => {

@@ -8,7 +8,9 @@
 import mysql from 'mysql2';
 
 /* Connection pooling to improve performance, avoid overloading MYSQL server with too many connections
-  creates a pool of reusable connections to the database - instead of creating a new connection for each query*/
+  creates a pool of reusable connections to the database - instead of creating a new connection for each query
+  Each query uses this object, when querying
+  */
 const dbPool = mysql.createPool({
 
     //Environment variables for: sensitive info & easy configuration/change of database
@@ -17,6 +19,12 @@ const dbPool = mysql.createPool({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE
 }).promise();    //promise() allows use promise API version of mysql
+
+export default dbPool;
+
+/* Nedenstående skal omstruktureres efter model-controller-routes strukturen - se product eksempel
+
+
 
 // Route to handle account creation
 app.post('/create-account', async (req, res) => {
@@ -67,4 +75,4 @@ app.post('/login', async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Failed to log in.' });
     }
-});
+});*/

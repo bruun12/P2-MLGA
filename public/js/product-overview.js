@@ -77,8 +77,10 @@ async function testing() {
 
 //testing();
 
-
-fetch("/data")
+//skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
+//Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
+//
+fetch("/allProducts")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{

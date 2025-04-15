@@ -1,8 +1,10 @@
+/* Defines the API endpoints and maps them to the appropriate controller functions */
+/* Responsible for routing HTTP methods (GET, POST, PUT, DELETE, etc.) to their corresponding handlers */
 import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import {getAllProducts} from '../database/database.js';
+import { getProducts } from '../controllers/product-controller.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -20,17 +22,12 @@ router.get("/product", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'))
 });
 
-
-
 router.get("/product-overview", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product-overview.html'));
 });
 
-router.get("/data", async (request, response) => {
-    //Get list of products to show
-    const products = await getAllProducts();
-    response.json(products);
-});
+//Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
+router.get("/allProducts", getProducts);
 
 //account administration 
 router.get("/login", (request, response) => {

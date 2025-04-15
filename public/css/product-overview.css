@@ -59,16 +59,16 @@ h1 {
 #productDisplayer {
     width: 75%;
     float: right;
-    padding: 20px;
+    padding: 2%;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 2%;
     justify-content: center;
 }
 
 /* Product card styling */
 .productDiv {
-    width: 250px;
+    width: 30%; /* Relative width for responsiveness */
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -85,29 +85,34 @@ h1 {
 
 .productIMG {
     width: 100%;
-    height: auto;
+    height: 200px; /* Fixed height for consistent image display */
+    object-fit: cover; /* Ensure images fit within the dimensions */
     border-bottom: 1px solid #ccc;
 }
 
 .productInfoDiv {
-    padding: 15px;
+    padding: 5%;
+    height: auto; /* Adjust height dynamically */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .productName {
     font-size: 1.2rem;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 5% 0;
 }
 
 .productPrice {
     font-size: 1.1rem;
     color: #28a745;
-    margin: 10px 0;
+    margin: 5% 0;
 }
 
 .addCart {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 10px 5%;
     background-color: #007bff;
     color: #fff;
     border: none;

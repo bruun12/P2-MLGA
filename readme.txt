@@ -17,7 +17,8 @@ This repository contains our 2nd semester project for the Software program at Aa
 
 - **Node.js** + **Express.js** – Backend server  
 - **HTML/CSS/JavaScript** – Frontend  
-- **File-based data storage**  
+- **File-based data storage** 
+- **MySQL** 
 
 ## Getting Started
 
@@ -40,4 +41,27 @@ cd P2-MLGA
 npm install
 
 # Start the server
-node server.js
+npm start
+
+# Start the server, automatic restart if changes in entire directory
+npm run dev
+
+
+# Model-Controller-Router Structure (without views)
+
+Models: 
+ - Contain the logic to interact with the database. 
+ - Handles tasks such as querying, inserting, updating, and deleting records in the database.
+
+Controllers:
+- Acts as the business logic layer: Contains functions or methods that process incoming requests (e.g., GET, POST, PUT, DELETE)
+- Receives requests from routes.
+- Validates and processes input data.
+- Calls the necessary model methods to interact with the database.
+- Formats the output (e.g., JSON responses) to send back to the client.
+- Handles errors, authentication, or other middleware operations as required.
+- They decide what happens when a specific route is hit.
+
+Routers:
+- Defines the API endpoints and maps them to the appropriate controller functions
+- Responsible for routing HTTP methods (GET, POST, PUT, DELETE, etc.) to their corresponding handlers

@@ -17,15 +17,3 @@ export async function getProductItem(id) {
     const [rows] = await dbPool.query("SELECT * FROM product_item WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
     return rows[0];                                                                     //Only return the element, not the array
 }
-
-// Select all events from a particular store
-export async function getStoreEvents(store_id) {
-    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE store_id = ?", [store_id]);
-    return rows;
-}
-
-//Select one particular event
-export async function getEvent(id){
-    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
-    return rows[0];                                                                //Only return the element, not the array
-}

@@ -1,3 +1,4 @@
+ 
 function pathDisplay(path){
     let productPath = document.createElement("P");
     productPath.setAttribute("id", "path");

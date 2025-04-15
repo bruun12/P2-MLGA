@@ -32,12 +32,15 @@ let submit = document.querySelector("btnSubmitProduct").addEventListener("click"
 
 //!!!!!!!! evt lav en joining der gør at man kan printe productet som helhed i 
 //sted for at skulle have to functioner
+console.log("hello world");
 /*
-
 async function printProducts() {
-    const [row] = await pool.query("SELECT * FROM product");
+    const [row] = await pool.query("SELECT * FROM product LIMIT 10");
     return row;
 }
+
+
+
 //Function to print sigle product by using product id
 async function printProductValue(){
     const [row] = await pool.query("SELECT * FROM product WHERE id = ?", [id]);
@@ -72,11 +75,11 @@ async function printNewProduct(){
 return printProductValue(itemId)
 }
 //prints functions to check how they look
+
 console.log(printProducts)
 console.log(printProductValue)
 
 //prints newly added function
 console.log(printNewProduct)
 */
-
 

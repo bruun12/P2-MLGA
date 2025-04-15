@@ -32,9 +32,9 @@ router.get("/create-account", (request, response) => {
 });
 
 
-//Lavet af Asta til admin addProductPage
-router.get("/addProductPage", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'))
+//Lavet af Asta til admin-add-product-page
+router.get("/admin-add-products", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'admin-add-products.html'))
 });
 
 export default router;

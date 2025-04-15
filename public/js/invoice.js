@@ -7,7 +7,7 @@ document.querySelector("#info").addEventListener("submit", function(event) {
     let postnummer = document.getElementById("postnummer").value;
     let by = document.getElementById("by").value;
 
-// Validation to check if all fields are filled, if not, alert the user, if yes, save the email and redirect to Faktuah.html
+// Validation to check if all fields are filled, if not, alert the user, if yes, save the email and redirect to invoice.html
     if (email === "" || fname === "" || lname === "" || adresse === "" || postnummer === ""  || by === "") {
         alert("Udfyld alle felterne!");
         event.preventDefault();
@@ -16,10 +16,10 @@ document.querySelector("#info").addEventListener("submit", function(event) {
       }
   });
 
-// Function to save and redirect to Faktuah.html
+// Function to save and redirect to invoice.html
 function saveEmail(email) {
     localStorage.setItem("email", email);
-    window.location.href = "Faktuah.html";
+    window.location.href = "invoice.html";
 }
 
 // Promo code function

@@ -8,7 +8,10 @@ import dbPool from "../database/database.js";
 // Select all products from the database - overview, potentially limit
 export async function getAllProducts() {
     // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
-    const [rows] = await dbPool.query("Select * FROM product LIMIT 10");
+    const [rows] = await dbPool.query(`SELECT title, price, product.img 
+                                       FROM product_item right JOIN product
+                                       ON product_item.product_id = product.id
+                                       LIMIT 15;`);
     return rows;
 }
 
@@ -18,14 +21,5 @@ export async function getProductItem(id) {
     return rows[0];                                                                     //Only return the element, not the array
 }
 
-// Select all events from a particular store
-export async function getStoreEvents(store_id) {
-    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE store_id = ?", [store_id]);
-    return rows;
-}
 
-//Select one particular event
-export async function getEvent(id){
-    const [rows] = await dbPool.query("SELECT * FROM `event` WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
-    return rows[0];                                                                //Only return the element, not the array
-}
+

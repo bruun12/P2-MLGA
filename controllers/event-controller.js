@@ -8,3 +8,33 @@ Acts as the business logic layer: Contains functions or methods that process inc
 
 They decide what happens when a specific route is hit.
 */
+
+import {getAllEvents, getAllStoresWithEvents, getStoreEvents} from '../models/event-model.js';
+
+export const getEvents = async (req, res) => {
+    try {
+      const events = await getAllEvents();
+      res.json(events); // Return JSON response
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server Error' });
+    }
+}
+export const getStoresWithEvents = async (req, res) => {
+    try {
+      const events = await getAllStoresWithEvents();
+      res.json(events); // Return JSON response
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server Error' });
+    }
+}
+export const storeEvents = async (req, res) => {
+    try {
+      const events = await getStoreEvents(8 );
+      res.json(events); // Return JSON response
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server Error' });
+    }
+}

@@ -7,7 +7,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 // if the query in the URL is product. make it a product page.
-if (urlParams.get('page') === "product"){
+if (urlParams.get('type') === "product"){
 
     //const fs = require('fs');
 function newSubCategoryChecker(subCategory, subCategoryArr){

@@ -16,10 +16,10 @@ h1 {
 
 /* Category box (top navigation) */
 #categoryBox {
-    display: flex;
     justify-content: center;
     gap: 10px;
     margin: 20px 0;
+    float: left;
 }
 
 #categoryBox a {
@@ -55,21 +55,23 @@ h1 {
     text-decoration: underline;
 }
 
-/* Product container */
-#productDisplayer {
-    width: 75%;
+/* item container */
+#displayer {
+    display: block;
+    width: 70%;
     float: right;
     padding: 2%;
     display: flex;
     flex-wrap: wrap;
     gap: 2%;
     justify-content: center;
+    background-color: lightblue;
 }
 
 /* Product card styling */
 .productDiv {
     width: 30%; /* Relative width for responsiveness */
-    background-color: #fff;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -83,9 +85,9 @@ h1 {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.productIMG {
-    width: 100%;
-    height: 200px; /* Fixed height for consistent image display */
+.itemImg {
+    width: 300px;
+    height: 300px; /* Fixed height for consistent image display */
     object-fit: cover; /* Ensure images fit within the dimensions */
     border-bottom: 1px solid #ccc;
 }
@@ -109,8 +111,8 @@ h1 {
     color: #28a745;
     margin: 5% 0;
 }
-
-.addCart {
+/* Skal måske ikke bruges*/
+/* .addCart {
     display: inline-block;
     padding: 10px 5%;
     background-color: #007bff;
@@ -124,11 +126,19 @@ h1 {
 
 .addCart:hover {
     background-color: #0056b3;
-}
+} */
 
 /* Clear floats */
 body::after {
     content: "";
     display: table;
     clear: both;
+}
+
+.eventDiv {
+    padding: 5%;
+    height: auto; /* Adjust height dynamically */
+    display: inline-block;
+    flex-direction: column;
+    justify-content: space-between;
 }

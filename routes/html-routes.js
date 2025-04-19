@@ -41,8 +41,15 @@ router.get("/allEvents", getEvents);
 
 router.get("/allStoresWithEvents", getStoresWithEvents);
 
+router.get("/storeEvents/:id", (request, response)=> {
 
-router.get("/storeEvents", storeEvents);
+    const id = request.params;
+
+    response.send(storeEvents(id));
+});
+
+
+
 
 
 

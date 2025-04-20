@@ -34,11 +34,13 @@ function subCategoryDisplay(subCategory, id){
 
 }
 
-function displayItem(name, price, img){
+function displayItem(name, price, img, id){
     //Make div and put it under the productDisplayer
-    let itemDiv = document.createElement("div");
+    let itemDiv = document.createElement("a");
     itemDiv.setAttribute("class", `${urlParams.get('type')}Div`)
     document.querySelector("#displayer").appendChild(itemDiv);
+    itemDiv.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
+
 
     //Create IMG and put it to product div
     let itemImg = document.createElement("img");
@@ -50,6 +52,7 @@ function displayItem(name, price, img){
     let itemInfoDiv = document.createElement("div");
     itemDiv.setAttribute("class", `${urlParams.get('type')}InfoDiv`)
     itemDiv.appendChild(itemInfoDiv);
+
 
     /* Create product name and append to product info div */
     let itemName = document.createElement("p");
@@ -85,31 +88,20 @@ function displayItem(name, price, img){
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 //
-if (urlParams.get('subCategory') !== null){
-    fetch(`/storeEvents`)
-    //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
-    .then(response => {return response.json()})
-    .then(data=>{
-        console.log(data);
-        //Vi løber igennem forløkken for alle 
-        for (const item of data) {
-            displayItem(item.title, item.price ,item.img);
-        //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
-        }
-    });
-} else {
-    fetch(`/all${urlParams.get('type')}s`)
-    //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
-    .then(response => {return response.json()})
-    .then(data=>{
-        console.log(data);
-        //Vi løber igennem forløkken for alle 
-        for (const item of data) {
-            displayItem(item.title, item.price ,item.img);
-        //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
-        }
-    });
-}
+
+fetch(`/all${urlParams.get('type')}s`)
+//Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
+.then(response => {return response.json()})
+.then(data=>{
+    console.log(data);
+    //Vi løber igennem forløkken for alle 
+    for (const item of data) {
+        console.log(item.id[0]);
+        displayItem(item.title, item.price ,item.img, item.id);
+    //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
+    }
+});
+
 
 
 if (urlParams.get('type') === "product"){

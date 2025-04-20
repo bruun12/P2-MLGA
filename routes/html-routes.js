@@ -24,6 +24,10 @@ router.get("/overview", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'overview.html'));
 });
 
+router.get("/detail", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'));
+});
+
 
 //account administration 
 router.get("/login", (request, response) => {

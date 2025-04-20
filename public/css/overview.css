@@ -71,7 +71,7 @@ h1 {
 /* Product card styling */
 .productDiv {
     width: 30%; /* Relative width for responsiveness */
-    background-color: #ffffff;
+    background-color: black;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

@@ -36,10 +36,10 @@ function subCategoryDisplay(subCategory, id){
 
 function displayItem(name, price, img, id){
     //Make div and put it under the productDisplayer
-    let itemDiv = document.createElement("a");
-    itemDiv.setAttribute("class", `${urlParams.get('type')}Div`)
-    document.querySelector("#displayer").appendChild(itemDiv);
-    itemDiv.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
+    let itemA = document.createElement("a");
+    itemA.setAttribute("class", `${urlParams.get('type')}Div`)
+    document.querySelector("#displayer").appendChild(itemA);
+    itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
 
 
     //Create IMG and put it to product div
@@ -47,11 +47,11 @@ function displayItem(name, price, img, id){
     itemImg.setAttribute("src", img);
     itemImg.setAttribute("class", "itemImg");
     itemImg.setAttribute("alt", "productPicture");
-    itemDiv.appendChild(itemImg);
+    itemA.appendChild(itemImg);
     
     let itemInfoDiv = document.createElement("div");
-    itemDiv.setAttribute("class", `${urlParams.get('type')}InfoDiv`)
-    itemDiv.appendChild(itemInfoDiv);
+    itemA.setAttribute("class", `${urlParams.get('type')}InfoDiv`)
+    itemA.appendChild(itemInfoDiv);
 
 
     /* Create product name and append to product info div */

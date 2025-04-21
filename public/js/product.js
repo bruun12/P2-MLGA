@@ -1,3 +1,7 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const productId = urlParams.get("id");
+
 function pathDisplay(path){
     let productPath = document.createElement("P");
     productPath.setAttribute("id", "path");
@@ -56,7 +60,7 @@ fetch("../database/products.json")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
-    let i = 1;
+    let i = 0;
     //Vi løber igennem forløkken for alle   
         pathDisplay(data.products[i].subCategory);
         imgDisplay(data.products[i].img);

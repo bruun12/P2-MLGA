@@ -24,7 +24,7 @@ let submit = document.querySelector("btnSubmitProduct").addEventListener("click"
 });
 */
 
-
+console.log("hello world");
 //Things for admin add page
 
 //function to print the products 
@@ -32,13 +32,10 @@ let submit = document.querySelector("btnSubmitProduct").addEventListener("click"
 
 //!!!!!!!! evt lav en joining der gør at man kan printe productet som helhed i 
 //sted for at skulle have to functioner
-console.log("hello world");
-/*
 async function printProducts() {
-    const [row] = await pool.query("SELECT * FROM product LIMIT 10");
-    return row;
+    const [row] = await pool.query("SELECT * FROM address LIMIT 10");
+    return [row];
 }
-
 
 
 //Function to print sigle product by using product id
@@ -46,40 +43,37 @@ async function printProductValue(){
     const [row] = await pool.query("SELECT * FROM product WHERE id = ?", [id]);
     return row[0] //prints only the first object in the array
 }
-
+    
 //function to print newly added product (item)
 async function printNewProduct(){
-
+    
     //function to add product to the product database
     async function addProduct(name, description, img, category_id) {
         const [productAdd] = await pool.query("INSERT INTO product (name, description, img, category_id) VALUES (?, ?, ?, ?)", [name, description, img, category_id]);
         const id = productAdd.product_id
         return productId
-    }
-
-    //function that add product items to database product_item
-    async function addProductItem(product_id, SKU, stock_qty, img, price) {
-        const productItemAdd = await pool.query(
-            "INSERT INTO product_item (product_id, SKU, stock_qty, img, price) VALUES (?, ?, ?, ?, ?)", [product_id, SKU, stock_qty, img, price]);
-        const itemId = productItemAdd.product_item_id
-        return itemId   
-    }
-
-    console.log("add product:", addProduct())
-    console.log("add product item: ", addProductItem())
-
-//find måde at printe de ting der intastes så det både er om product og product_item
-//evt det med joining
-
-
-return printProductValue(itemId)
+        }
+        
+        //function that add product items to database product_item
+        async function addProductItem(product_id, SKU, stock_qty, img, price) {
+            const productItemAdd = await pool.query(
+                "INSERT INTO product_item (product_id, SKU, stock_qty, img, price) VALUES (?, ?, ?, ?, ?)", [product_id, SKU, stock_qty, img, price]);
+                const itemId = productItemAdd.product_item_id
+                return itemId   
+        }
+                
+                console.log("add product:", addProduct())
+                console.log("add product item: ", addProductItem())          
+    //find måde at printe de ting der intastes så det både er om product og product_item
+    //evt det med joining
+    return printProductValue(itemId)
 }
-//prints functions to check how they look
 
+
+//prints functions to check how they look
 console.log(printProducts)
 console.log(printProductValue)
 
 //prints newly added function
 console.log(printNewProduct)
-*/
 

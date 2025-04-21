@@ -16,7 +16,46 @@ export async function getAllProducts() {
 }
 
 // Select a specific productItem by id
+// Namings shortened for readability example: product_item -> pi, 
 export async function getProductItem(id) {
-    const [rows] = await dbPool.query("SELECT * FROM product_item WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
-    return rows[0];                                                                     //Only return the element, not the array
+  // First: get base product + product_item info
+  const [productRows] = await dbPool.query(`
+      SELECT 
+          -- Product_item info
+          pi.id AS product_item_id,
+          pi.SKU,
+          pi.stock_qty,
+          pi.img AS item_img,
+          pi.price,
+
+          -- Product details
+          p.id AS product_id,
+          p.name AS product_name,
+          p.description,
+          p.img AS product_img
+
+      FROM product_item pi
+      JOIN product p ON pi.product_id = p.id
+      WHERE pi.id = ?
+  `, [id]);
+
+  if (!productRows.length) return null; // Return null if nothing is found
+
+  const productItem = productRows[0]; //Load productRows data into productItem variable and join them with variation options
+
+  // Second: get all variations for that product item
+  const [variationRows] = await dbPool.query(`
+      SELECT 
+          v.name AS variation_name,
+          vo.value AS option_value
+      FROM item_variation_mapping ivm
+      JOIN variation_opt vo ON ivm.variation_opt_id = vo.id
+      JOIN variation v ON vo.variation_id = v.id
+      WHERE ivm.product_item_id = ?
+  `, [id]);
+
+  // Add variations as array to productItem
+  productItem.variations = variationRows;
+
+  return productItem;
 }

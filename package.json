@@ -20,6 +20,8 @@
   "homepage": "https://github.com/bruun12/P2-MLGA#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql2": "^3.14.0"
   }

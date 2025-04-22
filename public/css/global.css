@@ -144,11 +144,25 @@ footer {
   color: var(--text-light);
   padding: var(--spacing-lg);
   width: 100%;
-  /* Ikke sikker på om disse er nødvendige eller ej.
-  overflow: hidden;
-  position: relative;
-  bottom: 0;
-  */
+}
+
+footer p {
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-light);
+  font-weight: var(--font-weight-normal);
+}
+
+footer a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+  transition: color var(--transition-fast);
+}
+
+footer a:hover {
+  color: var(--primary-color);
 }
 
 /* Shopping cart */
@@ -229,5 +243,9 @@ footer {
   main {
     margin-top: 60px;
     padding: var(--spacing-md);
+  }
+
+  footer p {
+    font-size: var(--font-size-small);
   }
 }

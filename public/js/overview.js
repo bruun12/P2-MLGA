@@ -83,6 +83,16 @@ function displayItem(name, price, img, id){
 
 }
 
+function sidebar(categories) {
+
+    for (let i = 0; i < categories.length; i++){
+        if(categories[i].id === categories[i].parent_id){
+            subCategoryDisplay(categories[i].name, categories[i].id);
+        } else if (categories[i].id !== categories[i].parent_id){
+            
+        }
+    }
+} 
 
 
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
@@ -105,7 +115,12 @@ fetch(`/all${urlParams.get('type')}s`)
 
 
 if (urlParams.get('type') === "product"){
-    
+    fetch(`/allCategories`)
+    .then(response => {return response.json()})
+    .then(data=>{
+        sidebar(data);
+ 
+});
 
 } else {
     fetch(`/allStoresWithEvents`)
@@ -120,4 +135,3 @@ if (urlParams.get('type') === "product"){
 }
 
 console.log(urlParams.get('subCategory'));
-

@@ -8,9 +8,10 @@ import dbPool from "../database/database.js";
 // Select all products from the database - overview, potentially limit
 export async function getAllProducts() {
     // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
-    const [rows] = await dbPool.query(`SELECT title, price, product.img 
+    const [rows] = await dbPool.query(`SELECT name title, price, product.img, product_id id
                                        FROM product_item right JOIN product
                                        ON product_item.product_id = product.id
+                                       WHERE product_id IS NOT NULL
                                        LIMIT 15;`);
     return rows;
 }

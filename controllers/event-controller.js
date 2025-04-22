@@ -31,7 +31,7 @@ export const getStoresWithEvents = async (req, res) => {
 }
 export const storeEvents = async (req, res) => {
     try {
-      const events = await getStoreEvents(8 );
+      const events = await getStoreEvents(req);
       res.json(events); // Return JSON response
     } catch (error) {
       console.error(error);

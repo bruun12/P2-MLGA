@@ -55,13 +55,13 @@ function infoDisplay(info){
     productInfoP.innerText = info;
 }
 
-
+/*
 fetch(`/product/${productId}`)
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
     
-    /*
+    
     let i = 0;
         pathDisplay(data.products[i].subCategory);
         imgDisplay(data.products[i].img);
@@ -70,16 +70,16 @@ fetch(`/product/${productId}`)
         priceDisplay(data.products[i].price);
 
         infoDisplay(data.products[i].info);
-    */
+    
 })
-
+*/
 async function fetchData() {
     try {
       const response = await fetch(`/product/${productId}`);
       const data = await response.json();
-      console.log(data);
+      console.dir(data, { depth: null });
     } catch (error) {
       console.error('Error:', error);
     }
   }
-  fetchData();
+fetchData();

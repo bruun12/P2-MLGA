@@ -4,8 +4,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch --env-file=.env server"
+    "start": "node --env-file=.env server",
+    "dev": "node --watch-path ./ --env-file=.env server"
   },
   "repository": {
     "type": "git",
@@ -20,8 +20,9 @@
   "homepage": "https://github.com/bruun12/P2-MLGA#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mysql": "^2.18.1",
     "mysql2": "^3.14.0"
   }
 }

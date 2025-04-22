@@ -1,13 +1,15 @@
 // New user (brugernavnet og password i local storage)
 async function registerUser() {
     const email = document.getElementById("registerEmail").value; // Gets input from the user
-    const username = document.getElementById("registerUsername").value; // Gets input from the user
     const password = document.getElementById("registerPassword").value; // Gets input from the user
+    const firstname = document.getElementById("registerFirstname").value; // Gets input from the user
+    const lastname = document.getElementById("registerLastname").value; // Gets input from the user
+    const phone = document.getElementById("registerPhone").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/create-account", { // Sends the data to the server
+    const response = await fetch("http://localhost:3350/create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password })
+        body: JSON.stringify({ email, password, firstname, lastname, phone })
     });
 
     const data = await response.json(); // Converts the response to JSON
@@ -18,13 +20,14 @@ async function loginUser() {
     const email = document.getElementById("loginEmail").value; // Gets input from the user
     const password = document.getElementById("loginPassword").value; // Gets input from the user
 
-    const response = await fetch("http://localhost:3000/login", { // Sends the data to the server
+    const response = await fetch("http://localhost:3350/login", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
     });
 
     const data = await response.json();
+    
     if (response.ok) { // If the response is ok, it means the login was successful
         alert(data.message);
         sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
@@ -58,11 +61,11 @@ document.getElementById("registerPassword").addEventListener("input", function (
 });
 
 // Viser bare passwordet til brugeren (hvis brugeren har glemt sit password) (Dette er blot et eksampel fundet på nettet)
-document.getElementById("forgotpassword").addEventListener("submit", function (e) {
+document.getElementById("forgotPassword").addEventListener("submit", function (e) {
     e.preventDefault();
-    const email = document.getElementById("showPasswordEmail").value;
+    const email = document.getElementById("email").value;
 
-    fetch("http://localhost:3000/show-password", {
+    fetch("http://localhost:3350/show-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
@@ -155,3 +158,6 @@ document.getElementById("forgotpassword").addEventListener("submit", function (e
         res.status(500).json({ message: "Failed to send temporary password." });
     }
 }); */
+
+
+

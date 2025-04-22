@@ -1,118 +1,180 @@
+@import 'variables.css';
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    background-image: url('../images/Mr.grey.jpg'); /* Baggrundsbillede */
-    background-size: cover; /* Sørg for, at billedet dækker hele baggrunden */
-    background-position: center; /* Centrer baggrundsbilledet */
+    background-image: url('../images/Mr.grey.jpg');
+    background-size: cover;
+    background-position: center;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    padding: var(--spacing-lg);
 }
 
 .header {
     text-align: center;
-    margin-bottom: 20px;
-    color: #fff;
+    margin-bottom: var(--spacing-lg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-lg) 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.header h1 {
+    color: var(--text-light);
+    font-size: var(--font-size-large);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: var(--shadow-md);
+}
+
+.header h2 {
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-md);
+    text-shadow: var(--shadow-sm);
 }
 
 form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    background-color: var(--text-light);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 350px;
     text-align: center;
-}
-
-h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #666;
-    text-align: center;
+    margin-top: 120px; /* Add space for the header */
 }
 
 .input-container {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    position: relative;
+    flex-direction: column;
+    margin-bottom: var(--spacing-md);
+    width: 100%;
 }
 
 .input-container label {
-    flex: 1;
-    text-align: left;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-color);
+    margin-bottom: var(--spacing-xs);
 }
 
 .input-container img {
     position: absolute;
-    right: 10px;
+    right: var(--spacing-sm);
     top: 50%;
     transform: translateY(-50%);
-    width: 24px; /* Juster bredden */
-    height: 24px; /* Juster højden */
+    width: 20px;
+    height: 20px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
 }
 
 input[type="text"],
-input[type="password"] {
-    width: calc(100% - 40px); /* Juster bredden for at give plads til billedet */
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+input[type="password"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-right: 40px; /* Space for the icon */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--text-light);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
     box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 button,
 input[type="submit"] {
     width: 100%;
-    padding: 12px;
-    background-color: #007BFF;
-    color: #fff;
+    padding: var(--spacing-md);
+    background-color: var(--primary-color);
+    color: var(--text-light);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    margin-bottom: 15px;
-    font-size: 16px;
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-base);
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-button img {
-    margin-left: 10px;
-    width: 20px; /* Juster bredden */
-    height: 20px; /* Juster højden */
+    transition: background-color var(--transition-fast);
 }
 
 button:hover,
 input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
+}
+
+button img {
+    margin-left: var(--spacing-sm);
+    width: 20px;
+    height: 20px;
 }
 
 .profil {
-    margin-top: 20px;
+    margin-top: var(--spacing-lg);
     text-align: center;
 }
 
 .profil h3 {
-    color: #000000;
+    color: var(--text-color);
+    font-size: var(--font-size-small);
+    margin-bottom: var(--spacing-sm);
 }
 
 .profil a {
-    color: #007BFF;
+    color: var(--primary-color);
     text-decoration: none;
+    transition: color var(--transition-fast);
 }
 
 .profil a:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    form {
+        padding: var(--spacing-lg);
+    }
+
+    .input-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="email"] {
+        width: 100%;
+    }
+
+    .input-container img {
+        position: relative;
+        right: 0;
+        top: 0;
+        transform: none;
+        margin-top: var(--spacing-sm);
+    }
 }

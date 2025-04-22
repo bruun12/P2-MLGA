@@ -81,20 +81,24 @@ input[type="text"],
 input[type="password"],
 input[type="submit"],
 button {
-  width: 90%;
-  padding: var(--spacing-sm);
-  margin: var(--spacing-sm) auto;
+  width: 100%;
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm) 0 var(--spacing-md) 0;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-sm);
   box-sizing: border-box;
   display: block;
-  transition: border-color var(--transition-fast);
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-base);
+  background-color: var(--text-light);
+  color: var(--text-color);
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 input[type="submit"],
@@ -102,12 +106,23 @@ button {
   background-color: var(--primary-color);
   color: var(--text-light);
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 input[type="submit"]:hover,
 button:hover {
   background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
 }
 
 /* Responsive Design */
@@ -117,4 +132,78 @@ button:hover {
     float: none;
     margin: var(--spacing-md) auto;
   }
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    margin: var(--spacing-xl) 0;
+    text-shadow: var(--shadow-md);
+}
+
+h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+aside h2 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+form h2 {
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.autocomplete-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+}
+
+.autocomplete-container input {
+    width: 100%;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    background-color: var(--text-light);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.autocomplete-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
+}
+
+#valgtadresse {
+    display: block;
+    margin-top: var(--spacing-xs);
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+}
+
+#adresse {
+    width: 100%;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0 var(--spacing-md) 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    box-sizing: border-box;
+    display: block;
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-base);
+    background-color: var(--text-light);
+    color: var(--text-color);
 }

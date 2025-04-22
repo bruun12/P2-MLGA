@@ -56,12 +56,13 @@ function infoDisplay(info){
 }
 
 
-fetch("../database/products.json")
+fetch(`/product/${productId}`)
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
+    
+    /*
     let i = 0;
-    //Vi løber igennem forløkken for alle   
         pathDisplay(data.products[i].subCategory);
         imgDisplay(data.products[i].img);
 
@@ -69,4 +70,16 @@ fetch("../database/products.json")
         priceDisplay(data.products[i].price);
 
         infoDisplay(data.products[i].info);
-     })
+    */
+})
+
+async function fetchData() {
+    try {
+      const response = await fetch(`/product/${productId}`);
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  fetchData();

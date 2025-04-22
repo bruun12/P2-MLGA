@@ -28,6 +28,7 @@ export const getProduct = async (req, res)=> {
       const product = await getProductItem(id);
       if(product) {
         res.json(product);
+        console.log(product);
       } else {
         res.status(404).json({error: 'Product not found :-('});
       }

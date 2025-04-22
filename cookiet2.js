@@ -1,10 +1,25 @@
-const firstText = document.querySelector("#firstText");
-const lastText = document.querySelector("#lastText");
-const submitbutton = document.querySelector("#submitbutton");
+const loginEmail = document.querySelector("#loginEmail");
+const password = document.querySelector("#password");
+const submitbtn = document.querySelector("#submitbtn");
 const cookiebutton = document.querySelector("#cookiebutton");
 
 
-submitbutton.addEventListener("click", () => {
+//function myFunction() {
+    // Get the checkbox
+    //let //checkBox = document.getElementById("huskmig");
+    // Get the output text
+    //let text = document.getElementById("text");
+
+    // If the checkbox is checked, display the output text
+  //if (checkBox.checked == true){
+    //text.style.display = "block";
+  //} else {
+    //text.style.display = "none";
+  //
+
+
+
+submitbtn.addEventListener("click", () => {
     setCookie("firstName", firstText.value, 365);
     setCookie("lastName", lastText.value, 365);
 });

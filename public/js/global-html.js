@@ -95,3 +95,37 @@ productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
 /* ------ Navbar END ------ */
+
+
+/* ------ Cart/Basket START ------ */
+/* ------ HTML Tmpl Cart/Basket ------ */
+const cartTmpl = (event) =>
+    `
+    <div class="cartTab">
+        <h2>Shopping Cart</h2>
+        <div class="listCart">
+            <div class="item">
+                <div class="image">
+                    ${INSERT_IMAGE_HERE}
+                </div>
+                <div class="name">
+                    ${INSERT_NAME_HERE}
+                </div>
+                <div class="totalPrice">
+                    ${INSERT_TOTAL_HERE}
+                </div>
+                <div class="quantity">
+                    <span class="minus"><</span>
+                    ${INSERT_QUANTITY_HERE}
+                    <span class="plus">></span>
+                </div>
+            </div>
+        </div>
+        <div class=btn>
+            <button class="close">Close</button>
+            <button class="checkOut">Check Out</button>
+        </div>
+    </div>
+    `
+
+/* ------ Cart/Basket END ------ */

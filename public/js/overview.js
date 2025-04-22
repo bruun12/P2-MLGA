@@ -105,6 +105,14 @@ fetch(`/all${urlParams.get('type')}s`)
 
 
 if (urlParams.get('type') === "product"){
+    const response = await fetch("http://localhost:3350/create-account", { // Sends the data to the server
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, firstname, lastname, phone })
+    });
+
+    const data = await response.json(); // Converts the response to JSON
+    alert(data.message);
 
 } else {
     fetch(`/allStoresWithEvents`)

@@ -65,8 +65,6 @@ function makeSubCategoryDiv(id, category){
 
     //This hides the div
     subCategoryDiv.style.display = "none";
-    subCategoryDiv.style.backgroundColor = "grey";
-
     //this makes the div indent so it becomes clearer where you are 
     subCategoryDiv.style.margin = "8%";
 

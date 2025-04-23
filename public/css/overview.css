@@ -1,132 +1,136 @@
 /* General reset and styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
     color: #333;
 }
 
 h1 {
     text-align: center;
     margin: 20px 0;
-    font-size: 2rem;
-    color: #444;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    font-weight: 600;
 }
 
-/* Category box (top navigation) */
-#categoryBox {
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-    float: left;
-}
-
-#categoryBox a {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-#categoryBox a:hover {
-    background-color: #0056b3;
+/* Main layout container */
+#categoryOverview {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    margin-top: 80px; /* Add margin to account for topbar */
 }
 
 /* Category selector (side panel) */
 #categorySelector {
-    background-color: #ddd;
-    padding: 15px;
-    width: 20%;
-    float: left;
+    background-color: #fff;
+    padding: 20px;
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    height: calc(100vh - 60px - 175px); /* Account for topbar and footer */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+#categorySelector h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
 }
 
 #categorySelector a {
     display: block;
-    color: #333;
+    color: #34495e;
     text-decoration: none;
-    margin-bottom: 10px;
-    font-size: 1rem;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 #categorySelector a:hover {
-    text-decoration: underline;
+    background-color: #f0f0f0;
+    color: #3498db;
 }
 
-/* item container */
+/* Main content area */
 #displayer {
-    display: block;
-    width: 70%;
-    float: right;
-    padding: 2%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2%;
-    justify-content: center;
-    background-color: lightblue;
+    margin-left: 250px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    background-color: #f5f5f5;
+    margin-top: 60px;
+    padding-bottom: 200px; /* Add padding at bottom to prevent footer overlap */
 }
 
 /* Product card styling */
 .productDiv {
-    width: 30%; /* Relative width for responsiveness */
-    background-color: black;
-    border: 1px solid #ccc;
+    background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .productDiv:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .itemImg {
-    width: 300px;
-    height: 300px; /* Fixed height for consistent image display */
-    object-fit: cover; /* Ensure images fit within the dimensions */
-    border-bottom: 1px solid #ccc;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
 }
 
 .productInfoDiv {
-    padding: 5%;
-    height: auto; /* Adjust height dynamically */
+    padding: 15px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .productName {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 5% 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
 }
 
 .productPrice {
-    font-size: 1.1rem;
-    color: #28a745;
-    margin: 5% 0;
-}
-/* Skal måske ikke bruges*/
-/* .addCart {
-    display: inline-block;
-    padding: 10px 5%;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    color: #27ae60;
+    font-weight: 600;
+    margin: 10px 0;
 }
 
-.addCart:hover {
-    background-color: #0056b3;
-} */
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #categorySelector {
+        width: 100%;
+        position: relative;
+        top: 0;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    
+    #displayer {
+        margin-left: 0;
+        margin-top: 20px;
+        padding-bottom: 200px; /* Keep bottom padding on mobile */
+    }
+}
 
 /* Clear floats */
 body::after {

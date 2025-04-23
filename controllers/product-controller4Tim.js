@@ -8,26 +8,22 @@ Acts as the business logic layer: Contains functions or methods that process inc
 
 They decide what happens when a specific route is hit.
 */
-import {getAllProducts, getProductItem} from '../models/product-model.js';
+import {getProductItems } from '../models/product-model4Tim.js';
+import { getProductInfo } from '../models/product-model4Tim.js';
+import { getProductVariations } from '../models/product-model4Tim.js';
 
-/* Uses getAllProducts from product-model to return a list of all products in json format */
-export const getProducts = async (req, res) => {
-    try {
-      const products = await getAllProducts();
-      res.json(products); // Return JSON response
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Server Error' });
-    }
-}
+// KIG HER ABTIN PASTA
+/* Uses ... from product-model to return a product in json format */
 
-/* Uses getProductItem from product-model to return a product in json format */
-export const getProduct = async (req, res)=> {
-    const {id} = req.params; // Assign request parameters to constant id.
+export const getProductDetails = async (req, res)=> {
     try {
-      const product = await getProductItem(id);
-      if(product) {
-        res.json(product);
+      // Extract product id from request parameters
+      const id = req.params.id;
+
+      const productInfo = await getProductInfo(id);
+
+      if(productInfo) {
+        res.json(productInfo);
       } else {
         res.status(404).json({error: 'Product not found :-('});
       }
@@ -35,4 +31,21 @@ export const getProduct = async (req, res)=> {
       console.error("Error getting product:", error);
       res.status(500).json({error: 'Server error ;-('});
     }
+}
+
+export const getVariationData = async (req, res) => {
+  // Extract product id from request parameters
+  try { 
+    const id = req.params.id;
+    const variationData = await getProductVariations(id)
+
+    if(variationData) {
+      res.json(variationData);
+    } else {
+      res.status(404).json({error: 'VariationData not found :-('});
+    } 
+  } catch (error) {
+  console.error("Error getting VriationData:", error);
+  res.status(500).json({error: 'Server error ;-('});
+  }
 }

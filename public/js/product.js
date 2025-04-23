@@ -78,8 +78,27 @@ async function fetchData() {
       const response = await fetch(`/product/${productId}`);
       const data = await response.json();
       console.dir(data, { depth: null });
+    
+        imgDisplay(data.img);
+
+        nameDisplay(data.product);
+        priceDisplay(data.price);
+
+        infoDisplay(data.stock_qty);
+    
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async function fetchData2() {
+    try {
+      const response = await fetch(`/product/${productId}/variations`);
+      const data = await response.json();
+      console.dir(data, { depth: null });
     } catch (error) {
       console.error('Error:', error);
     }
   }
 fetchData();
+fetchData2();

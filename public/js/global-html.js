@@ -9,7 +9,7 @@ const navTmpl = (event) =>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
-            <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+            <a href="login"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
             <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>

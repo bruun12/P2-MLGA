@@ -156,13 +156,13 @@ async function fetchAndDisplayStoreEvents(id) {
 }
 
 // Function map — keys are the values from urlParams.get('type')
-const typeHandlers = {
-    product: fetchAndDisplayItems(),
+const routeHandlers = {
+    product: fetchAndDisplayItems(), // Display all products
     event: (id) => {
         if (id) {
-            fetchAndDisplayStoreEvents(id)
+            fetchAndDisplayStoreEvents(id) // If we have an id, select items from specific store.
         } else {
-            fetchAndDisplayEvents()
+            fetchAndDisplayEvents() // Else display all events
         }
     },
     // Add more mappings here if needed
@@ -171,7 +171,7 @@ const typeHandlers = {
 // Extract type and safely call the handler
 const type = urlParams.get('type');
 const Id = urlParams.get('id')
-const handler = typeHandlers[type];
+const handler = routeHandlers[type];
 
 if (handler) {
     handler(Id); // Calls the matched function

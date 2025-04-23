@@ -30,8 +30,12 @@ function subCategoryDisplay(subCategory, id){
     document.querySelector("#categorySelector").appendChild(subCategoryA);
     subCategoryA.innerText = subCategory;
     
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
-
+/*     if(urlParams.get('type') !== "event"){
+        subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=${id}`;
+    } else {
+        subCategoryA.href = `/overview?type=${urlParams.get('type')}&storeId=${id}`;
+    } */
+    subCategoryA.href = `/overview?type=${urlParams.get('type')}&id=${id}`;
 }
 
 function displayItem(name, price, img, id){
@@ -59,14 +63,6 @@ function displayItem(name, price, img, id){
     itemInfoDiv.appendChild(itemName);
     itemName.setAttribute("class", "itemName")
 
-
-
-/*  //Create add to cart button and append to product info div
-    let addCart = document.createElement("button");
-    addCart.textContent = "Add to cart";
-    itemInfoDiv.appendChild(addCart);
-    addCart.setAttribute("class", "addCart") */
-
     /* Set name and price to values fetched from database */
     
 
@@ -89,7 +85,8 @@ function displayItem(name, price, img, id){
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 //
 
-fetch(`/all${urlParams.get('type')}s`)
+
+/* fetch(`/all${urlParams.get('type')}s`)
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
@@ -100,24 +97,84 @@ fetch(`/all${urlParams.get('type')}s`)
         displayItem(item.title, item.price ,item.img, item.id);
     //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
     }
-});
+}); */
 
+// ASYNC AWAIT OF MARKUS' FETCH ABOVE.
+async function fetchAndDisplayItems() {
+    try {
+        const response = await fetch(`/all${urlParams.get('type')}s`);
+        const data = await response.json();
 
-
-if (urlParams.get('type') === "product"){
-    
-
-} else {
-    fetch(`/allStoresWithEvents`)
-    .then(response => {return response.json()})
-    .then(data=>{
-    console.log(data);
-    //Vi løber igennem forløkken for alle 
-    for (const item of data) {
-        subCategoryDisplay(item.name, item.id);
+        for (const item of data) {
+            console.log(item.id[0]);
+            displayItem(item.title, item.price, item.img, item.id);
+            //subCategoryDisplay(item.subCategory, subCategoryArr); // If needed
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
     }
-});
 }
 
-console.log(urlParams.get('subCategory'));
+/* fetch(`/allStoresWithEvents`)
+.then(response => {return response.json()})
+.then(data=>{
+console.log(data);
+//Vi løber igennem forløkken for alle 
+for (const item of data) {
+    subCategoryDisplay(item.name, item.id);
+}
+}); */
 
+// ASYNC AWAIT OF MARKUS' FETCH ABOVE.
+//
+async function fetchAndDisplayEvents() {
+    try {
+        const response = await fetch(`/allStoresWithEvents`);
+        const data = await response.json();
+        console.log(data);
+
+        for (const item of data) {
+            subCategoryDisplay(item.name, item.id);
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+}
+
+async function fetchAndDisplayStoreEvents(id) {
+    try {
+        const response = await fetch(`/storeEvents/${id}`)
+        const data = await response.json();
+        console.log(data);
+
+        for (const item of data) {
+            displayItem(item.title, item.date, item.img, item.store_id);
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data", error);
+    }
+}
+
+// Function map — keys are the values from urlParams.get('type')
+const typeHandlers = {
+    product: fetchAndDisplayItems(),
+    event: (id) => {
+        if (id) {
+            fetchAndDisplayStoreEvents(id)
+        } else {
+            fetchAndDisplayEvents()
+        }
+    },
+    // Add more mappings here if needed
+};
+
+// Extract type and safely call the handler
+const type = urlParams.get('type');
+const Id = urlParams.get('id')
+const handler = typeHandlers[type];
+
+if (handler) {
+    handler(Id); // Calls the matched function
+} else {
+    console.warn(`No handler defined for type: ${type}`);
+}

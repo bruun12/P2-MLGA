@@ -49,11 +49,6 @@ router.get("/allEvents", getEvents);
 
 router.get("/allStoresWithEvents", getStoresWithEvents);
 
-router.get("/storeEvents/:id", (request, response)=> {
-
-    const id = request.params;
-
-    response.send(storeEvents(id));
-});
+router.get("/storeEvents/:id", storeEvents);
 
 export default router;

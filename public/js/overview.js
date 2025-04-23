@@ -106,7 +106,6 @@ async function fetchAndDisplayItems() {
         const data = await response.json();
 
         for (const item of data) {
-            console.log(item.id[0]);
             displayItem(item.title, item.price, item.img, item.id);
             //subCategoryDisplay(item.subCategory, subCategoryArr); // If needed
         }

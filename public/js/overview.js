@@ -4,49 +4,13 @@ let subCategoryArr = [];
 
 //uses the query set in the URL
 const queryString = window.location.search;
-
-console.log("This is the raw queryString: "); //Please see what it entails in the console
-console.log(queryString); //Please see what it entails in the console
 const urlParams = new URLSearchParams(queryString);
 
-console.log("This is the urlParams before is is specified:"); //Please see what it entails in the console
-console.log(urlParams);//Please see what it entails in the console
-
-console.log("This is a specified urlParam:");
-console.log(urlParams.get('type')); //Please see what it entails in the console
-
-    //const fs = require('fs');
-function newSubCategoryChecker(subCategory, subCategoryArr){
-    //Goes through all already created subCats 
-    for (const i in subCategoryArr){
-        if (subCategory === subCategoryArr[i]){
-            return false;
-        } 
-    }
-    subCategoryArr.push(subCategory);
-    return true;
-}
-
-function subCategoryDisplay(subCategory, id){
-    //This checks if there is an existing subCat with the same name  
-    //This makes the subCat appear on the top of the page
-/*     let subCategoryTopA = document.createElement("a");
-    document.querySelector("#categoryBox").appendChild(subCategoryTopA);
-    subCategoryTopA.innerText = subCategory; */
-
-    //This makes the subCat appear on the side of the page 
-    let subCategoryA = document.createElement("a");
-    document.querySelector("#categorySelector").appendChild(subCategoryA);
-    subCategoryA.innerText = subCategory;
-    
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
-
-}
 
 function displayItem(name, price, img, id){
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
-    itemA.setAttribute("class", `${urlParams.get('type')}Div`)
+    itemA.setAttribute("class", `${urlParams.get('type')}Div`);
     document.querySelector("#displayer").appendChild(itemA);
     itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
 
@@ -92,6 +56,72 @@ function displayItem(name, price, img, id){
 
 }
 
+function makeSubCategoryDiv(id, category){
+    let subCategoryDiv = document.createElement("div");
+
+    subCategoryDiv.setAttribute("id", `subCatDivId${id}`);
+    subCategoryDiv.setAttribute("class", `subCatDiv`);
+
+    category.appendChild(subCategoryDiv);
+
+    //This hides the div
+    subCategoryDiv.style.display = "none";
+    //this makes the div indent so it becomes clearer where you are 
+    subCategoryDiv.style.margin = "8%";
+
+}
+
+function categoryDisplay(name, id){
+    //This checks if there is an existing subCat with the same name  
+    //This makes the subCat appear on the top of the page
+/*     let subCategoryTopA = document.createElement("a");
+    document.querySelector("#categoryBox").appendChild(subCategoryTopA);
+    subCategoryTopA.innerText = subCategory; */
+
+    //This makes the subCat appear on the side of the page 
+    let categoryA = document.createElement("a");
+    categoryA.setAttribute("class", `${urlParams.get('type')}A`);
+    document.querySelector("#categorySelector").appendChild(categoryA);
+    categoryA.innerText = name;
+    
+    categoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+    
+    //Make subCategoryDiv for subCategories
+
+    //A box that makes the subcategories for this item.
+    makeSubCategoryDiv(id, categoryA);
+}
+
+function subCategoryDisplay(name, id, parent_id){
+    //get the parent    
+    const container = document.querySelector(`#subCatDivId${parent_id}`);
+
+    let subCategoryA = document.createElement("a");
+    subCategoryA.setAttribute("class", `${urlParams.get('type')}A`);
+
+    if (container) {
+        container.appendChild(subCategoryA);
+    } else {
+    console.error(`No element found with ID: subCatDivId${parent_id}`);
+    }
+    
+    subCategoryA.innerHTML = name;
+
+    subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+
+    makeSubCategoryDiv(id, subCategoryA);
+}
+
+function sidebar(categories) {
+
+    for (let i = 0; i < categories.length; i++){
+        if(categories[i].id === categories[i].parent_id){
+            categoryDisplay(categories[i].name, categories[i].id);
+        } else if (categories[i].id !== categories[i].parent_id){
+            subCategoryDisplay(categories[i].name, categories[i].id, categories[i].parent_id);
+        }
+    }
+} 
 
 
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
@@ -105,28 +135,49 @@ fetch(`/all${urlParams.get('type')}s`)
     console.log(data);
     //Vi løber igennem forløkken for alle 
     for (const item of data) {
-        console.log(item.id[0]);
         displayItem(item.title, item.price ,item.img, item.id);
     //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
     }
 });
 
 
-
 if (urlParams.get('type') === "product"){
-    
-
+    fetch(`/allCategories`)
+    .then(response => {return response.json()})
+    .then(data=>{
+        sidebar(data); 
+});
 } else {
     fetch(`/allStoresWithEvents`)
     .then(response => {return response.json()})
     .then(data=>{
-    console.log(data);
+    
     //Vi løber igennem forløkken for alle 
     for (const item of data) {
-        subCategoryDisplay(item.name, item.id);
+        categoryDisplay(item.name, item.id);
     }
 });
 }
+/* it takes a second for the dom to fully load so it is neccesarry to wait until
+the dom is fully loaded together with having a short timeout */
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const dropdown = document.getElementsByClassName(`${urlParams.get('type')}A`);
 
-console.log(urlParams.get('subCategory'));
+        console.log(dropdown[1].childNodes[1]);
+        for (let i = 0; i < dropdown.length; i++) {
+            //This displays the div when you hover with you mouse
+            dropdown[i].addEventListener("mouseover", function(event) {
+                
+                event.preventDefault();
+                dropdown[i].childNodes[1].style.display = "block";
+            });
+            dropdown[i].addEventListener("mouseout", ()=> {
+                dropdown[i].childNodes[1].style.display = "none";
+            });
+          }
+
+
+    }, 100);  // adjust delay as needed
+  });
 

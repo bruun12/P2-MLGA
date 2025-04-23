@@ -89,7 +89,7 @@ function sidebar(categories) {
         if(categories[i].id === categories[i].parent_id){
             subCategoryDisplay(categories[i].name, categories[i].id);
         } else if (categories[i].id !== categories[i].parent_id){
-            
+            subCategoryDisplay(categories[i].name, categories[i].id);
         }
     }
 } 

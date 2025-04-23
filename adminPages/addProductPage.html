@@ -1,44 +1,60 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
-  <title>IWP Demo</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/CSS/Design.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Admin Panel</title>
+    <link rel="stylesheet" href="addProductPageStyle.css">
 </head>
-<body>   
-  <nav class="topnav">
-    <a href="Frontpage.html"><img src="/Images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
-    <a href="https://www.amazon.com/" class="product">Produkter <i class="fa fa-caret-down"></i></a>
-    <a href="https://www.disney.dk/">Events</a>
-    <a href="https://da.wikipedia.org/wiki/Butik">Butikker</a>
-    
-    <!-- Div used to box elements -->
-    <div class="nav-icons">
-        <a href="https://www.youtube.com/"><i class="fa-solid fa-circle-user"></i></a>
-        <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
-        <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
+<body>
+    <div class="container">
+        <h1>Add New Product</h1>
+        <form class="product-form" id="productForm">
+            <div class="form-group">
+                <label for="productName">Product Name</label>
+                <input type="text" id="productName" name="productName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productCategory">Category</label>
+                <select id="productCategory" name="productCategory" required>
+                    <option value="">Select a category</option>
+                    <option value="1">Electronics</option>
+                    <option value="2">Clothing</option>
+                    <option value="3">Shoes</option>
+                    <option value="4">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="productDescription">Description</label>
+                <textarea id="productDescription" name="productDescription" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="productImage">Product Image URL</label>
+                <input type="url" id="productImage" name="productImage" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productPrice">Price</label>
+                <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productStock">Stock Quantity</label>
+                <input type="number" id="productStock" name="productStock" min="0" required>
+            </div>
+
+            <div class="button-group">
+                <a href="adminFrontPage.html" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn">Add Product</button>
+            </div>
+
+            <div id="messageContainer"></div>
+        </form>
     </div>
 
-    <!-- Div used to box search container elements -->
-    <form action="https://www.google.com/" class ="search-container">
-        <input type="text" placeholder="Search.." name="q">
-        <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
-</nav>
-
-    <form id="productForm" class="form">
-        <p>Name:</p>
-        <input name="name" id="inputName" type="text">
-        <p>Price:</p>
-        <input name="price" id="inputPrice" type="number">
-        <p>IMG source</p>
-        <input name="IMG" id="inputIMG" type="text"> <br> <br> 
-        <button id="submitProduct">press to upload item</button>
-    </form>
-
-
-
-    <script type="module" src = "../adminJS/addProducts.js"> </script>    
-</body>    
+    <script src="../adminJS/addProducts.js"></script>
+</body>
 </html>  

@@ -63,9 +63,13 @@ function makeSubCategoryDiv(id, category){
 
     category.appendChild(subCategoryDiv);
 
+    //This hides the div
     subCategoryDiv.style.display = "none";
+    subCategoryDiv.style.backgroundColor = "grey";
 
-    subCategoryDiv.style.marginLeft = "5%";
+    //this makes the div indent so it becomes clearer where you are 
+    subCategoryDiv.style.margin = "8%";
+
 }
 
 function categoryDisplay(name, id){
@@ -163,14 +167,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(dropdown[1].childNodes[1]);
         for (let i = 0; i < dropdown.length; i++) {
+            //This displays the div when you hover with you mouse
             dropdown[i].addEventListener("mouseover", function() {
+                event.preventDefault();
                 dropdown[i].childNodes[1].style.display = "block";
             });
-            dropdown[i].addEventListener("mouseout", function() {
+            dropdown[i].addEventListener("mouseout", ()=> {
                 dropdown[i].childNodes[1].style.display = "none";
             });
-
           }
+
+
     }, 100);  // adjust delay as needed
   });
 

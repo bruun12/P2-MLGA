@@ -64,6 +64,8 @@ function makeSubCategoryDiv(id, category){
     category.appendChild(subCategoryDiv);
 
     subCategoryDiv.style.display = "none";
+
+    subCategoryDiv.style.marginLeft = "5%";
 }
 
 function categoryDisplay(name, id){

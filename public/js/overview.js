@@ -60,6 +60,7 @@ function makeSubCategoryDiv(id, category){
     let subCategoryDiv = document.createElement("div");
 
     subCategoryDiv.setAttribute("id", `subCatDivId${id}`);
+    subCategoryDiv.setAttribute("class", `subCatDiv`);
 
     category.appendChild(subCategoryDiv);
 
@@ -166,7 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(dropdown[1].childNodes[1]);
         for (let i = 0; i < dropdown.length; i++) {
             //This displays the div when you hover with you mouse
-            dropdown[i].addEventListener("mouseover", function() {
+            dropdown[i].addEventListener("mouseover", function(event) {
+                
                 event.preventDefault();
                 dropdown[i].childNodes[1].style.display = "block";
             });

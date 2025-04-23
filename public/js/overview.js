@@ -4,7 +4,16 @@ let subCategoryArr = [];
 
 //uses the query set in the URL
 const queryString = window.location.search;
+
+console.log("This is the raw queryString: "); //Please see what it entails in the console
+console.log(queryString); //Please see what it entails in the console
 const urlParams = new URLSearchParams(queryString);
+
+console.log("This is the urlParams before is is specified:"); //Please see what it entails in the console
+console.log(urlParams);//Please see what it entails in the console
+
+console.log("This is a specified urlParam:");
+console.log(urlParams.get('type')); //Please see what it entails in the console
 
     //const fs = require('fs');
 function newSubCategoryChecker(subCategory, subCategoryArr){
@@ -105,6 +114,7 @@ fetch(`/all${urlParams.get('type')}s`)
 
 
 if (urlParams.get('type') === "product"){
+    
 
 } else {
     fetch(`/allStoresWithEvents`)

@@ -29,6 +29,7 @@ h1 {
     background-color: #fff;
     padding: 20px;
     width: auto;
+    min-width: 300px;
     position: fixed;
     left: 0;
     top: 80px;

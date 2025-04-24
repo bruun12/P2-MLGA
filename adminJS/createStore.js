@@ -1,24 +1,3 @@
-// Fetch and populate the address dropdown
-async function populateAddressDropdown() {
-    try {
-        const response = await fetch('/api/addresses');
-        if (response.ok) {
-            const addresses = await response.json();
-            const addressDropdown = document.getElementById('storeAddress');
-            addresses.forEach(address => {
-                const option = document.createElement('option');
-                option.value = address.id;
-                option.textContent = `${address.street}, ${address.city}, ${address.zip}`;
-                addressDropdown.appendChild(option);
-            });
-        } else {
-            console.error('Failed to fetch addresses');
-        }
-    } catch (err) {
-        console.error('Error fetching addresses:', err);
-    }
-}
-
 // Handle form submission
 document.getElementById('createStoreForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -55,6 +34,3 @@ document.getElementById('createStoreForm').addEventListener('submit', async (eve
         alert('An error occurred while creating the store.');
     }
 });
-
-// Populate the address dropdown on page load
-populateAddressDropdown();

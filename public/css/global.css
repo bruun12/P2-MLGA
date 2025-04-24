@@ -138,11 +138,6 @@ background-color: #333;
 z-index: 1000;
 height: 175px;
 width: 100%;
-/* Ikke sikker på om disse er nødvendige eller ej.
-overflow: hidden;
-position: relative;
-bottom: 0;
-*/
 color: white;
 /* All links in the footer are always blue */
 a { 
@@ -157,7 +152,7 @@ width: 400px;
 background-color: #353432;
 color: #eee;
 position: fixed;
-inset: 0 -400px 0 auto;
+inset: 80px 0 0 auto; /* Top is 80px to display below nav bar. */
 grid-template-rows: 70px 1fr 70px;
 transition: inset 0.3s ease-in-out;
 z-index: 1000;

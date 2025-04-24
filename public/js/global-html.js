@@ -11,7 +11,7 @@ const navTmpl = (event) =>
         <div class="nav-icons">
             <a href="login"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
-            <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="cartIcon" href=""><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Div used to box search container elements -->
@@ -53,6 +53,33 @@ const navTmpl = (event) =>
             </li>
         </ul>
     </div>
+
+    <!-- Shopping cart -->
+    <div class="cartTab">
+        <h2>Shopping Cart</h2>
+        <div class="listCart">
+            <div class="item">
+                <div class="image">
+                    
+                </div>
+                <div class="name">
+                    
+                </div>
+                <div class="totalPrice">
+                    
+                </div>
+                <div class="quantity">
+                    <span class="minus"><</span>
+                    
+                    <span class="plus">></span>
+                </div>
+            </div>
+        </div>
+        <div class=btn>
+            <button class="closeCart">Close</button>
+            <button class="checkOut">Check Out</button>
+        </div>
+    </div>
     `
 
     /* HTML Footer Template */
@@ -76,7 +103,7 @@ const footTmpl = (event) =>
 let body = document.querySelector("body");
 
 function insGlb() {
-    body.insertAdjacentHTML('beforebegin', navTmpl(event));
+    body.insertAdjacentHTML('afterbegin', navTmpl(event));
     body.insertAdjacentHTML('beforeend', footTmpl(event));
 }
 
@@ -94,38 +121,20 @@ product.addEventListener("mouseenter", function(){
 productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
+
+/* JS to display and hide shopping cart */
+let cartIcon = document.querySelector(".cartIcon");
+let cartTab = document.querySelector(".cartTab");
+let cartClose = document.querySelector(".closeCart");
+
+cartIcon.addEventListener("click", function(event){
+    event.preventDefault();
+    cartTab.style.display = "block";
+})
+
+cartClose.addEventListener("click", function(){
+    cartTab.style.display = "none";
+})
+
+
 /* ------ Navbar END ------ */
-
-
-/* ------ Cart/Basket START ------ */
-/* ------ HTML Tmpl Cart/Basket ------ */
-const cartTmpl = (event) =>
-    `
-    <div class="cartTab">
-        <h2>Shopping Cart</h2>
-        <div class="listCart">
-            <div class="item">
-                <div class="image">
-                    ${INSERT_IMAGE_HERE}
-                </div>
-                <div class="name">
-                    ${INSERT_NAME_HERE}
-                </div>
-                <div class="totalPrice">
-                    ${INSERT_TOTAL_HERE}
-                </div>
-                <div class="quantity">
-                    <span class="minus"><</span>
-                    ${INSERT_QUANTITY_HERE}
-                    <span class="plus">></span>
-                </div>
-            </div>
-        </div>
-        <div class=btn>
-            <button class="close">Close</button>
-            <button class="checkOut">Check Out</button>
-        </div>
-    </div>
-    `
-
-/* ------ Cart/Basket END ------ */

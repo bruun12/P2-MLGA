@@ -46,6 +46,21 @@
                 <input type="number" id="productStock" name="productStock" min="0" required>
             </div>
 
+            <div class="form-group">
+                <label for="productSKU">SKU (Create a unique id for product - EK98)</label>
+                <input type="text" id="productSKU" name="productSKU" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productStore">Store</label>
+                <select id="productStore" name="productStore" required>
+                    <option value="">Select a store</option>
+                    <option value="1">Store 1</option>
+                    <option value="2">Store 2</option>
+                    <option value="3">Store 3</option>
+                </select>
+            </div>
+
             <div class="button-group">
                 <a href="adminFrontPage.html" class="cancel-btn">Cancel</a>
                 <button type="submit" class="submit-btn">Add Product</button>
@@ -57,4 +72,4 @@
 
     <script src="../adminJS/addProducts.js"></script>
 </body>
-</html>  
+</html>

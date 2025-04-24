@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             stock_qty: parseInt(document.getElementById('productStock').value),
             img: document.getElementById('productImage').value,
             price: parseFloat(document.getElementById('productPrice').value),
-            store_id: 1 // Assuming we're working with a single store for now
+            store_id: parseInt(document.getElementById('productStore').value) // Added productStore value
         };
 
         try {

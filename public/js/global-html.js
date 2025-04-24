@@ -9,7 +9,7 @@ const navTmpl = (event) =>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
-            <a href="login.html"><i class="fa-solid fa-circle-user"></i></a>
+            <a href="login"><i class="fa-solid fa-circle-user"></i></a>
             <a href="https://da.bab.la/ordbog/engelsk-dansk/favorite"><i class="fa-solid fa-heart"></i></a>
             <a href="https://danmad.dk/vare-kategori/dase-konserves/pickles/?srsltid=AfmBOoq8LDLUP8niB2aMm6aOz4LkwSwYLJC4czeFZSM6Yv4jFvOtRnMp"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
@@ -95,3 +95,37 @@ productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
 /* ------ Navbar END ------ */
+
+
+/* ------ Cart/Basket START ------ */
+/* ------ HTML Tmpl Cart/Basket ------ */
+const cartTmpl = (event) =>
+    `
+    <div class="cartTab">
+        <h2>Shopping Cart</h2>
+        <div class="listCart">
+            <div class="item">
+                <div class="image">
+                    ${INSERT_IMAGE_HERE}
+                </div>
+                <div class="name">
+                    ${INSERT_NAME_HERE}
+                </div>
+                <div class="totalPrice">
+                    ${INSERT_TOTAL_HERE}
+                </div>
+                <div class="quantity">
+                    <span class="minus"><</span>
+                    ${INSERT_QUANTITY_HERE}
+                    <span class="plus">></span>
+                </div>
+            </div>
+        </div>
+        <div class=btn>
+            <button class="close">Close</button>
+            <button class="checkOut">Check Out</button>
+        </div>
+    </div>
+    `
+
+/* ------ Cart/Basket END ------ */

@@ -4,7 +4,7 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import { getProducts } from '../controllers/product-controller.js';
+import { getProducts, getCategories } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 import { getProduct } from '../controllers/product-controller.js';
 
@@ -57,6 +57,6 @@ router.get("/storeEvents/:id", (request, response)=> {
     response.send(storeEvents(id));
 });
 
-router.get("/product/:id", getProduct);
+router.get("/allCategories", getCategories)
 
 export default router;

@@ -135,6 +135,7 @@ background: #ccc;
 /* Footer beautyfication */
 footer {
 background-color: #333;
+z-index: 1000;
 height: 175px;
 width: 100%;
 /* Ikke sikker på om disse er nødvendige eller ej.

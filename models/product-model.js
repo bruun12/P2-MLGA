@@ -13,24 +13,19 @@
                                        ON product_item.product_id = product.id
                                        LIMIT 15;`);
     return rows;
-  }
-  
-  // Select a specific productItem by id
-  // Namings shortened for readability example: product_item -> pi, 
-  export async function getProductItem(id) {
-    const [rows] = await dbPool.query(`
-      SELECT 
-        product.*,
-        product_item.*
-      FROM product
-      LEFT JOIN product_item ON product.id = product_item.product_id
-      WHERE product.id = ?
-    `, [id]);
-    
-    if (!rows.length) return null; // Return null if nothing is found
-  
-    const productItem = rows; //Load productRows data into productItem variable and join them with variation options
-  
-    return productItem;
-  }
+}
+
+// Select a specific productItem by id
+export async function getProductItem(id) {
+    const [rows] = await dbPool.query("SELECT * FROM product_item WHERE id = ?", [id]); //Returns an array with the element with a matching primary key
+    return rows[0];                                                                     //Only return the element, not the array
+}
+
+// Select a specific productItem 
+export async function getAllCategories() {
+    const [rows] = await dbPool.query("SELECT * FROM category"); //Returns an array with the element with a matching primary key
+    return rows;                                                                     //Only return the element, not the array
+}
+
+
 

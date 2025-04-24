@@ -6,6 +6,7 @@ import url from 'url';
 //Importing database functions
 import { getProducts } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
+import { getProduct } from '../controllers/product-controller.js';
 
 
 // Get the directory name from the current file's URL
@@ -42,11 +43,6 @@ router.get("/forgot-password", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'forgot-password.html'))
 });
 
-
-router.get("/event-detail", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'event.html'));
-});
-
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);
 
@@ -60,5 +56,7 @@ router.get("/storeEvents/:id", (request, response)=> {
 
     response.send(storeEvents(id));
 });
+
+router.get("/product/:id", getProduct);
 
 export default router;

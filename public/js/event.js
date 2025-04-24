@@ -1,4 +1,5 @@
-console.log("open")
+//outdated og skal vist ikke bruges?
+/*console.log("open")
 
 //brug event-model til at skrive med SQL og event-control for at lave bl.a. fejlbeskeder
 const eventId=2;    
@@ -24,3 +25,4 @@ document.getElementById("eventSignUpBtn").addEventListener("click", function a()
 
 
 console.log("end")
+*/

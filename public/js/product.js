@@ -1,3 +1,7 @@
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const productId = urlParams.get("id");
+
 function pathDisplay(path){
     let productPath = document.createElement("P");
     productPath.setAttribute("id", "path");
@@ -51,13 +55,14 @@ function infoDisplay(info){
     productInfoP.innerText = info;
 }
 
-
-fetch("../database/products.json")
+/*
+fetch(`/product/${productId}`)
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
-    let i = 1;
-    //Vi løber igennem forløkken for alle   
+    
+    
+    let i = 0;
         pathDisplay(data.products[i].subCategory);
         imgDisplay(data.products[i].img);
 
@@ -65,4 +70,26 @@ fetch("../database/products.json")
         priceDisplay(data.products[i].price);
 
         infoDisplay(data.products[i].info);
-     })
+    
+})
+*/
+async function fetchData() {
+    try {
+      const response = await fetch(`/product/${productId}`);
+      const data = await response.json();
+      console.dir(data, { depth: null });
+      imgDisplay(data.img);
+  
+      nameDisplay(data.product);
+      priceDisplay(data.price);
+
+      infoDisplay(data.info);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+fetchData();
+
+//indlæs til begge: Img, Titel/name, Description, Adresse/store_id
+//inlæs til event: Date, store_id, member_id/mail 
+//indlæs til product: Price, stock_qty

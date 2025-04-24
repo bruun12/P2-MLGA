@@ -9,7 +9,7 @@ Acts as the business logic layer: Contains functions or methods that process inc
 They decide what happens when a specific route is hit.
 */
 
-import { insertAccount, checkMember, updateCustomerPassword} from "../models/account-model.js";
+import { insertAccount, checkMember, updateCustomerPassword, getUserFavorites } from "../models/account-model.js";
 import bcrypt from 'bcrypt'; // For password hashing
 import nodemailer from 'nodemailer'; // For sending emails
 
@@ -73,7 +73,8 @@ export async function useTempPassword(req, res) {
         // Generer et midlertidigt password
         const tempPassword = Math.random().toString(36).slice(-8);
 
-        updateCustomerPassword(email, tempPassword);
+        // Update the customer's password in the database
+        await updateCustomerPassword(email, tempPassword);
 
         // Send det midlertidige password via e-mail
         const transporter = nodemailer.createTransport({
@@ -96,5 +97,17 @@ export async function useTempPassword(req, res) {
     } catch (error) {
         console.error("Error sending temporary password:", error);
         res.status(500).json({ message: "Failed to send temporary password." });
+    }
+};
+
+export const getFavorites = async (req, res) => {
+    const userId = req.session.userId; // Assuming user ID is stored in the session
+
+    try {
+        const favorites = await getUserFavorites(userId);
+        res.status(200).json(favorites);
+    } catch (error) {
+        console.error("Error fetching favorites:", error);
+        res.status(500).json({ message: "Failed to fetch favorites." });
     }
 };

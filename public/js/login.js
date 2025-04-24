@@ -31,7 +31,7 @@ async function loginUser() {
     if (response.ok) { // If the response is ok, it means the login was successful
         alert(data.message);
         sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
-        window.location.href = "https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/"; 
+        window.location.href = `https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/profil-page.html?userId=${data.user.id}`; 
     } else {
         alert(data.message);
     }

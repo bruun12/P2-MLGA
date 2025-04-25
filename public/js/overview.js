@@ -2,16 +2,6 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-function subCategoryDisplay(subCategory, id){
-    //This checks if there is an existing subCat with the same name  
-    //This makes the subCat appear on the side of the page 
-    let subCategoryA = document.createElement("a");
-    document.querySelector("#categorySelector").appendChild(subCategoryA);
-    subCategoryA.innerText = subCategory;
-    
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
-}
-
 function displayItem(name, price, img, id){ // Note if event instead of product price = date.
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
@@ -80,10 +70,9 @@ function categoryDisplay(name, id){
     document.querySelector("#categorySelector").appendChild(categoryA);
     categoryA.innerText = name;
     
-    categoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+    categoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
     
     //Make subCategoryDiv for subCategories
-
     //A box that makes the subcategories for this item.
     makeSubCategoryDiv(id, categoryA);
 }
@@ -103,7 +92,7 @@ function subCategoryDisplay(name, id, parent_id){
     
     subCategoryA.innerHTML = name;
 
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+    subCategoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
 
     makeSubCategoryDiv(id, subCategoryA);
 }
@@ -150,7 +139,7 @@ async function fetchAndDisplayStores() {
         console.log(data);
 
         for (const item of data) {
-            subCategoryDisplay(item.name, item.id);
+            categoryDisplay(item.name, item.id);
         }
     } catch (error) {
         console.error("Error fetching or processing data:", error);

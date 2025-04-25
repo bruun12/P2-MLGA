@@ -8,7 +8,7 @@ import dbPool from "../database/database.js";
 // Select all products from the database - overview, potentially limit
 export async function getAllProducts() {
     // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
-    const [rows] = await dbPool.query(`SELECT name title, price, product.img, product_id id
+    const [rows] = await dbPool.query(`SELECT name title, price, product_item.img, product_id id
                                        FROM product_item right JOIN product
                                        ON product_item.product_id = product.id
                                        WHERE product_id IS NOT NULL
@@ -29,10 +29,23 @@ export async function getAllCategories() {
 }
 
 export async function filteredProducts(categoryId) {
-  const [rows] = await dbPool.query(`SELECT name title, price, product.img, product_id id
-                                     FROM product_item right JOIN product
-                                     ON product_item.product_id = product.id
-                                     WHERE category_id = ?`
+  const [rows] = await dbPool.query(`WITH RECURSIVE category_tree (id, name, parent_id, depth) AS (
+                                      
+                                      SELECT id, name, parent_id, 0
+                                      FROM category
+                                      WHERE id = ?
+
+                                      UNION ALL
+
+                                      SELECT c.id, c.name, c.parent_id, ct.depth + 1
+                                      FROM category c
+                                      JOIN category_tree ct ON c.parent_id = ct.id
+                                      WHERE ct.depth < 5  
+                                    )
+                                    SELECT DISTINCT product.id, product.name AS title, product_item.price, product_item.img     
+                                    FROM category_tree JOIN product JOIN product_item
+                                    WHERE product.category_id = category_tree.id AND product_item.product_id = product.id
+                                    LIMIT 20;`
                                      , [categoryId]);
   return rows;
 }

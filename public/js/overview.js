@@ -67,7 +67,12 @@ function setHeaders(name, id){
     if (urlParams.get('sortId') == id){
         document.querySelector("#categoryHeader").innerHTML = name;
     } else if (urlParams.get('sortId') == undefined){
-        document.querySelector("#categoryHeader").innerHTML = "Kategori";
+        if (urlParams.get('type') === "product"){
+            document.querySelector("#categoryHeader").innerHTML = "Products";
+        }
+        if (urlParams.get('type') === "event"){
+            document.querySelector("#categoryHeader").innerHTML = "Events";
+        }
     }
 }
 
@@ -157,13 +162,11 @@ async function fetchAndDisplayItems() {
 }
 
 async function fetchAndDisplayFilteredItems(id) {
-
- 
     try {
         const response = await fetch(`/filteredProducts/${id}`)
         const data = await response.json();        
         for (const item of data) {
-            displayItem(item.title, item.price, item.img, item.store_id);
+            displayItem(item.title, item.price, item.img, item.id);
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -176,9 +179,6 @@ async function fetchAndDisplayCategories() {
         const data = await response.json();
         //Creates the sidebar with all categories
         sidebar(data);
-        if (urlParams.get('sortId') !== null){
-            displayFilteredItems(data, Number(urlParams.get('sortId')));
-        }
     } catch (error) {
         console.error("Error fetching or processing data:", error);
     }
@@ -236,10 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
 const routeHandlers = {
     product: (id) => {
         if (id) {
+            fetchAndDisplayFilteredItems(id);
             fetchAndDisplayCategories();
         } else {
-            fetchAndDisplayItems();
             fetchAndDisplayCategories();
+            fetchAndDisplayItems();
         }
 
     }, // Display all products

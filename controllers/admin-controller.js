@@ -53,9 +53,9 @@ export async function createNewStore(req, res) {
         return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    const { street, city, zip } = address;
+    const { street, city, zip, country_id } = address;
 
-    if (!street || !city || !zip) {
+    if (!street || !city || !zip || !country_id) {
         return res.status(400).json({ message: 'Address fields are required.' });
     }
 
@@ -64,7 +64,7 @@ export async function createNewStore(req, res) {
         await connection.beginTransaction();
 
         
-        const addressResult = await insertAddress(street, city, zip);
+        const addressResult = await insertAddress(street, city, zip, country_id);
         const addressId = addressResult.insertId;
 
         

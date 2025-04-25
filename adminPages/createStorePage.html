@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Store</title>
+    <link rel="stylesheet" href="createStorePageStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create a New Store</h1>
+        <form id="createStoreForm">
+            <div class="form-group">
+                <label for="storeName">Store Name:</label>
+                <input type="text" id="storeName" name="storeName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storeImage">Image URL:</label>
+                <input type="url" id="storeImage" name="storeImage" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storeStreet">Street:</label>
+                <input type="text" id="storeStreet" name="storeStreet" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storeCity">City:</label>
+                <input type="text" id="storeCity" name="storeCity" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storeZip">ZIP Code:</label>
+                <input type="text" id="storeZip" name="storeZip" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="storePhone">Phone:</label>
+                <input type="tel" id="storePhone" name="storePhone" required>
+            </div>
+            
+            <button type="submit">Create Store</button>
+        </form>
+    </div>
+    <script src="../adminJS/createStore.js"></script>
+</body>
+</html>

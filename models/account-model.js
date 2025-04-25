@@ -1,5 +1,4 @@
-/*Model file contains the logic to interact with the database. 
-  Handles tasks such as querying, inserting, updating, and deleting records in the database.*/
+import bcrypt from 'bcrypt';
 import dbPool from "../database/database";
 
 export async function insertAccount (email, firstname, lastname, phone, hashedPassword){
@@ -7,7 +6,7 @@ export async function insertAccount (email, firstname, lastname, phone, hashedPa
         'INSERT INTO account (email, first_name, last_name, phone, password) VALUES (?, ?, ?, ?, ?)',
         [email, firstname, lastname, phone, hashedPassword]
 );
- } //Ændrer det til account, så det kan bruges til at oprette en ny bruger i databasen.
+ } 
 
 // Fetch user from the database
 export const checkMember = async (email) => {
@@ -27,3 +26,11 @@ export async function updateCustomerPassword(email, tempPassword) {
         [hashedPassword, email]
     );
 }
+
+export const getUserFavorites = async (userId) => {
+    const [rows] = await dbPool.execute(
+        "SELECT * FROM favorites WHERE user_id = ?",
+        [userId]
+    );
+    return rows;
+};

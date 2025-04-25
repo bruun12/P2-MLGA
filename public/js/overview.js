@@ -108,6 +108,16 @@ function subCategoryDisplay(name, id, parent_id){
     makeSubCategoryDiv(id, subCategoryA);
 }
 
+function displayFilteredItems(data, parentId){
+
+    for (const category of data) {
+        if (category.parent_id === Number(parentId)){
+            console.log(category.name);
+            fetchAndDisplayFilteredItems(category.id);
+        } 
+    }
+};
+
 function sidebar(categories) {
     if (categories.id === urlParams.get('sortId')){
         document.querySelector("#categoryHeader").innerHTML = categories.name;
@@ -147,12 +157,11 @@ async function fetchAndDisplayItems() {
 }
 
 async function fetchAndDisplayFilteredItems(id) {
+
+ 
     try {
         const response = await fetch(`/filteredProducts/${id}`)
-        const data = await response.json();
-        console.log(data);
-        
-        
+        const data = await response.json();        
         for (const item of data) {
             displayItem(item.title, item.price, item.img, item.store_id);
         }
@@ -165,7 +174,11 @@ async function fetchAndDisplayCategories() {
     try {
         const response = await fetch(`/allCategories`);
         const data = await response.json();
-            sidebar(data);
+        //Creates the sidebar with all categories
+        sidebar(data);
+        if (urlParams.get('sortId') !== null){
+            displayFilteredItems(data, urlParams.get('sortId'));
+        }
     } catch (error) {
         console.error("Error fetching or processing data:", error);
     }
@@ -175,11 +188,12 @@ async function fetchAndDisplayStores() {
     try {
         const response = await fetch(`/allStoresWithEvents`);
         const data = await response.json();
-        console.log(data);
-        
+        //Displays the different stores
         for (const item of data) {
             categoryDisplay(item.name, item.id);
         }
+
+
     } catch (error) {
         console.error("Error fetching or processing data:", error);
     }
@@ -189,7 +203,6 @@ async function fetchAndDisplayStoreEvents(id) {
     try {
         const response = await fetch(`/storeEvents/${id}`)
         const data = await response.json();
-        //console.log(data);
         for (const item of data) {
             displayItem(item.title, item.date, item.img, item.store_id);
         }
@@ -203,8 +216,6 @@ the dom is fully loaded together with having a short timeout */
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         const dropdown = document.getElementsByClassName(`${urlParams.get('type')}A`);
-
-        console.log(dropdown[1].childNodes[1]);
         for (let i = 0; i < dropdown.length; i++) {
             //This displays the div when you hover with you mouse
             dropdown[i].addEventListener("mouseover", function(event) {
@@ -225,7 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
 const routeHandlers = {
     product: (id) => {
         if (id) {
-            fetchAndDisplayFilteredItems(id);
             fetchAndDisplayCategories();
         } else {
             fetchAndDisplayItems();

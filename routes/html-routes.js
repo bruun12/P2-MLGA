@@ -4,7 +4,7 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import { getProducts, getCategories } from '../controllers/product-controller.js';
+import { getProducts, getCategories, getFilteredProducts } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 
 
@@ -48,6 +48,8 @@ router.get("/forgot-password", (request, response) => {
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);
+
+router.get("/filteredProducts/:id", getFilteredProducts);
 
 router.get("/allEvents", getEvents);
 

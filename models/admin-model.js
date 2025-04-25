@@ -12,12 +12,12 @@ export async function insertProduktID(productItem) {
     );
 }
 
-export async function insertAddress(street, city, zip) {
+export async function insertAddress(street, city, zip, country_id) {
     const [addressResult] = await connection.query(
         `INSERT INTO address (street, city, zip, country_id) 
-        VALUES (?, ?, ?, 1) 
+        VALUES (?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)`,
-        [street, city, zip]
+        [street, city, zip, country_id]
     );
     return addressResult; // Return the result to capture insertId
 }

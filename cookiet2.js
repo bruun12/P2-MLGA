@@ -1,7 +1,7 @@
 const loginEmail = document.querySelector("#loginEmail");
 const password = document.querySelector("#password");
 const submitbtn = document.querySelector("#submitbtn");
-const cookiebutton = document.querySelector("#cookiebutton");
+const huskmig = document.querySelector("#huskmig");
 
 
 //function myFunction() {
@@ -20,12 +20,29 @@ const cookiebutton = document.querySelector("#cookiebutton");
 
 
 submitbtn.addEventListener("click", () => {
-    setCookie("firstName", firstText.value, 365);
-    setCookie("lastName", lastText.value, 365);
+    if (huskmig.checked) {
+    setCookie("loginmail", loginEmail.value, 365);
+    setCookie("password", password.value, 365);
+    } else {
+    deleteCookie("loginmail");
+    deleteCookie("password");
+}
 });
+
 cookiebutton.addEventListener("click", () => {
-    firstText.value = getCookie("firstName");
-    lastText.value = getCookie("lastName");
+    loginEmail.value = getCookie("loginmail");
+    password.value = getCookie("password");
+});
+
+window.addEventListener("load", () => {
+    const savedEmail = getCookie("loginmail");
+    const savedPassword = getCookie("password");
+
+    if (savedEmail && savedPassword) {
+        loginEmail.value = savedEmail;
+        password.value = savedPassword;
+        huskmig.checked = true; // Automatically check "Remember Me" if cookies exist
+    }
 });
 
 function setCookie(name, value, daysToLive){

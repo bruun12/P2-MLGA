@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/login.css">
     <title>Login page</title>
     <script src="js/login.js" defer></script>
+    <script src="cookiet2.js" defer></script>
 </head>
 <body>
     <div class="header">
@@ -23,14 +24,14 @@
             <input type="password" id="password" name="password" minlength="8"> <br> <br>
             <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
         </div> 
-        <div class="checkbox-container">
-            <label id="huskmig" for="Husk mig">Husk mig</label>
-            <input type="checkbox" id="husk-mig" value="Husk mig">
-        </div>
-        <button id="submitbtn" type="submit">Login
+        <div class="input-container">
+            <label for="huskmig">Husk mig</label>
+            <input type="checkbox" id="huskmig" name="huskmig" value="yes">
+        </div>     
+        <button id="cookiebutton" >Get cookies</button>
+        <button id="submitbtn" type="submit">Login</button>
             <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
-        <button id="cookiebutton">Get Cookies</button>
         <a href="forgot-password" id="glemtpassword"> Forgot your password?</a> <br> <br>
         <div class="profil">
             <h3>Har du ikke en profil?</h3>
@@ -39,7 +40,7 @@
                 <img src="images/person_add_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Add person icon"> 
             </button>
         </div>
-        <script src="cookiet.js" defer></script>
+        
     </form>
 </body>
 </html>

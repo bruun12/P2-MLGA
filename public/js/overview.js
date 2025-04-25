@@ -109,11 +109,11 @@ function subCategoryDisplay(name, id, parent_id){
 }
 
 function displayFilteredItems(data, parentId){
-
     for (const category of data) {
-        if (category.parent_id === Number(parentId)){
-            console.log(category.name);
+        if (category.parent_id === parentId){
+            console.log(category.id);
             fetchAndDisplayFilteredItems(category.id);
+            //displayFilteredItems(data, Number(category.id));
         } 
     }
 };
@@ -177,7 +177,7 @@ async function fetchAndDisplayCategories() {
         //Creates the sidebar with all categories
         sidebar(data);
         if (urlParams.get('sortId') !== null){
-            displayFilteredItems(data, urlParams.get('sortId'));
+            displayFilteredItems(data, Number(urlParams.get('sortId')));
         }
     } catch (error) {
         console.error("Error fetching or processing data:", error);

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import dbPool from "../database/database";
+import dbPool from "../database/database.js";
 
 export async function insertAccount (email, firstname, lastname, phone, hashedPassword){
     const [result] = await dbPool.execute(

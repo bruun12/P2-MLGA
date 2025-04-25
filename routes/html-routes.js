@@ -34,6 +34,10 @@ router.get("/login", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'login.html'))
 });
 
+router.get("/profile", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'profile-page.html'))
+});
+
 router.get("/create-account", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'))
 });

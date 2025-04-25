@@ -4,8 +4,6 @@ const urlParams = new URLSearchParams(queryString);
 
 function subCategoryDisplay(subCategory, id){
     //This checks if there is an existing subCat with the same name  
-    //This makes the subCat appear on the top of the page
-
     //This makes the subCat appear on the side of the page 
     let subCategoryA = document.createElement("a");
     document.querySelector("#categorySelector").appendChild(subCategoryA);
@@ -76,11 +74,6 @@ function makeSubCategoryDiv(id, category){
 
 function categoryDisplay(name, id){
     //This checks if there is an existing subCat with the same name  
-    //This makes the subCat appear on the top of the page
-/*     let subCategoryTopA = document.createElement("a");
-    document.querySelector("#categoryBox").appendChild(subCategoryTopA);
-    subCategoryTopA.innerText = subCategory; */
-
     //This makes the subCat appear on the side of the page 
     let categoryA = document.createElement("a");
     categoryA.setAttribute("class", `${urlParams.get('type')}A`);
@@ -116,7 +109,6 @@ function subCategoryDisplay(name, id, parent_id){
 }
 
 function sidebar(categories) {
-
     for (let i = 0; i < categories.length; i++){
         if(categories[i].id === categories[i].parent_id){
             categoryDisplay(categories[i].name, categories[i].id);
@@ -145,7 +137,6 @@ async function fetchAndDisplayItems() {
 
         for (const item of data) {
             displayItem(item.title, getValue(item), item.img, item.id);
-            //subCategoryDisplay(item.subCategory, subCategoryArr); // If needed
         }
     } catch (error) {
         console.error("Error fetching or processing data:", error);

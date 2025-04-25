@@ -17,7 +17,7 @@ function subCategoryDisplay(subCategory, id){
 function displayItem(name, price, img, id){ // Note if event instead of product price = date.
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
-    itemA.setAttribute("class", `${urlParams.get('type')}Div`)
+    itemA.setAttribute("class", `${urlParams.get('type')}Div`);
     document.querySelector("#displayer").appendChild(itemA);
     itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
 
@@ -59,11 +59,76 @@ function displayItem(name, price, img, id){ // Note if event instead of product 
 
 }
 
+function makeSubCategoryDiv(id, category){
+    let subCategoryDiv = document.createElement("div");
+
+    subCategoryDiv.setAttribute("id", `subCatDivId${id}`);
+    subCategoryDiv.setAttribute("class", `subCatDiv`);
+
+    category.appendChild(subCategoryDiv);
+
+    //This hides the div
+    subCategoryDiv.style.display = "none";
+    //this makes the div indent so it becomes clearer where you are 
+    subCategoryDiv.style.margin = "8%";
+
+}
+
+function categoryDisplay(name, id){
+    //This checks if there is an existing subCat with the same name  
+    //This makes the subCat appear on the top of the page
+/*     let subCategoryTopA = document.createElement("a");
+    document.querySelector("#categoryBox").appendChild(subCategoryTopA);
+    subCategoryTopA.innerText = subCategory; */
+
+    //This makes the subCat appear on the side of the page 
+    let categoryA = document.createElement("a");
+    categoryA.setAttribute("class", `${urlParams.get('type')}A`);
+    document.querySelector("#categorySelector").appendChild(categoryA);
+    categoryA.innerText = name;
+    
+    categoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+    
+    //Make subCategoryDiv for subCategories
+
+    //A box that makes the subcategories for this item.
+    makeSubCategoryDiv(id, categoryA);
+}
+
+function subCategoryDisplay(name, id, parent_id){
+    //get the parent    
+    const container = document.querySelector(`#subCatDivId${parent_id}`);
+
+    let subCategoryA = document.createElement("a");
+    subCategoryA.setAttribute("class", `${urlParams.get('type')}A`);
+
+    if (container) {
+        container.appendChild(subCategoryA);
+    } else {
+    console.error(`No element found with ID: subCatDivId${parent_id}`);
+    }
+    
+    subCategoryA.innerHTML = name;
+
+    subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=$${id}`;
+
+    makeSubCategoryDiv(id, subCategoryA);
+}
+
+function sidebar(categories) {
+
+    for (let i = 0; i < categories.length; i++){
+        if(categories[i].id === categories[i].parent_id){
+            categoryDisplay(categories[i].name, categories[i].id);
+        } else if (categories[i].id !== categories[i].parent_id){
+            subCategoryDisplay(categories[i].name, categories[i].id, categories[i].parent_id);
+        }
+    }
+} 
 
 
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
-
 async function fetchAndDisplayItems() {
     try {
         const response = await fetch(`/all${urlParams.get('type')}s`);
@@ -113,6 +178,29 @@ async function fetchAndDisplayStoreEvents(id) {
         console.error("Error fetching or processing data", error);
     }
 }
+
+/* it takes a second for the dom to fully load so it is neccesarry to wait until
+the dom is fully loaded together with having a short timeout */
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const dropdown = document.getElementsByClassName(`${urlParams.get('type')}A`);
+
+        console.log(dropdown[1].childNodes[1]);
+        for (let i = 0; i < dropdown.length; i++) {
+            //This displays the div when you hover with you mouse
+            dropdown[i].addEventListener("mouseover", function(event) {
+                
+                event.preventDefault();
+                dropdown[i].childNodes[1].style.display = "block";
+            });
+            dropdown[i].addEventListener("mouseout", ()=> {
+                dropdown[i].childNodes[1].style.display = "none";
+            });
+          }
+
+
+    }, 100);  // adjust delay as needed
+  });
 
 // Function map — keys are the values from urlParams.get('type')
 const routeHandlers = {

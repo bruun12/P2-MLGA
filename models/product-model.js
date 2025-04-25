@@ -22,5 +22,11 @@ export async function getProductItem(id) {
     return rows[0];                                                                     //Only return the element, not the array
 }
 
+// Select a specific productItem 
+export async function getAllCategories() {
+    const [rows] = await dbPool.query("SELECT * FROM category"); //Returns an array with the element with a matching primary key
+    return rows;                                                                     //Only return the element, not the array
+}
+
 
 

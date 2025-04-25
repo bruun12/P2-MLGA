@@ -1,41 +1,17 @@
-const hostname = '127.0.0.1';
-const port = 3000;
-let subCategoryArr = [];
-
 //uses the query set in the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-    //const fs = require('fs');
-function newSubCategoryChecker(subCategory, subCategoryArr){
-    //Goes through all already created subCats 
-    for (const i in subCategoryArr){
-        if (subCategory === subCategoryArr[i]){
-            return false;
-        } 
-    }
-    subCategoryArr.push(subCategory);
-    return true;
-}
-
 function subCategoryDisplay(subCategory, id){
     //This checks if there is an existing subCat with the same name  
     //This makes the subCat appear on the top of the page
-/*     let subCategoryTopA = document.createElement("a");
-    document.querySelector("#categoryBox").appendChild(subCategoryTopA);
-    subCategoryTopA.innerText = subCategory; */
 
     //This makes the subCat appear on the side of the page 
     let subCategoryA = document.createElement("a");
     document.querySelector("#categorySelector").appendChild(subCategoryA);
     subCategoryA.innerText = subCategory;
     
-/*     if(urlParams.get('type') !== "event"){
-        subCategoryA.href = `/overview?type=${urlParams.get('type')}&subCategory=${id}`;
-    } else {
-        subCategoryA.href = `/overview?type=${urlParams.get('type')}&storeId=${id}`;
-    } */
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&id=${id}`;
+    subCategoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
 }
 
 function displayItem(name, price, img, id){ // Note if event instead of product price = date.
@@ -87,23 +63,7 @@ function displayItem(name, price, img, id){ // Note if event instead of product 
 
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
-//
 
-
-/* fetch(`/all${urlParams.get('type')}s`)
-//Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
-.then(response => {return response.json()})
-.then(data=>{
-    console.log(data);
-    //Vi løber igennem forløkken for alle 
-    for (const item of data) {
-        console.log(item.id[0]);
-        displayItem(item.title, item.price ,item.img, item.id);
-    //subCategoryDisplay(data.products[i].subCategory, subCategoryArr);
-    }
-}); */
-
-// ASYNC AWAIT OF MARKUS' FETCH ABOVE.
 async function fetchAndDisplayItems() {
     try {
         const response = await fetch(`/all${urlParams.get('type')}s`);
@@ -127,18 +87,6 @@ async function fetchAndDisplayItems() {
     }
 }
 
-/* fetch(`/allStoresWithEvents`)
-.then(response => {return response.json()})
-.then(data=>{
-console.log(data);
-//Vi løber igennem forløkken for alle 
-for (const item of data) {
-    subCategoryDisplay(item.name, item.id);
-}
-}); */
-
-// ASYNC AWAIT OF MARKUS' FETCH ABOVE.
-//
 async function fetchAndDisplayStores() {
     try {
         const response = await fetch(`/allStoresWithEvents`);
@@ -183,7 +131,7 @@ const routeHandlers = {
 
 // Extract type and call the handler
 const type = urlParams.get('type');
-const Id = urlParams.get('id')
+const Id = urlParams.get('sortId')
 const handler = routeHandlers[type];
 
 if (handler) {

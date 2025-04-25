@@ -6,7 +6,7 @@ export async function insertAccount (email, firstname, lastname, phone, hashedPa
         'INSERT INTO account (email, first_name, last_name, phone, password) VALUES (?, ?, ?, ?, ?)',
         [email, firstname, lastname, phone, hashedPassword]
 );
- } //Ændrer det til account, så det kan bruges til at oprette en ny bruger i databasen.
+ } 
 
 // Fetch user from the database
 export const checkMember = async (email) => {

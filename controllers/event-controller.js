@@ -20,6 +20,7 @@ export const getEvents = async (req, res) => {
       res.status(500).json({ success: false, message: 'Server Error' });
     }
 }
+
 export const getStoresWithEvents = async (req, res) => {
     try {
       const events = await getAllStoresWithEvents();
@@ -29,9 +30,11 @@ export const getStoresWithEvents = async (req, res) => {
       res.status(500).json({ success: false, message: 'Server Error' });
     }
 }
+
 export const storeEvents = async (req, res) => {
+    const {id} = req.params;
     try {
-      const events = await getStoreEvents(req);
+      const events = await getStoreEvents(id);
       res.json(events); // Return JSON response
     } catch (error) {
       console.error(error);

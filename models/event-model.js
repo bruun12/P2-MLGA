@@ -20,7 +20,10 @@ export async function getEvent(id){
 
 // Select all events from a particular store
 export async function getStoreEvents(store_id) {
-  const [rows] = await dbPool.query("SELECT * FROM `event` WHERE id = ?", [store_id]);
+  const [rows] = await dbPool.query(`SELECT event.store_id, event.img, event.title, event.date 
+                                     FROM event
+                                     WHERE store_id = ?`
+                                     , [store_id]);
   return rows;
 }
 

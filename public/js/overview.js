@@ -2,6 +2,7 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
+
 function displayItem(name, price, img, id){ // Note if event instead of product price = date.
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
@@ -62,9 +63,18 @@ function makeSubCategoryDiv(id, category){
 
 }
 
+function setHeaders(name, id){
+    if (urlParams.get('sortId') == id){
+        document.querySelector("#categoryHeader").innerHTML = name;
+    } else if (urlParams.get('sortId') == undefined){
+        document.querySelector("#categoryHeader").innerHTML = "Kategori";
+    }
+}
+
 function categoryDisplay(name, id){
     //This checks if there is an existing subCat with the same name  
     //This makes the subCat appear on the side of the page 
+    setHeaders(name, id);
     let categoryA = document.createElement("a");
     categoryA.setAttribute("class", `${urlParams.get('type')}A`);
     document.querySelector("#categorySelector").appendChild(categoryA);
@@ -78,7 +88,8 @@ function categoryDisplay(name, id){
 }
 
 function subCategoryDisplay(name, id, parent_id){
-    //get the parent    
+    setHeaders(name, id);
+
     const container = document.querySelector(`#subCatDivId${parent_id}`);
 
     let subCategoryA = document.createElement("a");
@@ -98,15 +109,18 @@ function subCategoryDisplay(name, id, parent_id){
 }
 
 function sidebar(categories) {
+    if (categories.id === urlParams.get('sortId')){
+        document.querySelector("#categoryHeader").innerHTML = categories.name;
+    }
+    
     for (let i = 0; i < categories.length; i++){
-        if(categories[i].id === categories[i].parent_id){
+        if(categories[i].id === categories[i].parent_id || categories[i] === undefined){
             categoryDisplay(categories[i].name, categories[i].id);
         } else if (categories[i].id !== categories[i].parent_id){
             subCategoryDisplay(categories[i].name, categories[i].id, categories[i].parent_id);
         }
     }
 } 
-
 
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
@@ -132,12 +146,37 @@ async function fetchAndDisplayItems() {
     }
 }
 
+async function fetchAndDisplayFilteredItems(id) {
+    try {
+        const response = await fetch(`/filteredProducts/${id}`)
+        const data = await response.json();
+        console.log(data);
+        
+        
+        for (const item of data) {
+            displayItem(item.title, item.price, item.img, item.store_id);
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data", error);
+    }
+}
+
+async function fetchAndDisplayCategories() {
+    try {
+        const response = await fetch(`/allCategories`);
+        const data = await response.json();
+            sidebar(data);
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+}
+
 async function fetchAndDisplayStores() {
     try {
         const response = await fetch(`/allStoresWithEvents`);
         const data = await response.json();
         console.log(data);
-
+        
         for (const item of data) {
             categoryDisplay(item.name, item.id);
         }
@@ -150,7 +189,7 @@ async function fetchAndDisplayStoreEvents(id) {
     try {
         const response = await fetch(`/storeEvents/${id}`)
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         for (const item of data) {
             displayItem(item.title, item.date, item.img, item.store_id);
         }
@@ -184,7 +223,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Function map — keys are the values from urlParams.get('type')
 const routeHandlers = {
-    product: () => fetchAndDisplayItems(), // Display all products
+    product: (id) => {
+        if (id) {
+            fetchAndDisplayFilteredItems(id);
+            fetchAndDisplayCategories();
+        } else {
+            fetchAndDisplayItems();
+            fetchAndDisplayCategories();
+        }
+
+    }, // Display all products
     event: (id) => {
         if (id) {
             fetchAndDisplayStores(); // Display stores 

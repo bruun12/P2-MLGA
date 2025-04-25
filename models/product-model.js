@@ -28,5 +28,14 @@ export async function getAllCategories() {
     return rows;                                                                     //Only return the element, not the array
 }
 
+export async function filteredProducts(categoryId) {
+  const [rows] = await dbPool.query(`SELECT name title, price, product.img, product_id id
+                                     FROM product_item right JOIN product
+                                     ON product_item.product_id = product.id
+                                     WHERE category_id = ?`
+                                     , [categoryId]);
+  return rows;
+}
+
 
 

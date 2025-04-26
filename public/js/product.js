@@ -92,7 +92,7 @@ async function fetchData() {
   try {
     const response = await fetch(`/product/${productId}`);
     const data = await response.json();
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
     
     nameDisplay(data.name);
     imgDisplay(data.img);
@@ -110,43 +110,10 @@ async function fetchData2() {
   try {
     const response = await fetch(`/product/${productId}/variations`);
     const data = await response.json();
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
     const groupedVariations = groupVariations(data);
-    
-  /*FIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIx */
-  // Create UI elements based on grouped variations
-Object.values(groupedVariations).forEach(group => {
-  // Create a label to display the variation name (e.g., "Size", "Color")
-  const labelElement = document.createElement('label');
-  labelElement.setAttribute('for', `variation-${group.variation_id}`);
-  labelElement.textContent = group.variation_name; // Display the name of the variation
-
-  // Create the select dropdown for this variation
-  const selectElement = document.createElement('select');
-  selectElement.id = `variation-${group.variation_id}`;
-
-  // Create the default option for the dropdown
-  const defaultOption = document.createElement('option');
-  defaultOption.value = '';  // Empty value for default option
-  defaultOption.text = `Choose ${group.variation_name}`;
-  selectElement.appendChild(defaultOption);
-
-  // Add options for each variation option (e.g., "Small", "Medium", etc.)
-  group.variation_options.forEach(option => {
-    const optionElement = document.createElement('option');
-    optionElement.value = option.id;
-    optionElement.text = option.value; // Text for the option (e.g., "Small", "Medium")
-    selectElement.appendChild(optionElement);
-  });
-
-  // Append the label and select dropdown to the DOM (container where variations are displayed)
-  const variationsContainer = document.getElementById('variations-container');
-  variationsContainer.appendChild(labelElement);  // Append the label first
-  variationsContainer.appendChild(selectElement); // Append the select dropdown below the label
-});
-    /*FIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIx */
-
-    
+    //console.dir(groupedVariations, { depth: null });
+    renderVariationSelector(groupedVariations);
     //console.dir(data, { depth: null });
   } catch (error) {
     console.error('Error:', error);
@@ -157,8 +124,8 @@ async function fetchData3() {
   try {
     const response = await fetch(`/product/${productId}/allItems`);
     const data = await response.json();
-    console.log("here should all items be");
-    console.dir(data, { depth: null });
+    //console.log("here should all items be");
+    //console.dir(data, { depth: null });
   } catch (error) {
     console.error('Error:', error);
   }
@@ -198,17 +165,57 @@ function groupVariations(data) {
     });
   });
 
-  console.log(Object.values(groups));
+  //console.log(Object.values(groups));
 
   //Convert the 'groups' object into an array of variation groups. Will not be sparse now, and easier to work with
   return Object.values(groups);
 }
 
-function displayVariationSelector(variations) {
-  for (variation of variations) {
-    // Create one container variation
+function renderVariationSelector(groupedVariations) {
 
-        //Foreach variation option, create an
+  //Select the general 'action' container from detail.html
+  let actionContainer = document.querySelector("#actionContainer");
 
+  //Create unique variationSelector element, a wrapper for all variations
+  let variationSelector = document.createElement("div");
+  variationSelector.setAttribute("id", "variationSelector");
+  actionContainer.appendChild(variationSelector);
+
+  console.dir(groupedVariations, { depth: null });
+
+
+  //render all variations
+  for (let variation of groupedVariations) {
+    console.log(variation);
+
+    //Create a wrapper for the variation in question
+    let variationWrapper = document.createElement("div");
+    variationWrapper.setAttribute("class", `variationWrapper`);
+    
+    //Create a label for the variation to select
+    let labelElement = document.createElement("label");
+    labelElement.setAttribute("for", `variation${variation.variation_id}`); //associates label w dropdown
+    labelElement.innerText = variation.variation_name; //Display name 
+
+    //Create dropdown menu for this variation 
+    let selectElement = document.createElement("select");
+    selectElement.setAttribute("id", `variation${variation.variation_id}`); //associates dropdown w label
+    selectElement.setAttribute("name", variation.variation_name); //maybe not needed if not using form /should it be id?
+
+
+    //if (Array.isArray(variation.variation_options)) maybe check if array exists
+    //Create options for dropdown menu from variation_options array
+    for (let option of variation.variation_options) {
+      let optionElement = document.createElement("option");
+      optionElement.setAttribute("value", option.id);
+      optionElement.innerText = option.value;
+
+      selectElement.appendChild(optionElement);
+    }
+
+    //Append this variation to the DOM
+    variationWrapper.appendChild(labelElement);
+    variationWrapper.appendChild(selectElement);
+    variationSelector.appendChild(variationWrapper);
   }
 }

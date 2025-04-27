@@ -8,7 +8,7 @@ Acts as the business logic layer: Contains functions or methods that process inc
 
 They decide what happens when a specific route is hit.
 */
-import {getAllProducts, getAllCategories, filteredProducts} from '../models/product-model.js';
+import {getAllProducts, getAllCategories, filteredProducts, searchedProducts} from '../models/product-model.js';
 
 /* Uses getAllProducts from product-model to return a list of all products in json format */
 export const getProducts = async (req, res) => {
@@ -35,6 +35,18 @@ export const getFilteredProducts = async (req, res) => {
   const {id} = req.params;
   try {
     const products = await filteredProducts(id);
+    res.json(products); // Return JSON response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+}
+
+export const getSearchedProducts = async (req, res) => {
+  const {searchword} = req.params;
+  console.log(req.params);
+  try {
+    const products = await searchedProducts(searchword);
     res.json(products); // Return JSON response
   } catch (error) {
     console.error(error);

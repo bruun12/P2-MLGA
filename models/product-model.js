@@ -12,7 +12,7 @@ export async function getAllProducts() {
                                        FROM product_item right JOIN product
                                        ON product_item.product_id = product.id
                                        WHERE product_id IS NOT NULL
-                                       LIMIT 15;`);
+                                       LIMIT 20;`);
     return rows;
 }
 
@@ -45,8 +45,17 @@ export async function filteredProducts(categoryId) {
                                     SELECT DISTINCT product.id, product.name AS title, product_item.price, product_item.img     
                                     FROM category_tree JOIN product JOIN product_item
                                     WHERE product.category_id = category_tree.id AND product_item.product_id = product.id
-                                    LIMIT 20;`
-                                     , [categoryId]);
+                                    LIMIT 20;`, [categoryId]);
+  return rows;
+}
+
+export async function searchedProducts(searchWord) {
+  let key = "%"+searchWord+"%" //the % means that anything can be infront of it.
+  const [rows] = await dbPool.query(`SELECT name title, price, product_item.img, product_id id
+                                     FROM product_item right JOIN product
+                                     ON product_item.product_id = product.id
+                                     WHERE name LIKE ? AND product_id IS NOT NULL
+                                     LIMIT 20;`, [key]);
   return rows;
 }
 

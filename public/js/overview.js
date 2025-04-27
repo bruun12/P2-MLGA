@@ -173,6 +173,19 @@ async function fetchAndDisplayFilteredItems(id) {
     }
 }
 
+async function fetchAndDisplaySearchedItems(searchWord) {
+
+    try {
+        const response = await fetch(`/searchedProducts/${searchWord}`)
+        const data = await response.json();        
+        for (const item of data) {
+            displayItem(item.title, item.price, item.img, item.id);
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data", error);
+    }
+}
+
 async function fetchAndDisplayCategories() {
     try {
         const response = await fetch(`/allCategories`);
@@ -235,31 +248,37 @@ document.addEventListener("DOMContentLoaded", () => {
 // Function map — keys are the values from urlParams.get('type')
 const routeHandlers = {
     product: (id) => {
+        fetchAndDisplayCategories(); //Display categories in sidebar
         if (id) {
             fetchAndDisplayFilteredItems(id);
-            fetchAndDisplayCategories();
+        } else if (urlParams.get('search') !== null) {
+            fetchAndDisplaySearchedItems(urlParams.get('search'));
         } else {
-            fetchAndDisplayCategories();
             fetchAndDisplayItems();
         }
 
     }, // Display all products
     event: (id) => {
+        fetchAndDisplayStores(); //Display stores in sidebar
         if (id) {
-            fetchAndDisplayStores(); // Display stores 
             fetchAndDisplayStoreEvents(id); // If we have an id, select items from specific store.
         } else {
-            fetchAndDisplayStores(); // Else display all events and stores.
+             // Else display all events and stores.
             fetchAndDisplayItems(); // Display all events
         }
     },
+/*     search: () => {
+
+        fetchAndDisplayCategories();
+    }  */
     // Add more mappings here if needed
 };
 
 // Extract type and call the handler
 const type = urlParams.get('type');
-const Id = urlParams.get('sortId')
+const Id = urlParams.get('sortId');
 const handler = routeHandlers[type];
+
 
 if (handler) {
     handler(Id); // Calls the matched function with ID if passed.

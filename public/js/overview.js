@@ -27,6 +27,7 @@ function displayItem(name, price, img, id){ // Note if event instead of product 
     let itemName = document.createElement("p");
     itemInfoDiv.appendChild(itemName);
     itemName.setAttribute("class", "itemName")
+    itemName.innerText = `${name}:`;
 
 
     /* Set name and price to values fetched from database */
@@ -35,15 +36,18 @@ function displayItem(name, price, img, id){ // Note if event instead of product 
         let productPrice = document.createElement("p");
         itemInfoDiv.appendChild(productPrice);
         productPrice.setAttribute("class", "productPrice")
-        itemName.innerText = `${name}:`;
         productPrice.innerText = `${price} kr.`;
-    } else {
+    } else if (urlParams.get('type') === "event") {
         /* Create event date */
-        itemName.innerText = `${name}`;
         let eventDate = document.createElement('p');
         itemInfoDiv.appendChild(eventDate);
         eventDate.setAttribute("class", "eventDate");
         eventDate.innerText = `${price}`;
+    } else {
+        let phone = document.createElement('p');
+        itemInfoDiv.appendChild(phone);
+        phone.setAttribute("class","phone");
+        phone.innerText = `${price}`;
     }
 
 }
@@ -72,6 +76,9 @@ function setHeaders(name, id){
         }
         if (urlParams.get('type') === "event"){
             document.querySelector("#categoryHeader").innerHTML = "Events";
+        }
+        if (urlParams.get('type' === "store")) {
+            document.querySelector("#categoryHeader").innerHTML = "Stores";
         }
     }
 }
@@ -201,7 +208,7 @@ async function fetchAndDisplayStores() {
     try {
         const response = await fetch(`/allStoresWithEvents`);
         const data = await response.json();
-        //Displays the different stores
+        //Displays the different stores in category aside
         for (const item of data) {
             categoryDisplay(item.name, item.id);
         }
@@ -214,10 +221,23 @@ async function fetchAndDisplayStores() {
 
 async function fetchAndDisplayStoreEvents(id) {
     try {
-        const response = await fetch(`/storeEvents/${id}`)
+        const response = await fetch(`/storeEvents/${id}`);
         const data = await response.json();
         for (const item of data) {
             displayItem(item.title, item.date, item.img, item.store_id);
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data", error);
+    }
+}
+
+async function fetchStoreOverview() {
+    try {
+        const response = await fetch(`/allStores`);
+        const data = await response.json();
+        console.log(data);
+        for (const store of data) {
+            displayItem(store.name, store.phone, store.img, store.id)
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -267,6 +287,10 @@ const routeHandlers = {
             fetchAndDisplayItems(); // Display all events
         }
     },
+    store: () => {
+        fetchStoreOverview(); // Display all stores with name and phone number
+        setHeaders('Stores', undefined); // Set the header of the page
+    }
 /*     search: () => {
 
         fetchAndDisplayCategories();

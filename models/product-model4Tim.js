@@ -57,15 +57,26 @@ export async function getProductItems(product_id) {
       pi.img AS item_img,
       pi.store_id,
       pi.product_id,
-      GROUP_CONCAT(vo.value ORDER BY v.name SEPARATOR ', ') AS variation_options
+
+      JSON_OBJECTAGG(
+        v.id, vo.id
+      ) AS variation_config, -- For fast matching, aggregiates multiple rows of {v.id: vo.id}, into a single row {v.id: vo.id, v.id: vo.id, ...}
+      
+      JSON_OBJECTAGG(
+        v.name, vo.value
+      ) AS variation_debug -- For display/debug
+
     FROM product_item pi
-    JOIN item_variation_mapping ivm ON pi.id = ivm.product_item_id
-    JOIN variation_opt vo ON ivm.variation_opt_id = vo.id
-    JOIN variation v ON vo.variation_id = v.id
+
+    LEFT JOIN item_variation_mapping ivm ON pi.id = ivm.product_item_id
+    LEFT JOIN variation_opt vo ON ivm.variation_opt_id = vo.id
+    LEFT JOIN variation v ON vo.variation_id = v.id
+
     WHERE pi.product_id = ?
     GROUP BY pi.id
-    ORDER BY pi.price ASC
+    ORDER BY pi.price ASC;
   `, [product_id]);
-
   return rows;
 }
+
+

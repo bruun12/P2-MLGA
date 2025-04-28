@@ -2,6 +2,8 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const productId = urlParams.get("id");
 
+let productItems;
+
 /*
 //Handler function to determine which element should be displayed on given pages
 const detailHandlers = {
@@ -44,6 +46,7 @@ function imgDisplay(img){
     return productImg;
 }
 
+//dom-utils.js: consider making a single renderParagraphElmt(id, appendToId, text);
 function pathDisplay(path){
   let productPath = document.createElement("P");
   productPath.setAttribute("id", "path");
@@ -87,55 +90,84 @@ function nameDisplay(name){
   
   //Display for Event
 
+
+
+
+
+
+
 //PRODUCT STUFF
-async function fetchData() {
+
+/* -------------------------- General flow ---------------------------------------- */
+//Actually fechting
+document.addEventListener('DOMContentLoaded', productHandler);
+async function productHandler() {
+  try {
+    // Fetch all data
+    fetchProductDetails();
+    const variationData = await fetchProductVariations();
+    productItems = await fetchProductItems();
+
+    // Now, render the variation selectors
+    let variationSelector = renderVariationSelector(variationData);
+
+    //Add eventlistener to handle changes
+    /*  "listen to "change" events on any <select> inside variationSelector".*/
+   addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
+
+    // TESTING: subject to change.  Fire real "change" event to initialize selectedOptions
+    // Fire one custom event when all selects are rendered
+    const selects = variationSelector.querySelectorAll('select');
+    selects.forEach(select => {
+    const event = new Event('change', { bubbles: true });
+    select.dispatchEvent(event);
+
+  });
+  } catch (error) {
+    console.error('Error while fetching data or rendering:', error);
+  }
+}
+
+/* -------------------------- FETCH DECLARATIONS---------------------------------------- */
+async function fetchProductDetails() {
   try {
     const response = await fetch(`/product/${productId}`);
     const data = await response.json();
     //console.dir(data, { depth: null });
     
+    //MIDLERTIDIGT
     nameDisplay(data.name);
-    imgDisplay(data.img);
-    
-    //priceDisplay(data.price);
-    
-    //infoDisplay(data.stock_qty);
-  
+    imgDisplay(data.img);  
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
-async function fetchData2() {
+async function fetchProductVariations() {
   try {
     const response = await fetch(`/product/${productId}/variations`);
     const data = await response.json();
-    //console.dir(data, { depth: null });
+    //Proccess flat array into grouped
     const groupedVariations = groupVariations(data);
-    //console.dir(groupedVariations, { depth: null });
-    renderVariationSelector(groupedVariations);
-    //console.dir(data, { depth: null });
+    return groupedVariations;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error: ', error);
   }
 }
 
-async function fetchData3() {
+async function fetchProductItems() {
   try {
     const response = await fetch(`/product/${productId}/allItems`);
     const data = await response.json();
     //console.log("here should all items be");
-    //console.dir(data, { depth: null });
+    console.dir(data, { depth: null });
+    return data;
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
-fetchData();
-fetchData2();
-fetchData3();
-
-
+/* -------------------------- VARIATION INITIALIZING - HAPENS ONCE ---------------------------------------- */
 function groupVariations(data) {
   // Initialize an empty object which contains all groups. 
   // Each property corresponds to one variation identified by variation-id as the key
@@ -181,12 +213,12 @@ function renderVariationSelector(groupedVariations) {
   variationSelector.setAttribute("id", "variationSelector");
   actionContainer.appendChild(variationSelector);
 
-  console.dir(groupedVariations, { depth: null });
+  //console.dir(groupedVariations, { depth: null });
 
 
   //render all variations
   for (let variation of groupedVariations) {
-    console.log(variation);
+    //console.log(variation);
 
     //Create a wrapper for the variation in question
     let variationWrapper = document.createElement("div");
@@ -194,12 +226,12 @@ function renderVariationSelector(groupedVariations) {
     
     //Create a label for the variation to select
     let labelElement = document.createElement("label");
-    labelElement.setAttribute("for", `variation${variation.variation_id}`); //associates label w dropdown
+    labelElement.setAttribute("for", `selectVariation:${variation.variation_id}`); //associates label w dropdown
     labelElement.innerText = variation.variation_name; //Display name 
 
     //Create dropdown menu for this variation 
     let selectElement = document.createElement("select");
-    selectElement.setAttribute("id", `variation${variation.variation_id}`); //associates dropdown w label
+    selectElement.setAttribute("id", `selectVariation:${variation.variation_id}`); //associates dropdown w label                this is the important one!!!!!!!!!!!!
     selectElement.setAttribute("name", variation.variation_name); //maybe not needed if not using form /should it be id?
 
 
@@ -218,4 +250,85 @@ function renderVariationSelector(groupedVariations) {
     variationWrapper.appendChild(selectElement);
     variationSelector.appendChild(variationWrapper);
   }
+  return variationSelector;
+}
+
+/* -------------------------- VARIATION INITIALIZING - HAPENS MULTIPLE TIMES ---------------------------------------- */
+
+// Initialize an empty object which gathers the users selected options GLOBAL
+let selectedOptions = {};
+let matchingItems = [];
+
+
+function handleVariationChange(e) {
+  console.log("Entered handlevar change");
+  //The selection updated
+  const selectElement = e.target;
+
+  //Extract the variation_id affected as integer (parseInt does conversion), assuming it's on the form "selectVariation:7"
+    //replace: ("selectVariation:7") -> ("7")
+  const variationId = parseInt(selectElement.id.replace("selectVariation:",""), 10); //the 10 specifies radix (base of number, i.e. not hex)
+
+  //selectedOptions is a global variable in this script
+  selectedOptions[variationId] = parseInt(selectElement.value, 10);
+
+  console.log(selectedOptions);
+
+  findMatchingProductItems(selectedOptions, productItems)
+}
+
+function findMatchingProductItems(selectedOptions, productItems) {
+  const matchingItems = [];
+
+  //Check all product items for a match with utility function 
+  for (let productItem of productItems) {
+    if (isProductItemMatch(selectedOptions, productItem)) {
+      matchingItems.push(productItem);
+    }
+  }
+  console.log(matchingItems);
+  return matchingItems;
+}
+/**
+ * Utility function checking: does the provided (only one) productItem match all selected options?.
+ * @param {Object} selectedOptions - The selected variation options (e.g., {1: 2, 2: 4})
+ * @param {Object} productItem - A single product item, including its variation_config
+ * @returns {boolean} - true if it matches, false otherwise
+ */
+function isProductItemMatch(selectedOptions, productItem) {
+  const config = productItem.variation_config;
+
+  for (let variationId in selectedOptions) {
+    //Immediately false on the first mismatch found
+    if (selectedOptions[variationId] !== config[variationId]) {
+      return false; 
+    }
+  }
+  //Not a single mismatch -> all matched
+  return true;
+}
+
+//isplaymathed, stock and price
+
+
+//add to cart
+
+/* -------------------------- GENERAL HELPER DECLARATIONS - HAPENS MULTIPLE TIMES ---------------------------------------- */
+//Helper function to streamline event listeners with event delegation, modular
+/**
+ * Adds a delegated event listener to a specified parent element.
+ * The event only triggers when the target element matches the given selector
+ * Useful for dynamically created elements.
+ * 
+ * @param {string} type - The type of event (e.g., "click", "input").
+ * @param {string} selector - The CSS selector to match elements.
+ * @param {function} callback - The function to execute when the event fires.
+ * @param {HTMLElement} [parent=document] - The parent element to attach the event to.
+ */
+function addDelegatedEventListener(type, selector, callback, parent = document){
+  parent.addEventListener(type, (e) => {
+    if (e.target.matches(selector)){
+      callback(e);
+    }
+  });
 }

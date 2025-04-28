@@ -44,7 +44,7 @@ export async function filteredProducts(categoryId) {
                                     )
                                     SELECT DISTINCT product.id, product.name AS title, product_item.price, product_item.img     
                                     FROM category_tree JOIN product JOIN product_item
-                                    WHERE product.category_id = category_tree.id AND product_item.product_id = product.id
+                                    WHERE product.category_id = category_tree.id AND product_item.product_id = product.id AND depth = 5
                                     LIMIT 20;`, [categoryId]);
   return rows;
 }

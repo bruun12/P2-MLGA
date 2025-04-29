@@ -33,7 +33,7 @@ export async function sendEmail(to, subject, text) {
         service: 'Gmail', 
         auth: {
             user: 'Byhjerte@gmail.com', 
-            pass: 'pash dfvd dkep fqwf'  
+            pass: ''  
         }
     });
 

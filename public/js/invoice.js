@@ -35,12 +35,4 @@ function rabat() {
 }
 
 
-function change(event) {
-    event.preventDefault();
-    
-    let infobox = document.querySelector("#info");
-    infobox.style.display = "none"   
-}
-
-
-document.querySelector("#fortnite").addEventListener("click", change);
+let basket=document.querySelector("#basket"); 

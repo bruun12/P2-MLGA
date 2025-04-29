@@ -2,7 +2,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const productId = urlParams.get("id");
 
-let productItems;
 
 /*
 //Handler function to determine which element should be displayed on given pages
@@ -97,23 +96,28 @@ function nameDisplay(name){
 
 
 //PRODUCT STUFF
+/* ---------------------------- Global Variables  ---------------------------------------- */
+let productItems;
 
-/* -------------------------- General flow ---------------------------------------- */
+/* ---------------------------- General flow ---------------------------------------- */
 //Actually fechting
 document.addEventListener('DOMContentLoaded', productHandler);
 async function productHandler() {
   try {
+    //Select the general 'action' container from detail.html
+    let actionContainer = document.querySelector("#actionContainer");
     // Fetch all data
     fetchProductDetails();
     const variationData = await fetchProductVariations();
     productItems = await fetchProductItems();
 
     // Now, render the variation selectors
-    let variationSelector = renderVariationSelector(variationData);
+    let variationSelector = renderVariationSelector(variationData, actionContainer);
+    renderStoreSelector(productItems, actionContainer);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/
-   addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
+    addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
 
     // TESTING: subject to change.  Fire real "change" event to initialize selectedOptions
     // Fire one custom event when all selects are rendered
@@ -121,14 +125,13 @@ async function productHandler() {
     selects.forEach(select => {
     const event = new Event('change', { bubbles: true });
     select.dispatchEvent(event);
-
-  });
+    });
+    
   } catch (error) {
     console.error('Error while fetching data or rendering:', error);
   }
 }
-
-/* -------------------------- FETCH DECLARATIONS---------------------------------------- */
+/* ---------------------------- FETCH DECLARATIONS------------------------------------ */
 async function fetchProductDetails() {
   try {
     const response = await fetch(`/product/${productId}`);
@@ -203,15 +206,12 @@ function groupVariations(data) {
   return Object.values(groups);
 }
 
-function renderVariationSelector(groupedVariations) {
-
-  //Select the general 'action' container from detail.html
-  let actionContainer = document.querySelector("#actionContainer");
+function renderVariationSelector(groupedVariations, parent) {
 
   //Create unique variationSelector element, a wrapper for all variations
   let variationSelector = document.createElement("div");
   variationSelector.setAttribute("id", "variationSelector");
-  actionContainer.appendChild(variationSelector);
+  parent.appendChild(variationSelector);
 
   //console.dir(groupedVariations, { depth: null });
 
@@ -224,36 +224,22 @@ function renderVariationSelector(groupedVariations) {
     let variationWrapper = document.createElement("div");
     variationWrapper.setAttribute("class", `variationWrapper`);
     
-    //Create a label for the variation to select
-    let labelElement = document.createElement("label");
-    labelElement.setAttribute("for", `selectVariation:${variation.variation_id}`); //associates label w dropdown
-    labelElement.innerText = variation.variation_name; //Display name 
+   
+    //Create a label and select (dropdown) element for the variation, append to its variationWrapper
+    let selectElement = renderSelectWLabelElem(`selectVariation:${variation.variation_id}`, variation.variation_name, variation.variation_name, variationWrapper);
 
-    //Create dropdown menu for this variation 
-    let selectElement = document.createElement("select");
-    selectElement.setAttribute("id", `selectVariation:${variation.variation_id}`); //associates dropdown w label                this is the important one!!!!!!!!!!!!
-    selectElement.setAttribute("name", variation.variation_name); //maybe not needed if not using form /should it be id?
-
-
-    //if (Array.isArray(variation.variation_options)) maybe check if array exists
-    //Create options for dropdown menu from variation_options array
+    //Create options for dropdown menu from variation_options array,    //if (Array.isArray(variation.variation_options)) maybe check if array exists
     for (let option of variation.variation_options) {
-      let optionElement = document.createElement("option");
-      optionElement.setAttribute("value", option.id);
-      optionElement.innerText = option.value;
-
-      selectElement.appendChild(optionElement);
+      renderOptionElem(option.id, option.value, selectElement);
     }
 
     //Append this variation to the DOM
-    variationWrapper.appendChild(labelElement);
-    variationWrapper.appendChild(selectElement);
     variationSelector.appendChild(variationWrapper);
   }
   return variationSelector;
 }
 
-/* -------------------------- VARIATION INITIALIZING - HAPENS MULTIPLE TIMES ---------------------------------------- */
+/* -------------------------- VARIATION INITIALIZING, and assignment - HAPENS MULTIPLE TIMES ---------------------------------------- */
 
 // Initialize an empty object which gathers the users selected options GLOBAL
 let selectedOptions = {};
@@ -274,7 +260,8 @@ function handleVariationChange(e) {
 
   console.log(selectedOptions);
 
-  findMatchingProductItems(selectedOptions, productItems)
+  findMatchingProductItems(selectedOptions, productItems);
+  updateStoreOptions(matchingItems);
 }
 
 function findMatchingProductItems(selectedOptions, productItems) {
@@ -289,6 +276,8 @@ function findMatchingProductItems(selectedOptions, productItems) {
   console.log(matchingItems);
   return matchingItems;
 }
+
+
 /**
  * Utility function checking: does the provided (only one) productItem match all selected options?.
  * @param {Object} selectedOptions - The selected variation options (e.g., {1: 2, 2: 4})
@@ -308,12 +297,55 @@ function isProductItemMatch(selectedOptions, productItem) {
   return true;
 }
 
-//isplaymathed, stock and price
+/* -------------------------- Store stuff INITIALIZING - HAPENS MULTIPLE TIMES ---------------------------------------- */
+
+function renderStoreSelector(productItems, parent) {
+  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", parent);
+}
+
+function updateStoreOptions(matchingItems) {
+  let selectElement = document.querySelector("#selectStore");
+
+    // Clear old options
+    while (selectElement.options.length > 0) {
+      selectElement.remove(0);
+    }
+  for (let productItem of productItems) {
+    console.dir(productItem, { depth: null });
+    renderOptionElem(productItem.store_id, productItem.store_name, selectElement);
+  }
+}
+
+function handleStoreChange(e) {
+  console.log("Entered handlevar change");
+  //The selection updated
+  const selectElement = e.target;
+
+  //Extract the variation_id affected as integer (parseInt does conversion), assuming it's on the form "selectVariation:7"
+    //replace: ("selectVariation:7") -> ("7")
+  const variationId = parseInt(selectElement.id.replace("selectVariation:",""), 10); //the 10 specifies radix (base of number, i.e. not hex)
+
+  //selectedOptions is a global variable in this script
+  selectedOptions[variationId] = parseInt(selectElement.value, 10);
+
+  console.log(selectedOptions);
+
+  findMatchingProductItems(selectedOptions, productItems);
+}
 
 
-//add to cart
+// handleStoreChange
+
+// select particular product item ()
+
+// Display stock price
+
+// Add to cart stuff
+
+
 
 /* -------------------------- GENERAL HELPER DECLARATIONS - HAPENS MULTIPLE TIMES ---------------------------------------- */
+
 //Helper function to streamline event listeners with event delegation, modular
 /**
  * Adds a delegated event listener to a specified parent element.
@@ -331,4 +363,37 @@ function addDelegatedEventListener(type, selector, callback, parent = document){
       callback(e);
     }
   });
+}
+
+/**
+ * Creates a label and a select (dropdown) element, appends both to the same parent supplied
+ * @param {*} associatingId - for atribute of label, id attribute of select must match
+ * @param {string} labelText - text displayed in the label
+ * @param {string} selectName - not sure
+ * @param {HTMLElement} parent - parent to attach both to
+ * @returns 
+ */
+function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document){
+   //Create a label for the select element
+   let labelElement = document.createElement("label");
+   labelElement.setAttribute("for", associatingId); //associates label w dropdown
+   labelElement.innerText = labelText; //Display name 
+   parent.appendChild(labelElement);
+
+   //Create dropdown menu for this label 
+   let selectElement = document.createElement("select");
+   selectElement.setAttribute("id", associatingId); //associates dropdown w label                this is the important one!!!!!!!!!!!!
+   selectElement.setAttribute("name", selectName); //maybe not needed if not using form /should it be id?
+   parent.appendChild(selectElement);
+
+   return selectElement;
+}
+
+function renderOptionElem(value, text, parent = document) {
+  let optionElement = document.createElement("option");
+  optionElement.setAttribute("value", value);
+  optionElement.innerText = text;
+
+  parent.appendChild(optionElement);
+  return optionElement;
 }

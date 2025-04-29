@@ -56,6 +56,7 @@ export async function getProductItems(product_id) {
       pi.stock_qty,
       pi.img AS item_img,
       pi.store_id,
+      store.name as store_name,
       pi.product_id,
 
       JSON_OBJECTAGG(
@@ -71,6 +72,7 @@ export async function getProductItems(product_id) {
     LEFT JOIN item_variation_mapping ivm ON pi.id = ivm.product_item_id
     LEFT JOIN variation_opt vo ON ivm.variation_opt_id = vo.id
     LEFT JOIN variation v ON vo.variation_id = v.id
+    LEFT JOIN store ON pi.store_id = store.id
 
     WHERE pi.product_id = ?
     GROUP BY pi.id

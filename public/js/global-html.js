@@ -100,7 +100,7 @@ const footTmpl = (event) =>
     </footer>
     `
 
-    /* JS inserting footer and navbar */
+/* JS inserting footer and navbar */
 let body = document.querySelector("body");
 
 function insGlb() {
@@ -129,7 +129,7 @@ let cartTab = document.querySelector(".cartTab");
 let cartClose = document.querySelector(".closeCart");
 
 cartIcon.addEventListener("click", function(event){
-    event.preventDefault();
+    event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
     cartTab.style.display = "block";
 })
 

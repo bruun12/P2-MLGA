@@ -303,12 +303,12 @@ const routeHandlers = {
 
 // Extract type and id and define handler with input.
 const type = urlParams.get('type');
-const Id = urlParams.get('sortId');
+const id = urlParams.get('sortId');
 const handler = routeHandlers[type]; //Access the property 'type'
 
 // Run the handler.
 if (handler) {
-    handler(Id); // Calls the matched function with ID if passed.
+    handler(id); // Calls the matched function with ID if passed.
 } else {
     console.warn(`No handler defined for type: ${type}`);
 }

@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 import htmlRoutes from './routes/html-routes.js';
+import accountRoutes from './routes/account-routes.js'; // Import the account routes
 import bcrypt from 'bcrypt'; // For password hashing
 import dbPool from './database/database.js'; // For database connection
 import bodyParser from 'body-parser';
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', htmlRoutes);
+
+app.use('/', accountRoutes);
 
 //Reveal error if any
 app.use((error, request, response, next) => {

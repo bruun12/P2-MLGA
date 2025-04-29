@@ -47,6 +47,18 @@ router.get("/forgot-password", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'forgot-password.html'))
 });
 
+router.get("/admin", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'adminFrontPage.html'))
+});
+
+router.get("/addProducts", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'))
+});
+
+router.get("/createStore", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'))
+});
+
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);
 

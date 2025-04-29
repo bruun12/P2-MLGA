@@ -11,6 +11,7 @@ import mysql from 'mysql2';
   creates a pool of reusable connections to the database - instead of creating a new connection for each query
   Each query uses this object, when querying
   */
+
 const dbPool = mysql.createPool({
 
     //Environment variables for: sensitive info & easy configuration/change of database
@@ -19,5 +20,13 @@ const dbPool = mysql.createPool({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
 }).promise();    //promise() allows use promise API version of mysql
+
+dbPool.query('SELECT DATABASE();') // Tjekker  hvilken database, den har oprettet forbinnelse til
+    .then(([rows]) => {
+        console.log('Connected to database:', rows[0]['DATABASE()']);
+    })
+    .catch((error) => {
+        console.error('Database connection error:', error);
+    });
 
 export default dbPool; // Export the connection pool for use in other files

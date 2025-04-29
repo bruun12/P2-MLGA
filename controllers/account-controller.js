@@ -9,7 +9,7 @@ Acts as the business logic layer: Contains functions or methods that process inc
 They decide what happens when a specific route is hit.
 */
 
-import { insertAccount, checkMember, updateCustomerPassword, getUserFavorites } from "../models/account-model.js";
+import { insertAccount, checkMember, updateCustomerPassword, getUserFavorites, sendEmail } from "../models/account-model.js";
 import bcrypt from 'bcrypt'; // For password hashing
 import nodemailer from 'nodemailer'; // For sending emails
 
@@ -20,15 +20,16 @@ export const createAccount = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        insertAccount(email, firstname, lastname, phone, hashedPassword);
+        await insertAccount(email, firstname, lastname, phone, hashedPassword);
         res.status(201).json({ message: 'Account created successfully!' });
     } catch (error) {
+        console.error('Error in createaccount:', error);
         if (error.code === 'ER_DUP_ENTRY') {
-        console.error('Duplicate email error:', error);
-        res.status(400).json({ message: 'Email is already in use. Please use a different email.' });
+            console.error('Duplicate email error:', error);
+            res.status(400).json({ message: 'Email is already in use. Please use a different email.' });
         } else {
-        console.error('Error saving user:', error);
-        res.status(500).json({ message: 'Failed to create account.' });
+            console.error('Error saving user:', error);
+            res.status(500).json({ message: 'Failed to create account.' });
         }
     }
 }
@@ -69,6 +70,10 @@ export async function memberLogin(req, res) {
 export async function useTempPassword(req, res) {
     const { email } = req.body;
 
+    if (!email) {
+        return res.status(400).json({ message: "Email is required." });
+    }
+
     try {
         // Generer et midlertidigt password
         const tempPassword = Math.random().toString(36).slice(-8);
@@ -76,29 +81,34 @@ export async function useTempPassword(req, res) {
         // Update the customer's password in the database
         await updateCustomerPassword(email, tempPassword);
 
-        // Send det midlertidige password via e-mail
-        const transporter = nodemailer.createTransport({
-            service: "Yahoo",
-            auth: {
-                user: "Byhjerte@yahoo.dk",
-                pass: ""
-            }
-        });
-
-        const mailOptions = {
-            from: "Byhjerte@yahoo.dk",
-            to: email,
-            subject: "Your Temporary Password",
-            text: `Your temporary password is: ${tempPassword}`
-        };
-
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "Temporary password sent successfully." });
+        const subject = 'Your Temporary Password';
+        const text = `Your temporary password is: ${tempPassword}`;
+        await sendEmail(email, subject, text);
+                        
+        res.status(200).json({ message: "a temporary password sent has been sent to your email." });
     } catch (error) {
         console.error("Error sending temporary password:", error);
         res.status(500).json({ message: "Failed to send temporary password." });
     }
 };
+
+export async function sendTestEmail(req, res) {
+    const { to, subject, text } = req.body;
+
+    if (!to || !subject || !text) {
+        return res.status(400).json({ message: 'All fields (to, subject, text) are required.' });
+    }
+
+    try {
+        await sendEmail(to, subject, text);
+        res.status(200).json({ message: 'Email sent successfully.' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ message: 'Failed to send email.', error: error.message });
+    }
+}
+
+
 
 export const getFavorites = async (req, res) => {
     const userId = req.session.userId; // Assuming user ID is stored in the session

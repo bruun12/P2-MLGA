@@ -1,8 +1,3 @@
-const loginEmail = document.querySelector("#loginEmail");
-const password = document.querySelector("#password");
-const submitbtn = document.querySelector("#submitbtn");
-const huskmig = document.querySelector("#huskmig");
-
 
 //function myFunction() {
     // Get the checkbox
@@ -17,8 +12,13 @@ const huskmig = document.querySelector("#huskmig");
     //text.style.display = "none";
   //
 
-
-
+  const loginEmail = document.querySelector("#loginEmail");
+  const password = document.querySelector("#password");
+  const submitbtn = document.querySelector("#submitbtn");
+  const huskmig = document.querySelector("#huskmig");
+  
+  
+//Submit button handler, if checked stores info if not deletes.
 submitbtn.addEventListener("click", () => {
     if (huskmig.checked) {
     setCookie("loginmail", loginEmail.value, 365);
@@ -29,22 +29,14 @@ submitbtn.addEventListener("click", () => {
 }
 });
 
+
+const cookiebutton = document.querySelector("#cookiebutton");
 cookiebutton.addEventListener("click", () => {
     loginEmail.value = getCookie("loginmail");
     password.value = getCookie("password");
 });
 
-window.addEventListener("load", () => {
-    const savedEmail = getCookie("loginmail");
-    const savedPassword = getCookie("password");
-
-    if (savedEmail && savedPassword) {
-        loginEmail.value = savedEmail;
-        password.value = savedPassword;
-        huskmig.checked = true; // Automatically check "Remember Me" if cookies exist
-    }
-});
-
+//cookie settings and expiration time.
 function setCookie(name, value, daysToLive){
     const date = new Date();
     date.setTime(date.getTime() +  (daysToLive * 24 * 60 * 60 * 1000));
@@ -52,8 +44,9 @@ function setCookie(name, value, daysToLive){
     document.cookie = `${name}=${value}; ${expires}; path=/`
 }
 function deleteCookie(name){
-    setCookie(name, null, null);
-}
+    function deleteCookie(name) {
+        document.cookie = `${name}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
+    }}
 function getCookie(name){
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");

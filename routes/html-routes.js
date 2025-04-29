@@ -54,7 +54,7 @@ router.get("/filteredProducts/:id", getFilteredProducts);
 
 router.get("/searchedProducts/:searchword", getSearchedProducts);
 
-
+/* Endpoint /allEvents also used in front-page.js for slideshow */
 router.get("/allEvents", getEvents);
 
 router.get("/allStoresWithEvents", getStoresWithEvents);

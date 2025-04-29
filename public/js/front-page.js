@@ -3,7 +3,7 @@ const eventTmpl = (event) =>
     `
     <div class="mySlides fade">
     <img class="slide-image" src="${event.img}">
-    <p class="text"><span>${event.event}</span></p>
+    <p class="text"><span>${event.description}</span></p>
     </div>
     `;
 
@@ -15,28 +15,40 @@ const eventTmp2 = (event) =>
 
 
 /* ------ Slideshow START ------ */
-/* Fetch slideshow.json data for slideshow */
-/* Fetch slideshow.json data */
+/* Fetch events data for slideshow */
 let slidesContainer = document.querySelector('.slideshow-container');
 let dotContainer = document.querySelector('.dot-container')
 async function fetchEventData() {
     try {
-        const response = await fetch('../../database/slideshow.json');
+        const response = await fetch('/allEvents');
         const data = await response.json();
-        const events = data.slides
+        console.log(data);
 
-        events.forEach((event) => {
+        // Get current date and date in three weeks.
+        const now = new Date(); // Current date in ISO UTC format: "2015-06-13T22:00:00.000Z"
+        const inXDays = new Date(); // Variable for date in X days.
+        const days = 1500; // Variable used to add to current date.
+        inXDays.setDate(now.getDate() + days); // inXDays = current date + x days. (If days = 7, it will be set to next week)
+
+        // Filter events between now and x days.
+        const upcomingEvents = data.filter(event => {
+            const eventDate = new Date(event.date); // Requires event date to be in ISO format "2015-06-13T22:00:00.000Z"
+            return eventDate >= now && eventDate <= inXDays; // eventDate must be today or later and less than or equal to latest date shown.
+        });
+
+        // Create slideshow from filtered data
+        upcomingEvents.forEach((event) => {
             slidesContainer.insertAdjacentHTML('beforeend', eventTmpl(event));
             dotContainer.insertAdjacentHTML('beforeend', eventTmp2(event));
         });
-
+        
         setupSlideshow();
     } catch (error) {
         console.error('Error fetching or parsing data:', error)
     }
 }
 
-fetchEventData();
+fetchEventData(); // Setup slide show of events
 
 /* Declare variables */
 function setupSlideshow(){

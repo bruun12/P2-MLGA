@@ -2,7 +2,7 @@
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="/"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="/overview?type=product" class="product">Produkter <i class="fa fa-caret-down"></i></a>
         <a href="/overview?type=event">Events</a>
         <a href="/overview?type=store">Butikker</a>

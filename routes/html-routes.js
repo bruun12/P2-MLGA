@@ -64,7 +64,7 @@ router.get("/storeEvents/:id", storeEvents);
 router.get("/allCategories", getCategories);
 
 
-// Endpoints used for stores in overview.js, store-model.js and store-controller.js
+// Endpoints used for stores in overview.js, store-model.js, and store-controller.js
 router.get("/allStores", getStores);
 
 export default router;

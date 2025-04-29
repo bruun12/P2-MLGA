@@ -30,22 +30,25 @@ export async function getAllCategories() {
 
 export async function filteredProducts(categoryId) {
   const [rows] = await dbPool.query(`WITH RECURSIVE category_tree (id, name, parent_id, depth) AS (
-                                      
                                       SELECT id, name, parent_id, 0
                                       FROM category
                                       WHERE id = ?
-
+                                      
                                       UNION ALL
-
+                                      
                                       SELECT c.id, c.name, c.parent_id, ct.depth + 1
                                       FROM category c
                                       JOIN category_tree ct ON c.parent_id = ct.id
-                                      WHERE ct.depth < 5  
+                                      WHERE ct.depth < 10
                                     )
-                                    SELECT DISTINCT product.id, product.name AS title, product_item.price, product_item.img     
-                                    FROM category_tree JOIN product JOIN product_item
-                                    WHERE product.category_id = category_tree.id AND product_item.product_id = product.id AND depth = 5
-                                    LIMIT 20;`, [categoryId]);
+                                    SELECT DISTINCT product.id, product.name AS title, 
+                                          (SELECT price FROM product_item WHERE product_id = product.id LIMIT 1) AS price,
+                                          (SELECT img FROM product_item WHERE product_id = product.id LIMIT 1) AS img,
+                                          category_id
+                                    FROM category_tree
+                                    JOIN product ON product.category_id = category_tree.id
+                                    WHERE (SELECT price FROM product_item WHERE product_id = product.id LIMIT 1) IS NOT NULL
+                                    LIMIT 20`, [categoryId]); // a depth of 10 is enough to get every element shown 
   return rows;
 }
 

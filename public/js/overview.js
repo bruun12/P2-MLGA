@@ -172,6 +172,7 @@ async function fetchAndDisplayFilteredItems(id) {
     try {
         const response = await fetch(`/filteredProducts/${id}`)
         const data = await response.json();        
+        console.log(data);
         for (const item of data) {
             displayItem(item.title, item.price, item.img, item.id);
         }

@@ -2,7 +2,7 @@
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="front-page.html"><img src="../images/logotemp.jpg" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="/"><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="/overview?type=product" class="product">Produkter <i class="fa fa-caret-down"></i></a>
         <a href="/overview?type=event">Events</a>
         <a href="/overview?type=store">Butikker</a>
@@ -100,7 +100,7 @@ const footTmpl = (event) =>
     </footer>
     `
 
-    /* JS inserting footer and navbar */
+/* JS inserting footer and navbar */
 let body = document.querySelector("body");
 
 function insGlb() {
@@ -129,7 +129,7 @@ let cartTab = document.querySelector(".cartTab");
 let cartClose = document.querySelector(".closeCart");
 
 cartIcon.addEventListener("click", function(event){
-    event.preventDefault();
+    event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
     cartTab.style.display = "block";
 })
 

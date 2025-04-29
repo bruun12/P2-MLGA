@@ -66,7 +66,7 @@ router.get("/filteredProducts/:id", getFilteredProducts);
 
 router.get("/searchedProducts/:searchword", getSearchedProducts);
 
-
+/* Endpoint /allEvents also used in front-page.js for slideshow */
 router.get("/allEvents", getEvents);
 
 router.get("/allStoresWithEvents", getStoresWithEvents);
@@ -76,7 +76,7 @@ router.get("/storeEvents/:id", storeEvents);
 router.get("/allCategories", getCategories);
 
 
-// Endpoints used for stores in overview.js, store-model.js and store-controller.js
+// Endpoints used for stores in overview.js, store-model.js, and store-controller.js
 router.get("/allStores", getStores);
 
 export default router;

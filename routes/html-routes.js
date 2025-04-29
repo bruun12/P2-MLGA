@@ -4,8 +4,9 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import { getProducts } from '../controllers/product-controller.js';
+import { getProducts, getCategories, getFilteredProducts, getSearchedProducts } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
+import { getStores } from "../controllers/store-controller.js";
 
 
 // Get the directory name from the current file's URL
@@ -34,6 +35,10 @@ router.get("/login", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'login.html'))
 });
 
+router.get("/profile", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'profile-page.html'))
+});
+
 router.get("/create-account", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'))
 });
@@ -45,15 +50,21 @@ router.get("/forgot-password", (request, response) => {
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);
 
+router.get("/filteredProducts/:id", getFilteredProducts);
+
+router.get("/searchedProducts/:searchword", getSearchedProducts);
+
+
 router.get("/allEvents", getEvents);
 
 router.get("/allStoresWithEvents", getStoresWithEvents);
 
-router.get("/storeEvents/:id", (request, response)=> {
+router.get("/storeEvents/:id", storeEvents);
 
-    const id = request.params;
+router.get("/allCategories", getCategories);
 
-    response.send(storeEvents(id));
-});
+
+// Endpoints used for stores in overview.js, store-model.js and store-controller.js
+router.get("/allStores", getStores);
 
 export default router;

@@ -1,100 +1,209 @@
+@import 'variables.css';
+
 aside {
   width: 40%;
-  padding: 20px;
-  margin: 20px;
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg);
   height: auto;
   float: right;
-  background-color: #ffcccc; /* Lys rød baggrund */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  border: 1px solid #ff6666; /* Mørkere rød kant */
+  background-color: var(--text-light);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
 }
 
- 
-  .dropbtn {
-    background-color: #ff6666; /* Rød baggrund */
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-          }
+.dropbtn {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
 .dropdown {
-          position: relative;
-          display: inline-block;
-          background-color: #ff6666; /* Mørkere rød ved hover */
-        
-        }
-        
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #ffe6e6; /* Lys rød baggrund */
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-          border-radius: 5px;
-      }
-        
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        border-radius: 5px;
-    }
-        
-    .dropdown:hover .dropbtn {
-      background-color: #cc0000; /* Mørkere rød ved hover */
-  }
-        
-        .dropdown:hover .dropdown-content {display: block;}
-        
-        .dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #ffe6e6; /* Lys rød baggrund */
-          margin: 0;
-          padding: 0;
-          color: #333;
-      }
-
-/* Stil til formularen */
-form {
-  background-color: #ffcccc; /* Lys rød baggrund */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 40%; /* Samme bredde som aside */
-  margin: 40px; ;
-  border: 1px solid #ff6666; /* Mørkere rød kant */
-
+  position: relative;
+  display: inline-block;
 }
 
-/* Stil til inputfelter og knapper */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--text-light);
+  min-width: 160px;
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+  border-radius: var(--border-radius-sm);
+}
+
+.dropdown-content a {
+  color: var(--text-color);
+  padding: var(--spacing-md);
+  text-decoration: none;
+  display: block;
+  transition: background-color var(--transition-fast);
+}
+
+.dropdown-content a:hover {
+  background-color: var(--background-color);
+}
+
+.dropdown:hover .dropbtn {
+  background-color: var(--primary-hover);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+body {
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+/* Form styling */
+form {
+  background-color: var(--text-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  width: 40%;
+  margin: var(--spacing-xl);
+  border: 1px solid var(--border-color);
+}
+
+/* Input fields and buttons */
 input[type="text"],
 input[type="password"],
 input[type="submit"],
 button {
-  width: 90%; /* Mindre bredde for at flugte med aside */
-  padding: 10px;
-  margin: 0px auto; /* Centrerer inputfelterne og knapperne */
-  border: 1px solid #ff6666; /* Mørkere rød kant */
-  border-radius: 5px;
+  width: 100%;
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm) 0 var(--spacing-md) 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
   box-sizing: border-box;
-  display: block; /* Gør inputfelterne og knapperne til blokke */
+  display: block;
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-base);
+  background-color: var(--text-light);
+  color: var(--text-color);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 input[type="submit"],
 button {
-  background-color: #ff6666; /* Rød baggrund */
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-light);
   cursor: pointer;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 input[type="submit"]:hover,
 button:hover {
-  background-color: #cc0000; /* Mørkere rød ved hover */
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  aside, form {
+    width: 90%;
+    float: none;
+    margin: var(--spacing-md) auto;
+  }
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2.5rem;
+    margin: var(--spacing-xl) 0;
+    text-shadow: var(--shadow-md);
+}
+
+h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+aside h2 {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+form h2 {
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.autocomplete-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+}
+
+.autocomplete-container input {
+    width: 100%;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    background-color: var(--text-light);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.autocomplete-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
+}
+
+#valgtadresse {
+    display: block;
+    margin-top: var(--spacing-xs);
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+}
+
+#adresse {
+    width: 100%;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0 var(--spacing-md) 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    box-sizing: border-box;
+    display: block;
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-base);
+    background-color: var(--text-light);
+    color: var(--text-color);
 }

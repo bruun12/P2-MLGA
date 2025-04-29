@@ -20,14 +20,17 @@ export async function getEvent(id){
 
 // Select all events from a particular store
 export async function getStoreEvents(store_id) {
-  const [rows] = await dbPool.query("SELECT * FROM `event` WHERE id = ?", [store_id]);
+  const [rows] = await dbPool.query(`SELECT event.store_id, event.img, event.title, event.date 
+                                     FROM event
+                                     WHERE store_id = ?`
+                                     , [store_id]);
   return rows;
 }
 
 // Select all events from a particular store
 export async function getAllStoresWithEvents() {
-  const [rows] = await dbPool.query(`SELECT distinct mlga.store.name, mlga.store.id
-                                     FROM mlga.store INNER JOIN mlga.event
-                                     ON mlga.store.id = mlga.event.store_id;`);
+  const [rows] = await dbPool.query(`SELECT distinct store.name, store.id
+                                     FROM store INNER JOIN event
+                                     ON store.id = event.store_id;`);
   return rows;
 }

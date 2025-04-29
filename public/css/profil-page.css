@@ -1,0 +1,162 @@
+@import 'variables.css';
+
+/* General layout */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+}
+
+/* Profile header section */
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: var(--font-size-large);
+    margin: var(--spacing-xl) 0;
+    text-shadow: var(--shadow-sm);
+}
+
+/* Favorites section */
+#favorites {
+    background-color: var(--text-light);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    width: 90%;
+}
+
+#favorites h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+#favoritesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.favorite-item {
+    background-color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.favorite-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.favorite-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.favorite-info {
+    padding: var(--spacing-md);
+}
+
+.favorite-name {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color);
+}
+
+.favorite-price {
+    color: var(--primary-color);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+}
+
+/* Additional features section */
+#additionalFeatures {
+    background-color: var(--text-light);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    width: 90%;
+}
+
+#additionalFeatures h2 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+#additionalFeatures p {
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+}
+
+/* Buttons and interactive elements */
+.action-button {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    transition: background-color var(--transition-fast);
+}
+
+.action-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #favorites,
+    #additionalFeatures {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+
+    #favoritesList {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin: var(--spacing-lg) 0;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #favorites,
+    #additionalFeatures {
+        padding: var(--spacing-md);
+    }
+
+    #favoritesList {
+        grid-template-columns: 1fr;
+    }
+
+    .favorite-item img {
+        height: 150px;
+    }
+}

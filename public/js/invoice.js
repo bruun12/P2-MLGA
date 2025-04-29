@@ -35,12 +35,18 @@ function rabat() {
 }
 
 
-function change(event) {
-    event.preventDefault();
+let basket=document.querySelector("#basket"); 
+console.log(getCookie("password"));
+
+function getCookie(name){
+    const cDecoded = decodeURIComponent(document.cookie);
+    const cArray = cDecoded.split("; ");
+    let result = null;
     
-    let infobox = document.querySelector("#info");
-    infobox.style.display = "none"   
-}
-
-
-document.querySelector("#fortnite").addEventListener("click", change);
+    cArray.forEach(element => {
+        if(element.indexOf(name) == 0){
+            result = element.substring(name.length + 1)
+        }
+    })
+    return result;
+} 

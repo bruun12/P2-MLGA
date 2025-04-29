@@ -20,4 +20,5 @@ const dbPool = mysql.createPool({
     database: process.env.MYSQL_DATABASE,
 }).promise();    //promise() allows use promise API version of mysql
 
+
 export default dbPool; // Export the connection pool for use in other files

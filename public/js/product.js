@@ -1,3 +1,4 @@
+ 
 function pathDisplay(path){
     let productPath = document.createElement("P");
     productPath.setAttribute("id", "path");
@@ -52,7 +53,7 @@ function infoDisplay(info){
 }
 
 
-fetch("../database/products.json")
+fetch("../../database/products.json")
 //Her omskriver vi det fra json til et array i js. Arrayet hedder "data" i næste function
 .then(response => {return response.json()})
 .then(data=>{
@@ -64,5 +65,5 @@ fetch("../database/products.json")
         nameDisplay(data.products[i].product);
         priceDisplay(data.products[i].price);
 
-        infoDisplay(data.products[i].info);
+        infoDisplay(data.products[i].subCategory);
      })

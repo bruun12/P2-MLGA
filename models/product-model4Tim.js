@@ -35,7 +35,7 @@ export async function getProductInfo(product_id) {
 export async function getProductVariations(product_id) {
   const [rows] = await dbPool.query(`
     SELECT DISTINCT 
-    v.id AS variation_id, v.name AS name,
+    v.id AS variation_id, v.name AS variation_name,
     vo.id AS option_id, vo.value AS option_value
     FROM product_item pi
     JOIN item_variation_mapping ivm ON pi.id = ivm.product_item_id

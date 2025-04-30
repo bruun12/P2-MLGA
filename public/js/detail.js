@@ -60,11 +60,11 @@ async function fetchEventData() {
 const detailHandlers = {
   product: (id) => {
     commonDetail(id);
-    productHandler();
+    productHandler(id);
   }, 
   event: (id) => {
     commonDetail(id);
-    eventHandler(id);
+   // eventHandler(id);
     //addEventListener("click", signUpBtn);
   },
 }
@@ -145,10 +145,6 @@ async function fetchProductDetails() {
     const response = await fetch(`/product/${detailId}`);
     const data = await response.json();
     //console.dir(data, { depth: null });
-    
-    //MIDLERTIDIGT
-    nameDisplay(data.name);
-    imgDisplay(data.img);  
   } catch (error) {
     console.error('Error:', error);
   }
@@ -160,6 +156,7 @@ async function fetchProductVariations() {
     const data = await response.json();
     //Proccess flat array into grouped
     const groupedVariations = groupVariations(data);
+    
     return groupedVariations;
   } catch (error) {
     console.error('Error: ', error);
@@ -220,7 +217,7 @@ function renderVariationSelector(groupedVariations, parent) {
   let variationSelector = document.createElement("div");
   variationSelector.setAttribute("id", "variationSelector");
   parent.appendChild(variationSelector);
-
+  //console.log("checking grouped variations in rendervariation selecter");
   //console.dir(groupedVariations, { depth: null });
 
 

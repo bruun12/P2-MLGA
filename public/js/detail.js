@@ -118,7 +118,7 @@ async function productHandler() {
     // Now, render the variation selectors
     let variationSelector = renderVariationSelector(variationData, actionContainer);
     renderStoreSelector(productItems, actionContainer);
-    renderButtonElem("cartButton", "Click & Collect (Cart)" ,actionContainer);
+    renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/

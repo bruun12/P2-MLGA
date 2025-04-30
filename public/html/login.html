@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/login.css">
     <title>Login page</title>
     <script src="js/login.js" defer></script>
-    <script src="../js/cookiet2.js" defer></script>
 </head>
 <body>
     <div class="header">
@@ -24,20 +23,22 @@
             <input type="password" id="password" name="password" minlength="8"> <br> <br>
             <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
         </div> 
-        <div class="input-container">
-            <label for="huskmig">Husk mig</label>
-            <input type="checkbox" id="huskmig" name="huskmig" value="yes">
-        </div>     
-        <button id="submitbtn" type="submit">Login</button>
+        <div class="checkbox-container">
+            <label for="Husk mig">Husk mig</label>
+            <input type="checkbox" id="husk-mig" value="Husk mig">
+        </div>
+        <button type="submit">Login
             <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
         </button> <br> <br>
-        <button id="cookiebutton" type="button">Load Saved Credentials</button>
         <a href="forgot-password" id="glemtpassword"> Forgot your password?</a> <br> <br>
         <div class="profil">
             <h3>Har du ikke en profil?</h3>
             <a href="create-account" id="opretprofil">Opret profil</a>
         </div>
-        
+        <div class="admin">
+            <h3>Er du administrator?</h3>
+            <a href="/admin" id="adminlogin">Login</a>
+        </div>
     </form>
 </body>
 </html>

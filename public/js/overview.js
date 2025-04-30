@@ -160,6 +160,7 @@ async function fetchAndDisplayItems() {
             getValue = (item) => item.date;
         }
 
+        // Display event or product depending on input
         for (const item of data) {
             displayItem(item.title, getValue(item), item.img, item.id);
         }
@@ -172,7 +173,8 @@ async function fetchAndDisplayFilteredItems(id) {
     try {
         const response = await fetch(`/filteredProducts/${id}`)
         const data = await response.json();        
-        console.log(data);
+        
+        // Display filtered items
         for (const item of data) {
             displayItem(item.title, item.price, item.img, item.id);
         }
@@ -185,7 +187,9 @@ async function fetchAndDisplaySearchedItems(searchWord) {
 
     try {
         const response = await fetch(`/searchedProducts/${searchWord}`)
-        const data = await response.json();        
+        const data = await response.json();
+        
+        // Display searched items
         for (const item of data) {
             displayItem(item.title, item.price, item.img, item.id);
         }
@@ -198,6 +202,7 @@ async function fetchAndDisplayCategories() {
     try {
         const response = await fetch(`/allCategories`);
         const data = await response.json();
+
         //Creates the sidebar with all categories
         sidebar(data);
     } catch (error) {
@@ -209,12 +214,11 @@ async function fetchAndDisplayStores() {
     try {
         const response = await fetch(`/allStoresWithEvents`);
         const data = await response.json();
+
         //Displays the different stores in category aside
         for (const item of data) {
             categoryDisplay(item.name, item.id);
         }
-
-
     } catch (error) {
         console.error("Error fetching or processing data:", error);
     }
@@ -224,6 +228,8 @@ async function fetchAndDisplayStoreEvents(id) {
     try {
         const response = await fetch(`/storeEvents/${id}`);
         const data = await response.json();
+
+        // Display events.
         for (const item of data) {
             displayItem(item.title, item.date, item.img, item.store_id);
         }
@@ -236,7 +242,8 @@ async function fetchStoreOverview() {
     try {
         const response = await fetch(`/allStores`);
         const data = await response.json();
-        console.log(data);
+        
+        // Display stores
         for (const store of data) {
             displayItem(store.name, store.phone, store.img, store.id)
         }
@@ -251,9 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         const dropdown = document.getElementsByClassName(`${urlParams.get('type')}A`);
         for (let i = 0; i < dropdown.length; i++) {
-            //This displays the div when you hover with you mouse
+            //This displays the div when you hover with your mouse
             dropdown[i].addEventListener("mouseover", function(event) {
-                
                 event.preventDefault();
                 dropdown[i].childNodes[1].style.display = "block";
             });
@@ -271,11 +277,11 @@ const routeHandlers = {
     product: (id) => {
         fetchAndDisplayCategories(); //Display categories in sidebar
         if (id) {
-            fetchAndDisplayFilteredItems(id);
+            fetchAndDisplayFilteredItems(id); // Display filtered items
         } else if (urlParams.get('search') !== null) {
-            fetchAndDisplaySearchedItems(urlParams.get('search'));
+            fetchAndDisplaySearchedItems(urlParams.get('search')); // Display searched items
         } else {
-            fetchAndDisplayItems();
+            fetchAndDisplayItems(); // Display all items
         }
 
     }, // Display all products
@@ -292,21 +298,17 @@ const routeHandlers = {
         fetchStoreOverview(); // Display all stores with name and phone number
         setHeaders('Stores', undefined); // Set the header of the page
     }
-/*     search: () => {
-
-        fetchAndDisplayCategories();
-    }  */
     // Add more mappings here if needed
 };
 
-// Extract type and call the handler
+// Extract type and id and define handler with input.
 const type = urlParams.get('type');
-const Id = urlParams.get('sortId');
-const handler = routeHandlers[type];
+const id = urlParams.get('sortId');
+const handler = routeHandlers[type]; //Access the property 'type'
 
-
+// Run the handler.
 if (handler) {
-    handler(Id); // Calls the matched function with ID if passed.
+    handler(id); // Calls the matched function with ID if passed.
 } else {
     console.warn(`No handler defined for type: ${type}`);
 }

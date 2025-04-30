@@ -27,7 +27,7 @@ export async function getStoreEvents(store_id) {
   return rows;
 }
 
-// Select all events from a particular store
+// Select all stores with events
 export async function getAllStoresWithEvents() {
   const [rows] = await dbPool.query(`SELECT distinct store.name, store.id
                                      FROM store INNER JOIN event

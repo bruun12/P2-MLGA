@@ -36,7 +36,6 @@ function rabat() {
 
 
 let basket=document.querySelector("#basket"); 
-console.log(getCookie("password"));
 
 function getCookie(name){
     const cDecoded = decodeURIComponent(document.cookie);

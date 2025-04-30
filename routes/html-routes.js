@@ -16,7 +16,7 @@ const router = express.Router();
 
 // Frontpage
 router.get("/", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'front-page.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'front-page.html'));
 });
 
 
@@ -32,31 +32,35 @@ router.get("/detail", (request, response) => {
 
 //account administration 
 router.get("/login", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'login.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'login.html'));
 });
 
 router.get("/profile", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'profile-page.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'profile-page.html'));
 });
 
 router.get("/create-account", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'create-account.html'));
 });
 
 router.get("/forgot-password", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'forgot-password.html'))
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'forgot-password.html'));
 });
 
 router.get("/admin", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'adminFrontPage.html'))
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'adminFrontPage.html'));
 });
 
 router.get("/addProducts", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'))
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'));
 });
 
 router.get("/createStore", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'))
+    response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'));
+});
+
+router.get("/basket", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'invoice.html'));
 });
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.

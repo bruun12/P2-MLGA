@@ -6,8 +6,9 @@ import url from 'url';
 //Importing database functions
 import { getProducts } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
-import { getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
 
+import { getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
+import { getEventDetails } from '../controllers/product-controller4Tim.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -60,5 +61,8 @@ router.get("/storeEvents/:id", (request, response)=> {
 router.get("/product/:id", getProductDetails);
 router.get("/product/:id/variations", getVariationData);
 router.get("/product/:id/allItems", getAllProductItems);
+
+router.get("/event/:id", getEventDetails);
+
 
 export default router;

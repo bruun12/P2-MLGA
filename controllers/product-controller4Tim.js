@@ -11,10 +11,31 @@ They decide what happens when a specific route is hit.
 import { getProductInfo } from '../models/product-model4Tim.js';
 import { getProductVariations } from '../models/product-model4Tim.js';
 import {getProductItems } from '../models/product-model4Tim.js';
+import { getEventInfo } from '../models/product-model4Tim.js';
+//import { eventJoinStore } from '../models/product-model4Tim.js';
+
+//gets detail from the event table
+export const getEventDetails = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const id = req.params.id;
+
+    const eventInfo = await getEventInfo(id);
+
+    if(eventInfo) {
+      res.json(eventInfo);
+    } else {
+      res.status(404).json({error: 'Event not found :-('});
+    }
+
+  } catch (error) {
+    console.error("Error getting event:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
 
 // KIG HER ABTIN PASTA
 /* Uses ... from product-model to return a product in json format */
-
 export const getProductDetails = async (req, res)=> {
     try {
       // Extract product id from request parameters

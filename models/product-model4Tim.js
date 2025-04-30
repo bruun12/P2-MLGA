@@ -5,6 +5,13 @@ import dbPool from "../database/database.js";
 /*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
   i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
+
+//Basic information to make event page level #3
+export async function getEventInfo(event_id) {
+  const [rows] = await dbPool.query("SELECT `title`, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
+  return rows[0];                                                                     //Only return the element, not the array
+}
+
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {
   const [rows] = await dbPool.query("SELECT `name`, `description`, img, category_id FROM product WHERE id = ?", [product_id]); //Returns an array with the element with a matching primary key

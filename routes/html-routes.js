@@ -29,6 +29,10 @@ router.get("/detail", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'));
 });
 
+// Basket page
+router.get("/basket", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'invoice.html'));
+});
 
 //account administration 
 router.get("/login", (request, response) => {
@@ -80,3 +84,4 @@ router.get("/allCategories", getCategories);
 router.get("/allStores", getStores);
 
 export default router;
+

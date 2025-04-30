@@ -1,10 +1,9 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const detailId = urlParams.get("id");
-let infoContainer = document.querySelector("#info");
+let infoContainer = document.querySelector("#infoTop");
 let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
-
 //import dom utile functions
 import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
 
@@ -282,10 +281,10 @@ function findMatchingProductItems(selectedOptions, productItems) {
   console.log(matchingItems);
 
   //Quick fake final item, for Benjamin and Markus to test
-  console.log ("Printing final item");
   finalItem = matchingItems[0]
-  console.dir(finalItem, { depth: null });
 
+  //Now prints picture associated with the product_item instead of the product
+  document.querySelector(".mainIMG").setAttribute("src", finalItem.item_img);
   return matchingItems;
 }
 

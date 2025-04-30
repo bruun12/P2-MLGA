@@ -5,13 +5,35 @@ import dbPool from "../database/database.js";
 /*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
   i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
+//Basic information to make event page level #3
+export async function getEventInfo(event_id) {
+  const [rows] = await dbPool.query("SELECT `title`, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
+  return rows[0];                                                                     //Only return the element, not the array
+}
+
+//!!!!!!!!!!!!!!!!!HER!!!!!!!!!!!!!!!!!
+//join table og målet er at få fat i navne til store så det kan vises i informationen på eventDetail
+//Tim kigge på tid
+//når færdig kig på adresse der laves om (nok også join) me om der kan laves (se bogmærke stackoverflow)
+//Join table to make store visible on event
+
+export async function eventJoinStore(event_id){
+  const [rows] = await dbPool.query(`
+    SELECT DISTINCT
+    e.id AS event_id, e.title AS event_title
+    FROM event
+
+  
+  `, [event_id]); //join the store_id, event_id, store_name, event_title
+  return rows;
+}
+
 
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {
   const [rows] = await dbPool.query("SELECT `name`, `description`, img, category_id FROM product WHERE id = ?", [product_id]); //Returns an array with the element with a matching primary key
   return rows[0];                                                                     //Only return the element, not the array
 }
-
 
 /*2. Get the id and name for variations and options for a product i.e. providing a product id
      2, Size, 3, S

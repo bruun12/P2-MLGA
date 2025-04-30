@@ -56,4 +56,5 @@ function getCookie(name){
     return result;
 }
 
+console.log(getCookie("loginmail"));
 console.log(getCookie("password"));

@@ -82,8 +82,6 @@ function insGlb() {
 
 insGlb()
 
-
-
 /* ------ Navbar START ------ */
 /* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
@@ -110,8 +108,6 @@ cartIcon.addEventListener("click", function(event){
 cartClose.addEventListener("click", function(){
     cartTab.style.display = "none";
 })
-
-let mainCategories = []
 
 function storeCategories(categories) {
     for (let i = 0; i < categories.length; i++){

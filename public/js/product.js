@@ -97,7 +97,20 @@ function nameDisplay(name){
 
 //PRODUCT STUFF
 /* ---------------------------- Global Variables  ---------------------------------------- */
+//Contains all fetched product items
 let productItems;
+
+// Initialize an empty object which gathers the users selected options GLOBAL
+
+//Currently only concerns variation options
+let selectedOptions = {};
+
+//A subset of productItems variable above. Can be empty. After variations are chosen this is an updated array of matching items.
+let matchingItems = [];
+
+//The final item after variation and store selection. Can be empty. Currently hardcoded to the first element in the mactching items array. May therefore be empty
+//finalItem.product_item_id for id currently
+let finalItem;
 
 /* ---------------------------- General flow ---------------------------------------- */
 //Actually fechting
@@ -114,6 +127,7 @@ async function productHandler() {
     // Now, render the variation selectors
     let variationSelector = renderVariationSelector(variationData, actionContainer);
     renderStoreSelector(productItems, actionContainer);
+    renderButtonElem("cartButton", "Click & Collect (Cart)" ,actionContainer);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/
@@ -241,10 +255,6 @@ function renderVariationSelector(groupedVariations, parent) {
 
 /* -------------------------- VARIATION INITIALIZING, and assignment - HAPENS MULTIPLE TIMES ---------------------------------------- */
 
-// Initialize an empty object which gathers the users selected options GLOBAL
-let selectedOptions = {};
-let matchingItems = [];
-
 
 function handleVariationChange(e) {
   console.log("Entered handlevar change");
@@ -274,6 +284,12 @@ function findMatchingProductItems(selectedOptions, productItems) {
     }
   }
   console.log(matchingItems);
+
+  //Quick fake final item, for Benjamin and Markus to test
+  console.log ("Princting final item");
+  finalItem = matchingItems[0]
+  console.dir(finalItem, { depth: null });
+
   return matchingItems;
 }
 
@@ -311,7 +327,7 @@ function updateStoreOptions(matchingItems) {
       selectElement.remove(0);
     }
   for (let productItem of productItems) {
-    console.dir(productItem, { depth: null });
+    //console.dir(productItem, { depth: null });
     renderOptionElem(productItem.store_id, productItem.store_name, selectElement);
   }
 }
@@ -340,7 +356,8 @@ function handleStoreChange(e) {
 
 // Display stock price
 
-// Add to cart stuff
+//  ----------------------------- Add to cart stuff ------------------------------------------
+
 
 
 
@@ -373,7 +390,7 @@ function addDelegatedEventListener(type, selector, callback, parent = document){
  * @param {HTMLElement} parent - parent to attach both to
  * @returns 
  */
-function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document){
+function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document) {
    //Create a label for the select element
    let labelElement = document.createElement("label");
    labelElement.setAttribute("for", associatingId); //associates label w dropdown
@@ -396,4 +413,13 @@ function renderOptionElem(value, text, parent = document) {
 
   parent.appendChild(optionElement);
   return optionElement;
+}
+
+function renderButtonElem(id, text, parent = document) {
+  let buttonElement = document.createElement("button");
+  buttonElement.setAttribute("id", id);
+  buttonElement.innerText = text;
+
+  parent.appendChild(buttonElement);
+  return buttonElement;
 }

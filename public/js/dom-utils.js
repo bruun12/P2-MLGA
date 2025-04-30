@@ -11,13 +11,19 @@ export async function renderTextElem(type, id, text, parent = main) {
 
 //function that creates an img with given  id and the src from database 
 export async function renderImgElem(id, src, parent = main) {
-    let imgElement = document.createElement("img", id); 
+    let imgElement = document.createElement("img"); 
     imgElement.setAttribute("src", src);
     imgElement.setAttribute("class", "mainIMG");
     imgElement.setAttribute("alt", "productPicture");
 
-    //append to the main element from html so it isn't hid behind navn bar
-    parent.appendChild(imgElement);
+    // Find the main-image div and append the image to it
+    const mainImageDiv = parent.querySelector('.main-image');
+    if (mainImageDiv) {
+        mainImageDiv.appendChild(imgElement);
+    } else {
+        // Fallback to appending to parent if main-image div is not found
+        parent.appendChild(imgElement);
+    }
 }
 
 //function that creates a text element with given type/class, id and the text from database 

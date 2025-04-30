@@ -64,7 +64,7 @@ const detailHandlers = {
   }, 
   event: (id) => {
     commonDetail(id);
-   // eventHandler(id);
+    eventHandler(id);
     //addEventListener("click", signUpBtn);
   },
 }

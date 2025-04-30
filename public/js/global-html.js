@@ -23,36 +23,8 @@ const navTmpl = (event) =>
     </nav>
 
     <!-- Subnav til products -->
-    <div class="product-link">
-        <ul>
-            <li><a href="https://www.zalando.dk/">Tøj</a>
-                <ul>
-                    <li><a href="https://www.zalando.dk/herrer-home/">Herre</a></li>
-                    <li><a href="https://www.zalando.dk/damer-home/">Damer</a></li>
-                    <li><a href="https://www.zalando.dk/boern-home/">Børn</a></li>
-                </ul>
-            </li>
+    <div id="category-link" class="product-link">
 
-            <li><a href="https://kunsten.dk/">Kunst</a>
-                <ul>
-                    <li><a href="https://en.wikipedia.org/wiki/Minions_(Despicable_Me)">Top Dollar</a></li>
-                </ul>
-            </li>
-
-            <li><a href="https://www.ikea.com/">Husholdning</a>
-                <ul>
-                    <li><a href="https://www.billigblomst.dk/">Planter</a></li>
-                </ul>
-            </li>
-        
-            <li><a href="https://www.fortnite.com/?lang=en-US">Hobby</a>
-                <ul>
-                    <li><a href="https://lakridspizza.dk/">Musik</a></li>
-                    <li><a href="https://laesehesten.dk/">Bøger</a></li>
-                    <li><a href="https://hotgirl.dk/shop/webshop-restsalg-tilbud-845c1.html">Legetøj</a></li>
-                </ul>
-            </li>
-        </ul>
     </div>
 
     <!-- Shopping cart -->
@@ -110,12 +82,14 @@ function insGlb() {
 
 insGlb()
 
+
+
 /* ------ Navbar START ------ */
 /* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
 
-product.addEventListener("mouseenter", function(){
+product.addEventListener("mouseenter", function(event){
     productLink.style.display = "block";
 });
 
@@ -137,5 +111,38 @@ cartClose.addEventListener("click", function(){
     cartTab.style.display = "none";
 })
 
+let mainCategories = []
+
+function storeCategories(categories) {
+    for (let i = 0; i < categories.length; i++){
+        if(categories[i].id === categories[i].parent_id || categories[i] === undefined){
+            createCategory(categories[i].name, categories[i].id)
+        }
+    }
+}
+
+function createCategory(name, id){
+
+    let categoryNavA = document.createElement("a");
+    categoryNavA.setAttribute("class", `categoryNavA`);
+    productLink.appendChild(categoryNavA);
+    categoryNavA.innerText = name;
+    
+    categoryNavA.href = `/overview?type=product&sortId=${id}`;   
+}
+
+async function fetchAndDisplayCategories() {
+    try {
+        const response = await fetch(`/allCategories`);
+        const data = await response.json();
+
+        //Creates the sidebar with all categories
+        storeCategories(data);
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+}
+
+fetchAndDisplayCategories();
 
 /* ------ Navbar END ------ */

@@ -100,6 +100,34 @@ margin: 0;
 list-style: none;
 }
 
+/* Category navigation links styling */
+.categoryNavA {
+display: inline-block;
+color: #f2f2f2;
+text-decoration: none;
+padding: 12px 20px;
+margin: 5px;
+font-size: 16px;
+border-radius: 4px;
+transition: all 0.3s ease;
+background-color: rgba(255, 255, 255, 0.1);
+}
+
+.categoryNavA:hover {
+background-color: rgba(255, 255, 255, 0.2);
+transform: translateY(-2px);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design for category navigation */
+@media (max-width: 768px) {
+.categoryNavA {
+padding: 10px 15px;
+font-size: 14px;
+margin: 3px;
+}
+}
+
 .topnav .nav-icons {
 float: right; /* Position nav icons in right side of nav bar */
 cursor: pointer; /* change cursor to pointer, when on nav icons. */

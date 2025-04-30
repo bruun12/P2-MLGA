@@ -1,4 +1,4 @@
-import { insertProduct, insertProduktID, insertAddress, insertStore } from "../models/admin-model";
+import { insertProduct, insertProduktID, insertAddress, insertStore } from "../models/admin-model.js";
 
 export async function addProduct(req, res) {
     const { product, productItem } = req.body;

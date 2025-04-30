@@ -275,7 +275,8 @@ function handleVariationChange(e) {
 }
 
 function findMatchingProductItems(selectedOptions, productItems) {
-  const matchingItems = [];
+  //Clear previous matching items, variations have changed
+  matchingItems = [];
 
   //Check all product items for a match with utility function 
   for (let productItem of productItems) {
@@ -286,7 +287,7 @@ function findMatchingProductItems(selectedOptions, productItems) {
   console.log(matchingItems);
 
   //Quick fake final item, for Benjamin and Markus to test
-  console.log ("Princting final item");
+  console.log ("Printing final item");
   finalItem = matchingItems[0]
   console.dir(finalItem, { depth: null });
 

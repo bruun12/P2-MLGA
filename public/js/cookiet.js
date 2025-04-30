@@ -1,16 +1,4 @@
 
-//function myFunction() {
-    // Get the checkbox
-    //let //checkBox = document.getElementById("huskmig");
-    // Get the output text
-    //let text = document.getElementById("text");
-
-    // If the checkbox is checked, display the output text
-  //if (checkBox.checked == true){
-    //text.style.display = "block";
-  //} else {
-    //text.style.display = "none";
-  //
 
   const loginEmail = document.querySelector("#loginEmail");
   const password = document.querySelector("#password");
@@ -44,9 +32,9 @@ function setCookie(name, value, daysToLive){
     document.cookie = `${name}=${value}; ${expires}; path=/`
 }
 function deleteCookie(name){
-    function deleteCookie(name) {
         document.cookie = `${name}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
-    }}
+    };
+    
 function getCookie(name){
     const cDecoded = decodeURIComponent(document.cookie);
     const cArray = cDecoded.split("; ");

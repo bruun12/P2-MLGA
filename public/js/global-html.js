@@ -78,7 +78,7 @@ const navTmpl = (event) =>
         </div>
         <div class=btn>
             <button class="closeCart">Close</button>
-            <button class="checkOut">Check Out</button>
+            <a href=""<button class="checkOut">Check Out</button>
         </div>
     </div>
     `

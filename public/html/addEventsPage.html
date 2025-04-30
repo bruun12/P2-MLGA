@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <link rel="stylesheet" href="../css/addEventPageStyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create an Event</h1>
+        <form id="createEventForm">
+            <div class="form-group">
+                <label for="storeId">Store ID:</label>
+                <input type="number" id="storeId" name="storeId" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventImage">Image URL:</label>
+                <input type="url" id="eventImage" name="eventImage" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventTitle">Title:</label>
+                <input type="text" id="eventTitle" name="eventTitle" maxlength="50" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventDescription">Description:</label>
+                <textarea id="eventDescription" name="eventDescription" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventDate">Date and Time:</label>
+                <input type="datetime-local" id="eventDate" name="eventDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="addressId">Address ID:</label>
+                <input type="number" id="addressId" name="addressId">
+            </div>
+            
+            <div class="form-group">
+                <label for="memberId">Member ID:</label>
+                <input type="number" id="memberId" name="memberId">
+            </div>
+            
+            <button type="submit">Create Event</button>
+        </form>
+    </div>
+    <script src="../adminJS/createEvent.js"></script>
+</body>
+</html>

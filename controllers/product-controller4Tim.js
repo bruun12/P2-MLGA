@@ -28,22 +28,10 @@ export const getEventDetails = async (req, res)=> {
       res.status(404).json({error: 'Event not found :-('});
     }
 
-
-    //try to join store and event table to show what store is having the event
-    /*
-    try {
-      const eventStoreInfo = await eventJoinStore(id)
-      console.dir(eventStoreInfo, { depth: null });
-  
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    */
   } catch (error) {
     console.error("Error getting event:", error);
     res.status(500).json({error: 'Server error ;-('});
   }
-
 }
 
 // KIG HER ABTIN PASTA

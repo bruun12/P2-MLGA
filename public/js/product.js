@@ -2,10 +2,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const detailId = urlParams.get("id");
 
-
-//Lav indtastningfelt og knap til tilmeld!!!!!!!
-
-
 //import dom utile functions
 import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
 
@@ -76,7 +72,7 @@ const detailHandlers = {
   event: (id) => {
     commonDetail(id);
     eventRenderDetail(id);
-    document.addEventListener("click", signUpBtn);
+    addEventListener("click", signUpBtn);
   },
 }
 const type = urlParams.get('type');
@@ -88,6 +84,6 @@ addEventListener("DOMContentLoaded", (event) => {
   if (detailHandler) {
       detailHandler(id);
   } else{
-    console.error("FEJL")
+      console.error("FEJL")
   }
 });

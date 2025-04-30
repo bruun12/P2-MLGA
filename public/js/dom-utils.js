@@ -1,14 +1,3 @@
-//lav en samlet funktion for displayerne
-//Skriv export foran funkotinen og importer dem i product.ja (evt en med nyt navn)
-    /*
-   let mainElement = document.querySelector("main");
-    if(mainElement){
-        mainElement.appendChild(textElement);
-    } else{
-        document.body.appendChild(textElement);
-        alert("No main element found"); //evt slet eller laves mere subtle
-    }
-    */
 //function that check if there is a main elemet in the html to insert the information into, give by the type defined in the dom-utils functions
 async function htmlMainInsert(typeElem){ 
     let mainElement = document.querySelector("main");
@@ -18,7 +7,7 @@ async function htmlMainInsert(typeElem){
         document.body.appendChild(typeElem);
         alert("No main element found"); //evt slet eller laves mere subtle
     }
-return;
+    return;
 }
 
 //function that creates a text element with given type/class, id and the text from database 
@@ -55,6 +44,7 @@ export async function renderInputElem(id, placeholder) {
     htmlMainInsert(inputElement)
     return;
 }
+
 //function that add the member to the sign up at an event
 export async function renderBtn(id, text) {
     let btn = document.createElement("button"); 
@@ -63,6 +53,5 @@ export async function renderBtn(id, text) {
     
     //append to the main element from html so it isn't hid behind navn bar
     htmlMainInsert(btn)
-
         return;
 }

@@ -112,6 +112,9 @@ let matchingItems = [];
 //finalItem.product_item_id for id currently
 let finalItem;
 
+
+
+
 /* ---------------------------- General flow ---------------------------------------- */
 //Actually fechting
 document.addEventListener('DOMContentLoaded', productHandler);
@@ -135,16 +138,19 @@ async function productHandler() {
 
     // TESTING: subject to change.  Fire real "change" event to initialize selectedOptions
     // Fire one custom event when all selects are rendered
-    const selects = variationSelector.querySelectorAll('select');
-    selects.forEach(select => {
-    const event = new Event('change', { bubbles: true });
-    select.dispatchEvent(event);
-    });
+        const selects = variationSelector.querySelectorAll('select');
+        selects.forEach(select => {
+        const event = new Event('change', { bubbles: true });
+        select.dispatchEvent(event);
+        });
     
   } catch (error) {
     console.error('Error while fetching data or rendering:', error);
   }
 }
+
+
+
 /* ---------------------------- FETCH DECLARATIONS------------------------------------ */
 async function fetchProductDetails() {
   try {
@@ -253,9 +259,13 @@ function renderVariationSelector(groupedVariations, parent) {
   return variationSelector;
 }
 
-/* -------------------------- VARIATION INITIALIZING, and assignment - HAPENS MULTIPLE TIMES ---------------------------------------- */
+/* -------------------------- STORE HTML ---------------------------------------- */
+function renderStoreSelector(productItems, parent) {
+  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", parent);
+}
 
 
+/* -------------------------- VARIATION CHANGES - HAPENS MULTIPLE TIMES ---------------------------------------- */
 function handleVariationChange(e) {
   console.log("Entered handlevar change");
   //The selection updated
@@ -294,7 +304,6 @@ function findMatchingProductItems(selectedOptions, productItems) {
   return matchingItems;
 }
 
-
 /**
  * Utility function checking: does the provided (only one) productItem match all selected options?.
  * @param {Object} selectedOptions - The selected variation options (e.g., {1: 2, 2: 4})
@@ -316,42 +325,39 @@ function isProductItemMatch(selectedOptions, productItem) {
 
 /* -------------------------- Store stuff INITIALIZING - HAPENS MULTIPLE TIMES ---------------------------------------- */
 
-function renderStoreSelector(productItems, parent) {
-  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", parent);
-}
-
+/**
+ * Updates the options available under the <select> for choosing store
+ * @param {*} matchingItems - Used to create one option for each
+ */
 function updateStoreOptions(matchingItems) {
   let selectElement = document.querySelector("#selectStore");
 
-    // Clear old options
-    while (selectElement.options.length > 0) {
+  console.log("Entered updateStoreOptions with matching items:");
+  console.dir(matchingItems, { depth: null });
+
+    // Clear old options clearing doesnt work
+  while (selectElement.options.length > 0) {
       selectElement.remove(0);
-    }
-  for (let productItem of productItems) {
+  }
+
+  console.log("After removin options, printin selecElement.options");
+  console.dir(selectElement, { depth: null });
+
+  for (let item of matchingItems) {
     //console.dir(productItem, { depth: null });
-    renderOptionElem(productItem.store_id, productItem.store_name, selectElement);
+    renderOptionElem(item.store_id, item.store_name, selectElement);
   }
 }
 
+
+
+//Called when the store is changed
 function handleStoreChange(e) {
   console.log("Entered handlevar change");
   //The selection updated
   const selectElement = e.target;
 
-  //Extract the variation_id affected as integer (parseInt does conversion), assuming it's on the form "selectVariation:7"
-    //replace: ("selectVariation:7") -> ("7")
-  const variationId = parseInt(selectElement.id.replace("selectVariation:",""), 10); //the 10 specifies radix (base of number, i.e. not hex)
-
-  //selectedOptions is a global variable in this script
-  selectedOptions[variationId] = parseInt(selectElement.value, 10);
-
-  console.log(selectedOptions);
-
-  findMatchingProductItems(selectedOptions, productItems);
 }
-
-
-// handleStoreChange
 
 // select particular product item ()
 
@@ -382,7 +388,6 @@ function addDelegatedEventListener(type, selector, callback, parent = document){
     }
   });
 }
-
 /**
  * Creates a label and a select (dropdown) element, appends both to the same parent supplied
  * @param {*} associatingId - for atribute of label, id attribute of select must match

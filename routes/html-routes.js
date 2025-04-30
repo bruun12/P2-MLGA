@@ -8,6 +8,8 @@ import { getProducts, getCategories, getFilteredProducts, getSearchedProducts } 
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 import { getStores } from "../controllers/store-controller.js";
 
+import { getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
+import { getEventDetails } from '../controllers/product-controller4Tim.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -26,7 +28,7 @@ router.get("/overview", (request, response) => {
 });
 
 router.get("/detail", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'));
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'detail.html'));
 });
 
 
@@ -82,5 +84,13 @@ router.get("/allCategories", getCategories);
 
 // Endpoints used for stores in overview.js, store-model.js, and store-controller.js
 router.get("/allStores", getStores);
+
+//KIG HER ABTIN ASTA
+router.get("/product/:id", getProductDetails);
+router.get("/product/:id/variations", getVariationData);
+router.get("/product/:id/allItems", getAllProductItems);
+
+router.get("/event/:id", getEventDetails);
+
 
 export default router;

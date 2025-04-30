@@ -8,7 +8,7 @@ import dbPool from "../database/database.js";
 
 //Basic information to make event page level #3
 export async function getEventInfo(event_id) {
-  const [rows] = await dbPool.query("SELECT `title`, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
+  const [rows] = await dbPool.query("SELECT `title` AS name, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
   return rows[0];                                                                     //Only return the element, not the array
 }
 
@@ -35,7 +35,7 @@ export async function getProductInfo(product_id) {
 export async function getProductVariations(product_id) {
   const [rows] = await dbPool.query(`
     SELECT DISTINCT 
-    v.id AS variation_id, v.name AS variation_name,
+    v.id AS variation_id, v.name AS name,
     vo.id AS option_id, vo.value AS option_value
     FROM product_item pi
     JOIN item_variation_mapping ivm ON pi.id = ivm.product_item_id

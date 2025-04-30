@@ -1,66 +1,85 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const detailId = urlParams.get("id");
+let infoContainer = document.querySelector("#info");
+let galleryContainer = document.querySelector("#gallery");
+let actionContainer = document.querySelector("#actionContainer");
 
-//Display for BOTH product and event
-function imgDisplay(img){
-  let productImg = document.createElement("img");
-  productImg.setAttribute("src", img);
-  productImg.setAttribute("class", "mainIMG");
-  productImg.setAttribute("alt", "productPicture");
-  
-  let pathNImg = document.querySelector("#pathNImg");
-    pathNImg.appendChild(productImg);
+//import dom utile functions
+import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
 
-    return productImg;
+//Function that displays all functions that are both on event and product detail pages
+async function commonDetail() {
+  try {
+    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
+    const data = await response.json();
+
+    renderTextElem("H1","Title", data.name, infoContainer);
+    renderTextElem("P", "description", data.description, infoContainer);
+
+    renderImgElem("mainImg", data.img, galleryContainer);
+    
+    return data;
+  }catch (error) {
+    console.error('Error:', error);
+  }
 }
 
-//dom-utils.js: consider making a single renderParagraphElmt(id, appendToId, text);
-function pathDisplay(path){
-  let productPath = document.createElement("P");
-  productPath.setAttribute("id", "path");
-  
-  let pathNImg = document.querySelector("#pathNImg");
-  pathNImg.appendChild(productPath);
-  
-  productPath.innerText = path;
-} 
+async function eventHandler() {
+  try {
+    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
+    const data = await response.json();
+    renderTextElem("P", "dateEvent", data.date, infoContainer);
+    renderInputElem("emailEvent", "Insert your email", actionContainer);
+    renderBtn("btnSignUpEvent", "Sign up", actionContainer);
 
-function nameDisplay(name){
-    let productName = document.createElement("P");
-    productName.setAttribute("id", "name");
-    
-    let productAttributes = document.querySelector("#productAttributes");
-    productAttributes.appendChild(productName);
-    
-    productName.innerText = `${name}:`;
+  }catch (error) {
+    console.error('Error:', error);
   }
+}
 
-  function infoDisplay(info){
-    let productInfoP = document.createElement("P");
-    productInfoP.setAttribute("id", "info");
-    
-    let productInfo = document.querySelector("#productInfo");
-    productInfo.appendChild(productInfoP);
-    
-    productInfoP.innerText = info;
-  }
-  //Display for product
+async function signUpBtn() {
+  console.log("sign up btn works");
   
-  function priceDisplay(price){
-    let productPrice = document.createElement("P");
-    productPrice.setAttribute("id", "price");
-    
-    let productAttributes = document.querySelector("#productAttributes");
-    productAttributes.appendChild(productPrice);
+  //get from event (via member_id) account get e*mail
+  //join table customer with event, customer_id (fælles), event_id customer_email
+}
 
-    productPrice.innerText = `${price}kr.`;
+fetchEventData();
+async function fetchEventData() {
+  try {
+    const response = await fetch(`/event/${detailId}`);
+    const data = await response.json();
+    console.dir(data, { depth: null });
+  } catch (error) {
+    console.error('Error:', error);
   }
-  
-  //Display for Event
+}
 
+//Handler function to determine which element should be displayed on given pages
+const detailHandlers = {
+  product: (id) => {
+    commonDetail(id);
+    productHandler();
+  }, 
+  event: (id) => {
+    commonDetail(id);
+    eventHandler(id);
+    //addEventListener("click", signUpBtn);
+  },
+}
+const type = urlParams.get('type');
+const id = urlParams.get('id');
+const detailHandler = detailHandlers[type];
 
-
+//shows information onto the page, when the document is fully loaded
+addEventListener("DOMContentLoaded", (event) => {
+  if (detailHandler) {
+      detailHandler(id);
+  } else{
+      console.error("FEJL")
+  }
+});
 
 
 
@@ -87,7 +106,6 @@ let finalItem;
 
 /* ---------------------------- General flow ---------------------------------------- */
 //Actually fechting
-document.addEventListener('DOMContentLoaded', productHandler);
 async function productHandler() {
   try {
     //Select the general 'action' container from detail.html
@@ -124,7 +142,7 @@ async function productHandler() {
 /* ---------------------------- FETCH DECLARATIONS------------------------------------ */
 async function fetchProductDetails() {
   try {
-    const response = await fetch(`/product/${productId}`);
+    const response = await fetch(`/product/${detailId}`);
     const data = await response.json();
     //console.dir(data, { depth: null });
     
@@ -138,7 +156,7 @@ async function fetchProductDetails() {
 
 async function fetchProductVariations() {
   try {
-    const response = await fetch(`/product/${productId}/variations`);
+    const response = await fetch(`/product/${detailId}/variations`);
     const data = await response.json();
     //Proccess flat array into grouped
     const groupedVariations = groupVariations(data);
@@ -150,7 +168,7 @@ async function fetchProductVariations() {
 
 async function fetchProductItems() {
   try {
-    const response = await fetch(`/product/${productId}/allItems`);
+    const response = await fetch(`/product/${detailId}/allItems`);
     const data = await response.json();
     //console.log("here should all items be");
     console.dir(data, { depth: null });
@@ -399,91 +417,3 @@ function renderButtonElem(id, text, parent = document) {
   parent.appendChild(buttonElement);
   return buttonElement;
 }
-
-
-//import dom utile functions
-import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
-
-//Function that displays all functions that are both on event and product detail pages
-async function commonDetail() {
-  try {
-    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
-    const data = await response.json();
-    
-    renderImgElem("mainImg", data.img);
-    renderTextElem("P", "description", data.description);
-
-    return data;
-  }catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-async function productRenderDetail() {
-  try {
-    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
-    const data = await response.json();
-    renderTextElem("H1","Title", data.name);
-    //ABTIN indsætter sine funktioner her
-  }catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-async function eventRenderDetail() {
-  try {
-    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
-    const data = await response.json();
-    renderTextElem("H1","titleEvent", data.title);
-    renderTextElem("P", "dateEvent", data.date);
-    renderInputElem("emailEvent", "Insert your email");
-    renderBtn("btnSignUpEvent", "Sign up");
-
-  }catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-async function signUpBtn() {
-  console.log("sign up btn works");
-  
-  //get from event (via member_id) account get e*mail
-  //join table customer with event, customer_id (fælles), event_id customer_email
-}
-
-fetchEventData();
-async function fetchEventData() {
-  try {
-    const response = await fetch(`/event/${detailId}`);
-    const data = await response.json();
-    console.dir(data, { depth: null });
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-//Handler function to determine which element should be displayed on given pages
-const detailHandlers = {
-  product: (id) => {
-    commonDetail(id);
-    productRenderDetail(id);
-  }, 
-  event: (id) => {
-    commonDetail(id);
-    eventRenderDetail(id);
-    addEventListener("click", signUpBtn);
-  },
-}
-const type = urlParams.get('type');
-const id = urlParams.get('id');
-const detailHandler = detailHandlers[type];
-
-//shows information onto the page, when the document is fully loaded
-addEventListener("DOMContentLoaded", (event) => {
-  if (detailHandler) {
-      detailHandler(id);
-  } else{
-      console.error("FEJL")
-  }
-});
-

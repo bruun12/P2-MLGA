@@ -27,7 +27,7 @@ router.get("/overview", (request, response) => {
 });
 
 router.get("/detail", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'product.html'));
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'detail.html'));
 });
 
 

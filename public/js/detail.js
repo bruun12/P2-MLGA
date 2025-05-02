@@ -49,7 +49,7 @@ async function fetchEventData() {
   try {
     const response = await fetch(`/event/${detailId}`);
     const data = await response.json();
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
   } catch (error) {
     console.error('Error:', error);
   }
@@ -116,12 +116,13 @@ async function productHandler() {
 
     // Now, render the variation selectors
     let variationSelector = renderVariationSelector(variationData, actionContainer);
-    renderStoreSelector(productItems, actionContainer);
+    let storeSelector = renderStoreSelector(productItems, actionContainer);
     renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/
     addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
+    addDelegatedEventListener("change","select", handleStoreChange, storeSelector);
 
     // TESTING: subject to change.  Fire real "change" event to initialize selectedOptions
     // Fire one custom event when all selects are rendered
@@ -167,7 +168,7 @@ async function fetchProductItems() {
     const response = await fetch(`/product/${detailId}/allItems`);
     const data = await response.json();
     //console.log("here should all items be");
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
     return data;
   } catch (error) {
     console.error('Error:', error);
@@ -245,7 +246,13 @@ function renderVariationSelector(groupedVariations, parent) {
 
 /* -------------------------- STORE HTML ---------------------------------------- */
 function renderStoreSelector(productItems, parent) {
-  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", parent);
+  //Create unique variationSelector element, a wrapper for all variations
+  let storeSelector = document.createElement("div");
+  storeSelector.setAttribute("id", "storeSelector");
+  parent.appendChild(storeSelector);
+
+  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", storeSelector);
+  return storeSelector;
 }
 
 
@@ -262,10 +269,12 @@ function handleVariationChange(e) {
   //selectedOptions is a global variable in this script
   selectedOptions[variationId] = parseInt(selectElement.value, 10);
 
-  console.log(selectedOptions);
+  console.log("Selected Variation Options:", selectedOptions);
 
   findMatchingProductItems(selectedOptions, productItems);
   updateStoreOptions(matchingItems);
+
+  //Should trigger an event to check final item
 }
 
 function findMatchingProductItems(selectedOptions, productItems) {
@@ -278,7 +287,8 @@ function findMatchingProductItems(selectedOptions, productItems) {
       matchingItems.push(productItem);
     }
   }
-  console.log(matchingItems);
+
+  console.log("Items matching variations:",matchingItems);
 
   //Quick fake final item, for Benjamin and Markus to test
   finalItem = matchingItems[0]
@@ -316,16 +326,16 @@ function isProductItemMatch(selectedOptions, productItem) {
 function updateStoreOptions(matchingItems) {
   let selectElement = document.querySelector("#selectStore");
 
-  console.log("Entered updateStoreOptions with matching items:");
-  console.dir(matchingItems, { depth: null });
+  //console.log("Entered updateStoreOptions with matching items:");
+  //console.dir(matchingItems, { depth: null });
 
     // Clear old options clearing doesnt work
   while (selectElement.options.length > 0) {
       selectElement.remove(0);
   }
 
-  console.log("After removin options, printin selecElement.options");
-  console.dir(selectElement, { depth: null });
+  //console.log("After removin options, printin selecElement.options");
+  //console.dir(selectElement, { depth: null });
 
   for (let item of matchingItems) {
     //console.dir(productItem, { depth: null });
@@ -337,11 +347,22 @@ function updateStoreOptions(matchingItems) {
 
 //Called when the store is changed
 function handleStoreChange(e) {
-  console.log("Entered handlevar change");
-  //The selection updated
-  const selectElement = e.target;
+  console.log("Entered store change");
+  
+  //The store selected
+  const selectedStoreId = e.target.value;
 
+  //Should only be one, long
+  const realFinalItem = matchingItems.filter( (matchingItem) => matchingItem.store_id == selectedStoreId);
+
+  /*
+  if (realFinalItem.length > 1) {
+    console.log("FinalItem is more than one? duplicate item?");
+  } else*/
+  
+  console.log("Final item FR: ", realFinalItem);
 }
+
 
 // select particular product item ()
 

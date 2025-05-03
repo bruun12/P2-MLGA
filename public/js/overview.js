@@ -146,11 +146,13 @@ function sidebar(categories) {
 
 /* Recommender system for products on overview page */
 /*  Material for understanding recommender system code:
-    Step 1:
     [...] Spread operator: https://www.youtube.com/watch?v=NIq3qLaHCIs
     Map & Set: https://www.youtube.com/watch?v=yJDofSGTSPQ (9:18 -> 13:50)
+    .indexOf: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+    .some: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    .sort: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 
-    Step 2:
+    
     Choice of comparisons formula (Compairsons by ChatGippidy)
         1. Cosine Similarity (Most popular for recommender systems from what I could see on google -> SLIAL block 1 self-study slide 3, 19)
             - Good for sparse data, where users don't interact with majority of products

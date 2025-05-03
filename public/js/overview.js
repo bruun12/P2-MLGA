@@ -144,6 +144,56 @@ function sidebar(categories) {
     }
 } 
 
+/* Recommender system for products on overview page */
+/*  Material for understanding recommender system code:
+    Step 1:
+    [...] Spread operator: https://www.youtube.com/watch?v=NIq3qLaHCIs
+    Map & Set: https://www.youtube.com/watch?v=yJDofSGTSPQ (9:18 -> 13:50)
+
+    Step 2:
+    Choice of comparisons formula (Compairsons by ChatGippidy)
+        1. Cosine Similarity (Most popular for recommender systems from what I could see on google)
+            -
+
+        2.
+
+        3.
+
+        4.
+
+        5.
+*/
+
+// Fake interaction data to be used while no data available from database. product_item_id can be either favorited item or previously bought item.
+const interactions = [
+    { account_id: 1, product_item_id: 101 },
+    { account_id: 1, product_item_id: 103 },
+    { account_id: 2, product_item_id: 101 },
+    { account_id: 2, product_item_id: 102 },
+    { account_id: 3, product_item_id: 102 },
+    { account_id: 3, product_item_id: 103 },
+  ];
+
+
+/* Step 1: Build user item matrix */
+/* Rows = Users, Columns = Items, if cell === 1 user has bought/favorited item else 0. */
+// NOTE: "..." is called the spread operator. It spreads the set into an array. See material for more info
+  const users = [...new Set(interactions.map(index => index.account_id))]; // Map each account_id into its own set, then turn it into an array.
+  const products = [...new Set(interactions.map(index => index.product_item_id))]; // Map each product item into its own set, then turn it into an array.
+
+  // Create user item matrix
+  const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
+    return products.map(productId => {  // For each product, check run if else check.
+        if (interactions.some(index => index.account_id === userId && index.product_item_id === productId)) { // Check if interaction between user and product exists.
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+  })
+
+/* Step 2: Compute similarity between users using cosine similarity */
+
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 async function fetchAndDisplayItems() {

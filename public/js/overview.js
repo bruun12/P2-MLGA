@@ -202,7 +202,7 @@ const interactions = [
 ];
 
 
-// Choose the user we are making recommendations for (change this to test!)
+// Choose the user recieveing recommendations (change this to test!)
 const targetUserId = 3;
 
 /* Step 1: Build user item matrix */
@@ -212,7 +212,7 @@ const users = [...new Set(interactions.map(index => index.account_id))]; // Map 
 const products = [...new Set(interactions.map(index => index.product_item_id))]; // Map each product item into its own set, then turn it into an array.
 
 // Create user item matrix
-export const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
+const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
     return products.map(productId => {  // For each product, check run if else check.
         if (interactions.some(index => index.account_id === userId && index.product_item_id === productId)) { // Check if interaction between user and product exists.
             return 1;
@@ -234,7 +234,7 @@ const targetUserIndex = users.indexOf(targetUserId);
  */
 export function dotProduct(vecA, vecB) {
     let result = 0;
-    for (let i = 0; i < vecA.length; i++) {
+    for (let i = 0; i < vecA.length; i++) { // Multiply each index in each array and add it to result.
         result += vecA[i] * vecB[i];
     }
     return result;
@@ -251,12 +251,12 @@ export function cosineSimilarity(vecA, vecB) {
     const normA = Math.sqrt(dotProduct(vecA, vecA)); // Get the norm of vector A.
     const normB = Math.sqrt(dotProduct(vecB, vecB)); // Get the norm of vector B.
     if (normA === 0 || normB === 0) return 0; // Avoid divison by zero.
-    return dotProductValue / (normA * normB);
+    return dotProductValue / (normA * normB); // SLIAL Block 1 Self-Study slide 19.
 }
 
 const similarities = users.map((currentUserId, currentIndex) => {
     //If not same user, compare.
-    if (currentIndex !== targetUserIndex) {
+    if (currentIndex !== targetUserIndex) { // Return object including userid and similarity
         return {
             user: currentUserId,
             similarity: cosineSimilarity(userItemMatrix[targetUserIndex], userItemMatrix[currentIndex])
@@ -280,9 +280,6 @@ if (mostSimilarUser) {
     })
 
     console.log(`Recommended products for user ${targetUserId}:`, productRec);
-/*  console.log('UserItem matrix:', userItemMatrix);
-    console.log('Users:', users);
-    console.log('Products:', products); */
 } else {
     console.log("No similar users found for recommendation.")
 }

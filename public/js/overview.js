@@ -144,6 +144,147 @@ function sidebar(categories) {
     }
 } 
 
+/* Recommender system for products on overview page */
+/*  Material for understanding recommender system code:
+    Step 1:
+    [...] Spread operator: https://www.youtube.com/watch?v=NIq3qLaHCIs
+    Map & Set: https://www.youtube.com/watch?v=yJDofSGTSPQ (9:18 -> 13:50)
+
+    Step 2:
+    Choice of comparisons formula (Compairsons by ChatGippidy)
+        1. Cosine Similarity (Most popular for recommender systems from what I could see on google -> SLIAL block 1 self-study slide 3, 19)
+            - Good for sparse data, where users don't interact with majority of products
+            - Focuses on what user liked/bought, not number of interactions
+        2. Euclidean / Manhatten 
+            - Less useful in sparse data, due to less meaningful euclidean distance
+                - i.e. two users who have not interacted with 90% of products will look very similar no matter what they have interacted with.
+            - Good for dense data and quantity of matters (ex: ratings from 1-5)
+        3. Jaccard
+            - Ignores no interactions
+            - Undervalues similarity for sparse datasets.
+        4. Minkowski Distance
+            - Generalized Euclidean / Manhatten -> share same downsides.
+*/
+
+/* ------ RECOMMENDER START ------ */
+// Fake interaction data to be used while no data available from database. product_item_id can be either favorited item or previously bought item.
+const interactions = [
+    { account_id: 1, product_item_id: 101 },
+    { account_id: 1, product_item_id: 103 },
+    { account_id: 1, product_item_id: 104 },
+    { account_id: 2, product_item_id: 101 },
+    { account_id: 2, product_item_id: 102 },
+    { account_id: 2, product_item_id: 105 },
+    { account_id: 3, product_item_id: 102 },
+    { account_id: 3, product_item_id: 103 },
+    { account_id: 3, product_item_id: 106 },
+    { account_id: 4, product_item_id: 101 },
+    { account_id: 4, product_item_id: 104 },
+    { account_id: 4, product_item_id: 106 },
+    { account_id: 5, product_item_id: 107 },
+    { account_id: 5, product_item_id: 108 },
+    { account_id: 5, product_item_id: 102 },
+    { account_id: 6, product_item_id: 105 },
+    { account_id: 6, product_item_id: 106 },
+    { account_id: 6, product_item_id: 108 },
+    { account_id: 7, product_item_id: 109 },
+    { account_id: 7, product_item_id: 110 },
+    { account_id: 7, product_item_id: 101 },
+    { account_id: 8, product_item_id: 102 },
+    { account_id: 8, product_item_id: 109 },
+    { account_id: 8, product_item_id: 110 },
+    { account_id: 9, product_item_id: 103 },
+    { account_id: 9, product_item_id: 104 },
+    { account_id: 9, product_item_id: 108 },
+    { account_id: 10, product_item_id: 105 },
+    { account_id: 10, product_item_id: 107 },
+    { account_id: 10, product_item_id: 110 }
+];
+
+
+// Choose the user recieveing recommendations (change this to test!)
+const targetUserId = 3;
+
+/* Step 1: Build user item matrix */
+/* Rows = Users, Columns = Items, if cell === 1 user has bought/favorited item else 0. */
+// NOTE: "..." is called the spread operator. It spreads the set into an array. See material for more info
+const users = [...new Set(interactions.map(index => index.account_id))]; // Map each account_id into its own set, then turn it into an array.
+const products = [...new Set(interactions.map(index => index.product_item_id))]; // Map each product item into its own set, then turn it into an array.
+
+// Create user item matrix
+const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
+    return products.map(productId => {  // For each product, check run if else check.
+        if (interactions.some(index => index.account_id === userId && index.product_item_id === productId)) { // Check if interaction between user and product exists.
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+})
+
+// Find the index of the target user in the users array
+const targetUserIndex = users.indexOf(targetUserId);
+
+/* Step 2: Compute similarity between users using cosine similarity */
+/**
+ * Computes the dot product between to vectors.
+ * @param {Array} vecA Array symbolizing a vector.
+ * @param {Array} vecB Array symbolizing a vector.
+ * @returns dot product of two vectors.
+ */
+export function dotProduct(vecA, vecB) {
+    let result = 0;
+    for (let i = 0; i < vecA.length; i++) { // Multiply each index in each array and add it to result.
+        result += vecA[i] * vecB[i];
+    }
+    return result;
+}
+
+/**
+ * Computes similarity between vectors
+ * @param {Array} vecA Array symbolizing a vector.
+ * @param {Array} vecB Array symbolizing a vector.
+ * @returns Angle between two vectors, i.e similarity
+ */
+export function cosineSimilarity(vecA, vecB) {
+    const dotProductValue = dotProduct(vecA, vecB); // Get dot product of both vectors.
+    const normA = Math.sqrt(dotProduct(vecA, vecA)); // Get the norm of vector A.
+    const normB = Math.sqrt(dotProduct(vecB, vecB)); // Get the norm of vector B.
+    if (normA === 0 || normB === 0) return 0; // Avoid divison by zero.
+    return dotProductValue / (normA * normB); // SLIAL Block 1 Self-Study slide 19.
+}
+
+const similarities = users.map((currentUserId, currentIndex) => {
+    //If not same user, compare.
+    if (currentIndex !== targetUserIndex) { // Return object including userid and similarity
+        return {
+            user: currentUserId,
+            similarity: cosineSimilarity(userItemMatrix[targetUserIndex], userItemMatrix[currentIndex])
+        };
+    } else {
+        return null; // return null when it is the same user
+    }
+}).filter(result => result !== null); // Filter array to not include null.
+
+/* Step 3: Recommend products */
+// Find most similar user by sorting list
+const mostSimilarUser = similarities.sort((a,b) => b.similarity - a.similarity)[0]; 
+
+if (mostSimilarUser) {
+    // Find row of user in matrix
+    const similarUserIndex = users.indexOf(mostSimilarUser.user);
+    
+    // Product IDs to recommend
+    const productRec = products.filter((productId, index) => {
+        return userItemMatrix[similarUserIndex][index] === 1 && userItemMatrix[targetUserIndex][index] === 0;
+    })
+
+    console.log(`Recommended products for user ${targetUserId}:`, productRec);
+} else {
+    console.log("No similar users found for recommendation.")
+}
+/* ------ RECOMMENDER END ------ */
+
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 async function fetchAndDisplayItems() {

@@ -171,14 +171,39 @@ function sidebar(categories) {
 const interactions = [
     { account_id: 1, product_item_id: 101 },
     { account_id: 1, product_item_id: 103 },
+    { account_id: 1, product_item_id: 104 },
     { account_id: 2, product_item_id: 101 },
     { account_id: 2, product_item_id: 102 },
+    { account_id: 2, product_item_id: 105 },
     { account_id: 3, product_item_id: 102 },
     { account_id: 3, product_item_id: 103 },
-  ];
+    { account_id: 3, product_item_id: 106 },
+    { account_id: 4, product_item_id: 101 },
+    { account_id: 4, product_item_id: 104 },
+    { account_id: 4, product_item_id: 106 },
+    { account_id: 5, product_item_id: 107 },
+    { account_id: 5, product_item_id: 108 },
+    { account_id: 5, product_item_id: 102 },
+    { account_id: 6, product_item_id: 105 },
+    { account_id: 6, product_item_id: 106 },
+    { account_id: 6, product_item_id: 108 },
+    { account_id: 7, product_item_id: 109 },
+    { account_id: 7, product_item_id: 110 },
+    { account_id: 7, product_item_id: 101 },
+    { account_id: 8, product_item_id: 102 },
+    { account_id: 8, product_item_id: 109 },
+    { account_id: 8, product_item_id: 110 },
+    { account_id: 9, product_item_id: 103 },
+    { account_id: 9, product_item_id: 104 },
+    { account_id: 9, product_item_id: 108 },
+    { account_id: 10, product_item_id: 105 },
+    { account_id: 10, product_item_id: 107 },
+    { account_id: 10, product_item_id: 110 }
+];
+
 
 // Choose the user we are making recommendations for (change this to test!)
-const targetUserId = 1;
+const targetUserId = 3;
 
 /* Step 1: Build user item matrix */
 /* Rows = Users, Columns = Items, if cell === 1 user has bought/favorited item else 0. */
@@ -255,6 +280,9 @@ if (mostSimilarUser) {
     })
 
     console.log(`Recommended products for user ${targetUserId}:`, productRec);
+/*  console.log('UserItem matrix:', userItemMatrix);
+    console.log('Users:', users);
+    console.log('Products:', products); */
 } else {
     console.log("No similar users found for recommendation.")
 }

@@ -11,6 +11,44 @@ export async function getEventInfo(event_id) {
   const [rows] = await dbPool.query("SELECT `title` AS name, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
   return rows[0];                                                                     //Only return the element, not the array
 }
+//Basic information to make store page level #3 
+export async function getStoreInfo(store_id) {
+  const [rows] = await dbPool.query("SELECT `name`, img, address_id FROM store WHERE id = ?", [store_id]); //Returns an array with the element with a matching primary key
+  return rows[0];                                                                     //Only return the element, not the array
+}
+//joins address and Store
+export async function getAddressJoinStoreInfo(store_id) {
+  const [rows] = await dbPool.query(`
+    SELECT st.id AS st_id, ad.id AS add_id, ad.city, ad.street, ad.zip
+    FROM store AS st
+    JOIN address AS ad ON st.address_id = ad.id
+    WHERE st.id = ?
+  `, [store_id]); //returns an array with an adress with an adress an event_id matching  
+  return rows[0];
+}
+
+//joins address and event
+export async function getAddressJoinEventInfo(event_id) {
+  const [rows] = await dbPool.query(`
+    SELECT ev.id AS ev_id, ad.id AS add_id, ad.city, ad.street, ad.zip
+    FROM event AS ev
+    JOIN address AS ad ON ev.address_id = ad.id
+    WHERE ev.id = ?
+  `, [event_id]); //returns an array with an adress with an adress an event_id matching  
+  return rows[0];
+}
+
+//joins account and event to have accound, event id, and account.email
+export async function getAccEmailForEvent(account_email) {
+  const [row] = await dbPool.query(`
+    SELECT account.id AS acc_id, event.id AS ev_id , account.email
+    from account
+    LEFT JOIN event ON account.id = event.member_id`)
+}
+
+export async function insertEventEmail(email, member_id, ) {
+  
+}
 
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {

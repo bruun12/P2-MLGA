@@ -5,20 +5,22 @@ let infoContainer = document.querySelector("#infoTop");
 let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
 //import dom utile functions
-import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
+import { renderBtn, renderInputElem, renderTextElem, renderImgElem, renderMap} from "./dom-utils.js";
 
 //Function that displays all functions that are both on event and product detail pages
 async function commonDetail() {
   try {
     const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
-
+    //insert alle text element from database
     renderTextElem("H1","Title", data.name, infoContainer);
     renderTextElem("P", "description", data.description, infoContainer);
-
+    renderTextElem("P", "dateEvent", data.date, infoContainer);
+    //insert img from database
     renderImgElem("mainImg", data.img, galleryContainer);
+    //insert map if address is in the database
+    getAddress();
     
-    return data;
   }catch (error) {
     console.error('Error:', error);
   }
@@ -26,25 +28,49 @@ async function commonDetail() {
 
 async function eventHandler() {
   try {
-    const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
-    const data = await response.json();
-    renderTextElem("P", "dateEvent", data.date, infoContainer);
     renderInputElem("emailEvent", "Insert your email", actionContainer);
     renderBtn("btnSignUpEvent", "Sign up", actionContainer);
 
-  }catch (error) {
+    btnSignUpEvent.addEventListener("click", signUpBtn);
+    }catch (error) {
     console.error('Error:', error);
   }
 }
-
+//få mailen til at komme med i popup
 async function signUpBtn() {
-  console.log("sign up btn works");
-  
+    console.log("sign up btn clicked");
+    let emailPromt;
+ 
+    if(emailPromt == ""){
+      prompt("Do you want to sign up with following mail:", "Enter email");
+    } else if (emailPromt == null){
+      prompt("Do you want to sign up with following mail:", "Enter email");
+    } else{
+      promts("Do you want to sign up with following mail:", "");
+    }
   //get from event (via member_id) account get e*mail
   //join table customer with event, customer_id (fælles), event_id customer_email
 }
 
-fetchEventData();
+//Makes a map from the data in the databse
+async function getAddress() {
+  const response = await fetch(`/${urlParams.get('type')}/${detailId}/address`); //make sure to get the information based on the type (product/event)
+  const data = await response.json();
+  console.dir(data, {depth: null});
+
+  //filters data so the id numbers will not be part of the address search
+  const excludedKeys = ['ev_id', 'add_id'];
+  const filteredAddressData = Object.fromEntries(
+    Object.entries(data).filter(([key, value]) => !excludedKeys.includes(key))
+  );
+  const address = Object.values(filteredAddressData).join(' ');
+  //insert map  with address from database
+  renderMap("map", address);
+}
+//!!!!!!!!!!!!!!!!!!!!if not null get store_add til product
+
+
+//fetchEventData();
 async function fetchEventData() {
   try {
     const response = await fetch(`/event/${detailId}`);
@@ -66,6 +92,9 @@ const detailHandlers = {
     eventHandler(id);
     //addEventListener("click", signUpBtn);
   },
+  store: (id) => {
+    commonDetail(id);
+  }
 }
 const type = urlParams.get('type');
 const id = urlParams.get('id');

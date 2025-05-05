@@ -12,7 +12,63 @@ import { getProductInfo } from '../models/product-model4Tim.js';
 import { getProductVariations } from '../models/product-model4Tim.js';
 import {getProductItems } from '../models/product-model4Tim.js';
 import { getEventInfo } from '../models/product-model4Tim.js';
-//import { eventJoinStore } from '../models/product-model4Tim.js';
+import { getStoreInfo } from '../models/product-model4Tim.js';
+import { getAddressJoinEventInfo } from '../models/product-model4Tim.js';
+import { getAddressJoinStoreInfo } from '../models/product-model4Tim.js';
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinEvent = async (req, res)=> {
+  try {
+    // Extract product id from request parameters
+    const id = req.params.id;
+    const addressInfo = await getAddressJoinEventInfo(id); 
+
+    if(addressInfo) {
+      res.json(addressInfo);
+    } else {
+      res.status(404).json({error: 'address not found for event:-('});
+    }
+  } catch (error) {
+    console.error("Error getting address: event", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinStore = async (req, res)=> {
+  try {
+    // Extract product id from request parameters
+    const id = req.params.id;
+    const storeInfo = await getAddressJoinStoreInfo(id); 
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'address not found for store :-('});
+    }
+  } catch (error) {
+    console.error("Error getting address from store:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinStoreProduct = async (req, res)=> {
+  try {
+    // Extract product id from request parameters
+    const id = req.params.id;
+    const storeInfo = await getAddressJoinStoreInfo(id); 
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'address not found for store :-('});
+    }
+  } catch (error) {
+    console.error("Error getting address from store:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
 
 //gets detail from the event table
 export const getEventDetails = async (req, res)=> {
@@ -30,6 +86,26 @@ export const getEventDetails = async (req, res)=> {
 
   } catch (error) {
     console.error("Error getting event:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets detail from the store table
+export const getStoreDetails = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const id = req.params.id;
+
+    const storeInfo = await getStoreInfo(id);
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'Store not found :-('});
+    }
+
+  } catch (error) {
+    console.error("Error getting store:", error);
     res.status(500).json({error: 'Server error ;-('});
   }
 }

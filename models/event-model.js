@@ -34,3 +34,12 @@ export async function getAllStoresWithEvents() {
                                      ON store.id = event.store_id;`);
   return rows;
 }
+
+export async function insertEvent(storeId, img, title, description, date, addressId, memberId) {
+  const query = `
+      INSERT INTO event (store_id, img, title, description, date, address_id, member_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  const [result] = await dbPool.query(query, [storeId, img, title, description, date, addressId, memberId]);
+  return result;
+}

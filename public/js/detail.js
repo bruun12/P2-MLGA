@@ -75,7 +75,7 @@ async function fetchEventData() {
   try {
     const response = await fetch(`/event/${detailId}`);
     const data = await response.json();
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
   } catch (error) {
     console.error('Error:', error);
   }
@@ -112,53 +112,50 @@ addEventListener("DOMContentLoaded", (event) => {
 
 
 
+
+
+
 //PRODUCT STUFF
-/* ---------------------------- Global Variables  ---------------------------------------- */
+/* ---------------------------- GLOBAL VARIABLES  ---------------------------------------- */
 //Contains all fetched product items
-let productItems;
+let allProductItems;
 
-// Initialize an empty object which gathers the users selected options GLOBAL
-
-//Currently only concerns variation options
-let selectedOptions = {};
+//User selected
+let selectedVariationOptions = {};
+let selectedStoreId = null;
 
 //A subset of productItems variable above. Can be empty. After variations are chosen this is an updated array of matching items.
-let matchingItems = [];
+let variationMatchedItems = [];
 
-//The final item after variation and store selection. Can be empty. Currently hardcoded to the first element in the mactching items array. May therefore be empty
-//finalItem.product_item_id for id currently
-let finalItem;
-
+//Final item after variation and store selection. Can be empty. Currently hardcoded to the first element in the mactching items array. May therefore be empty. //finalItem.product_item_id for id currently
+let fullyMatchedItem;
 
 
-
-/* ---------------------------- General flow ---------------------------------------- */
-//Actually fechting
+/* ---------------------------- MAIN FLOW ---------------------------------------- */
 async function productHandler() {
   try {
     //Select the general 'action' container from detail.html
     let actionContainer = document.querySelector("#actionContainer");
-    // Fetch all data
-    fetchProductDetails();
-    const variationData = await fetchProductVariations();
-    productItems = await fetchProductItems();
+    
+    // Fetch all data, 
+    await fetchProductDetails();                            //for common data
+    const variationData = await fetchProductVariations();   //for variation selectors data
+    allProductItems = await fetchProductItems();               //to match against
 
-    // Now, render the variation selectors
+    //Create and append the exstra DOM elements
     let variationSelector = renderVariationSelector(variationData, actionContainer);
-    renderStoreSelector(productItems, actionContainer);
-    renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
+    let storeSelector = renderStoreSelector(actionContainer);
+    renderButtonElem("cartButton", "Add to Cart", actionContainer);
 
-    //Add eventlistener to handle changes
-    /*  "listen to "change" events on any <select> inside variationSelector".*/
+    //Add eventlistener to handle changes - "listen to "change" events on any <select> inside variationSelector/storeSelector"
     addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
+    addDelegatedEventListener("change","select", handleStoreChange, storeSelector);
 
-    // TESTING: subject to change.  Fire real "change" event to initialize selectedOptions
-    // Fire one custom event when all selects are rendered
-        const selects = variationSelector.querySelectorAll('select');
-        selects.forEach(select => {
-        const event = new Event('change', { bubbles: true });
-        select.dispatchEvent(event);
-        });
+    // TESTING, MAY CHANGE. Trigger change events to initialize state
+    variationSelector.querySelectorAll('select').forEach(select => {
+      console.log("Fired initialization event on variationSelector");
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
     
   } catch (error) {
     console.error('Error while fetching data or rendering:', error);
@@ -182,10 +179,11 @@ async function fetchProductVariations() {
   try {
     const response = await fetch(`/product/${detailId}/variations`);
     const data = await response.json();
-    //Proccess flat array into grouped
-    const groupedVariations = groupVariations(data);
     
+    //Proccess flat array into grouped and return it
+    const groupedVariations = groupVariations(data);
     return groupedVariations;
+
   } catch (error) {
     console.error('Error: ', error);
   }
@@ -196,18 +194,18 @@ async function fetchProductItems() {
     const response = await fetch(`/product/${detailId}/allItems`);
     const data = await response.json();
     //console.log("here should all items be");
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
     return data;
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
-/* -------------------------- VARIATION INITIALIZING - HAPENS ONCE ---------------------------------------- */
+/* -------------------------- DOM RENDERING - HAPPENS ONCE ---------------------------------------- */
 function groupVariations(data) {
-  // Initialize an empty object which contains all groups. 
-  // Each property corresponds to one variation identified by variation-id as the key
-  // Keys might be 2, 7, 99 ... Arrays would have many holes & wasted space.
+  /* Initialize an empty object which contains all groups. 
+  Each property corresponds to one variation identified by variation-id as the key
+  Keys might be 2, 7, 99 ... Arrays would have many holes & wasted space.*/
   const groups = {};
   
   data.forEach(item => {
@@ -233,8 +231,6 @@ function groupVariations(data) {
     });
   });
 
-  //console.log(Object.values(groups));
-
   //Convert the 'groups' object into an array of variation groups. Will not be sparse now, and easier to work with
   return Object.values(groups);
 }
@@ -245,19 +241,14 @@ function renderVariationSelector(groupedVariations, parent) {
   let variationSelector = document.createElement("div");
   variationSelector.setAttribute("id", "variationSelector");
   parent.appendChild(variationSelector);
-  //console.log("checking grouped variations in rendervariation selecter");
-  //console.dir(groupedVariations, { depth: null });
-
 
   //render all variations
   for (let variation of groupedVariations) {
-    //console.log(variation);
 
     //Create a wrapper for the variation in question
     let variationWrapper = document.createElement("div");
     variationWrapper.setAttribute("class", `variationWrapper`);
     
-   
     //Create a label and select (dropdown) element for the variation, append to its variationWrapper
     let selectElement = renderSelectWLabelElem(`selectVariation:${variation.variation_id}`, variation.variation_name, variation.variation_name, variationWrapper);
 
@@ -272,63 +263,93 @@ function renderVariationSelector(groupedVariations, parent) {
   return variationSelector;
 }
 
-/* -------------------------- STORE HTML ---------------------------------------- */
-function renderStoreSelector(productItems, parent) {
-  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", parent);
+function renderStoreSelector(parent) {
+  //Create unique variationSelector element, a wrapper for all variations
+  let storeSelector = document.createElement("div");
+  storeSelector.setAttribute("id", "storeSelector");
+  parent.appendChild(storeSelector);
+
+  let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", storeSelector);
+  return storeSelector;
 }
 
 
-/* -------------------------- VARIATION CHANGES - HAPENS MULTIPLE TIMES ---------------------------------------- */
+/* -------------------------- EVENT HANDLERS ---------------------------------------- */
 function handleVariationChange(e) {
-  console.log("Entered handlevar change");
+  console.log("Entered handleVariationChange");
   //The selection updated
   const selectElement = e.target;
 
-  //Extract the variation_id affected as integer (parseInt does conversion), assuming it's on the form "selectVariation:7"
-    //replace: ("selectVariation:7") -> ("7")
-  const variationId = parseInt(selectElement.id.replace("selectVariation:",""), 10); //the 10 specifies radix (base of number, i.e. not hex)
+  updateSelectedVariationOption(selectElement);
+  console.log("Selected Variation Options:", selectedVariationOptions);
 
-  //selectedOptions is a global variable in this script
-  selectedOptions[variationId] = parseInt(selectElement.value, 10);
-
-  console.log(selectedOptions);
-
-  findMatchingProductItems(selectedOptions, productItems);
-  updateStoreOptions(matchingItems);
+  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
+  updateStoreOptions(variationMatchedItems);
 }
 
-function findMatchingProductItems(selectedOptions, productItems) {
+//Called when the store is changed
+function handleStoreChange(e) {
+  console.log("Entered handleStoreChange");
+  //Update the global variable, that describes which store is selected
+  selectedStoreId = e.target.value;
+  updateFinalItem();
+}
+
+
+function updateSelectedVariationOption(selectElement) {
+  //Extract the variation_id affected as integer (parseInt does conversion), assuming it's on the form "selectVariation:7"  -> replace: ("selectVariation:7") -> ("7")
+  const variationId = parseInt(selectElement.id.replace("selectVariation:",""), 10); //the 10 specifies radix (base of number, i.e. not hex)
+
+  //selectedVariationOptions is a global variable in this script
+  selectedVariationOptions[variationId] = parseInt(selectElement.value, 10);
+
+}
+
+
+/* -------------------------- MATCHING AND SELECTION -  HAPENS MULTIPLE TIMES ---------------------------------------- */
+
+function findVariationMatches(selectedVariationOptions, allProductItems) {
   //Clear previous matching items, variations have changed
-  matchingItems = [];
+  variationMatchedItems = [];
+
+  console.log("Amount of selected options:",Object.keys(selectedVariationOptions).length);
 
   //Check all product items for a match with utility function 
-  for (let productItem of productItems) {
-    if (isProductItemMatch(selectedOptions, productItem)) {
-      matchingItems.push(productItem);
+  for (let productItem of allProductItems) {
+    if (isProductItemMatch(selectedVariationOptions, productItem)) {
+      variationMatchedItems.push(productItem);
     }
   }
-  console.log(matchingItems);
+
+  console.log("Items matching variations:",variationMatchedItems);
 
   //Quick fake final item, for Benjamin and Markus to test
-  finalItem = matchingItems[0]
+  //finalItem = variationMatchedItems[0]
 
   //Now prints picture associated with the product_item instead of the product
-  document.querySelector(".mainIMG").setAttribute("src", finalItem.item_img);
-  return matchingItems;
+  //document.querySelector(".mainIMG").setAttribute("src", finalItem.item_img);
+  return variationMatchedItems;
 }
 
 /**
  * Utility function checking: does the provided (only one) productItem match all selected options?.
- * @param {Object} selectedOptions - The selected variation options (e.g., {1: 2, 2: 4})
+ * @param {Object} selectedVariationOptions - The selected variation options (e.g., {1: 2, 2: 4})
  * @param {Object} productItem - A single product item, including its variation_config
  * @returns {boolean} - true if it matches, false otherwise
  */
-function isProductItemMatch(selectedOptions, productItem) {
+function isProductItemMatch(selectedVariationOptions, productItem) {
   const config = productItem.variation_config;
 
-  for (let variationId in selectedOptions) {
+  //if the amount of selected options don't match the length of a productItems variations, they cant match
+
+  if (Object.keys(selectedVariationOptions).length !== Object.keys(config).length) {
+    console.log("Length of selected options, dont match length of productitem")
+    return false;
+  }
+
+  for (let variationId in selectedVariationOptions) {
     //Immediately false on the first mismatch found
-    if (selectedOptions[variationId] !== config[variationId]) {
+    if (selectedVariationOptions[variationId] !== config[variationId]) {
       return false; 
     }
   }
@@ -336,45 +357,64 @@ function isProductItemMatch(selectedOptions, productItem) {
   return true;
 }
 
-/* -------------------------- Store stuff INITIALIZING - HAPENS MULTIPLE TIMES ---------------------------------------- */
-
 /**
  * Updates the options available under the <select> for choosing store
- * @param {*} matchingItems - Used to create one option for each
+ * @param {*} variationMatchedItems - Used to create one option for each
  */
-function updateStoreOptions(matchingItems) {
+function updateStoreOptions(variationMatchedItems) {
   let selectElement = document.querySelector("#selectStore");
 
-  console.log("Entered updateStoreOptions with matching items:");
-  console.dir(matchingItems, { depth: null });
-
-    // Clear old options clearing doesnt work
+  // Clear old options clearing doesnt work
   while (selectElement.options.length > 0) {
       selectElement.remove(0);
   }
 
-  console.log("After removin options, printin selecElement.options");
-  console.dir(selectElement, { depth: null });
-
-  for (let item of matchingItems) {
-    //console.dir(productItem, { depth: null });
+  for (let item of variationMatchedItems) {
     renderOptionElem(item.store_id, item.store_name, selectElement);
+  }
+
+  //Store options have been updated, meaning may have been updated
+  if (selectElement.options.length > 0) {
+    selectElement.selectedIndex = 0;
+    const event = new Event('change', { bubbles: true });
+    selectElement.dispatchEvent(event);
   }
 }
 
+function updateFinalItem() {
+    //Should only be one, long
+    const fullyMatchingItems = variationMatchedItems.filter( (varMatchingItem) => varMatchingItem.store_id == selectedStoreId);
+    
+
+  if (fullyMatchingItems.length == 1) {
+      fullyMatchedItem = fullyMatchingItems[0];
+      console.log("Final fully matching item: ", fullyMatchedItem);
+
+      //Now prints picture associated with the product_item instead of the product
+      document.querySelector(".mainIMG").setAttribute("src", fullyMatchedItem.item_img);
+  } else if (fullyMatchingItems.length > 1) {
+      console.log("fullyMatchingItems is more than one? duplicate item?");
+  } else {
+      console.log("No fully matching item found");
+  }    
+}
 
 
-//Called when the store is changed
-function handleStoreChange(e) {
-  console.log("Entered handlevar change");
-  //The selection updated
-  const selectElement = e.target;
+// Display stock price
+
+function updateDisplay() {
+
+  //Update the picture
+
+  //Update the store options
+
+  //Update maps
 
 }
 
-// select particular product item ()
+function updateStockDisplay(){
 
-// Display stock price
+}
 
 //  ----------------------------- Add to cart stuff ------------------------------------------
 

@@ -249,7 +249,7 @@ async function recommendProducts() {
                            userItemMatrix[targetUserIndex][index] === 0;
                 });
             
-                console.log(`Recommended products from user ${similarUsers.user} for user ${targetUserId}:`, productRec);
+                console.log(`Recommended products from user ${similarUser} for user ${targetUserId}:`, productRec);
             }
         } else {
             console.log("No similar users found for recommendation.")

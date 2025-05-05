@@ -241,16 +241,36 @@ async function recommendProducts() {
         const mostSimilarUsers = similarities.sort((a,b) => b.similarity - a.similarity).slice(0,3);
 
         if (mostSimilarUsers.length > 0) {
+            const productRec = new Set(); // Use Set to avoid duplicates
+
             for (const similarUser of mostSimilarUsers) {
                 const similarUserIndex = users.indexOf(similarUser.user);
-            
-                const productRec = products.filter((productId, index) => {
-                    return userItemMatrix[similarUserIndex][index] === 1 &&
-                           userItemMatrix[targetUserIndex][index] === 0;
+
+                products.forEach((productId, index) => {
+                    if (userItemMatrix[similarUserIndex][index] === 1 &&
+                        userItemMatrix[targetUserIndex][index] === 0) {
+                        productRec.add(productId); // Add unique recommendations
+                    }
                 });
-            
-                console.log(`Recommended products from user ${similarUser} for user ${targetUserId}:`, productRec);
-            }
+        }
+
+        const productRecArr = [...productRec] // Make set of recommendations into array.
+        console.log(`Recommended products for user ${targetUserId}:`, productRecArr);
+
+        // Get products from database
+        const response2 = await fetch('/recProducts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productIds: productRecArr })
+        });
+        
+        const data2 = await response2.json();
+        console.log("Product data from DB:", data2);
+
+        // Show recommended products.
+
         } else {
             console.log("No similar users found for recommendation.")
         }

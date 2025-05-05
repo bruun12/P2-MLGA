@@ -80,7 +80,17 @@ export async function userInteractions() { // Select all bought items for each u
                                             customer_order ON order_line.order_number = customer_order.order_number
                                      WHERE 
                                             customer_order.member_id IS NOT NULL;`);
+  return rows;
 }
 
+export async function getProductsByIds(productIds) {
+  if (!Array.isArray(productIds) || productIds.length === 0) return [];
+
+  const [rows] = await dbPool.query(
+      `SELECT * FROM product WHERE product_item_id IN (?)`, [productIds]
+  );
+
+  return rows;
+}
 
 

@@ -22,8 +22,10 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
     "mysql2": "^3.14.0",
     "nodemailer": "^6.10.1",
+    "session": "^0.1.0",
     "stripe": "^18.0.0"
   },
   "description": ""

@@ -4,7 +4,7 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import { getProducts, getCategories, getFilteredProducts, getSearchedProducts } from '../controllers/product-controller.js';
+import { getProducts, getCategories, getFilteredProducts, getSearchedProducts, getUserInteractions } from '../controllers/product-controller.js';
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 import { getStores } from "../controllers/store-controller.js";
 
@@ -80,6 +80,8 @@ router.get("/allStoresWithEvents", getStoresWithEvents);
 router.get("/storeEvents/:id", storeEvents);
 
 router.get("/allCategories", getCategories);
+
+router.get("/userInteractions", getUserInteractions);
 
 
 // Endpoints used for stores in overview.js, store-model.js, and store-controller.js

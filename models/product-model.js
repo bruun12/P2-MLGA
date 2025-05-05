@@ -71,5 +71,16 @@ export async function searchedProducts(searchWord) {
   return rows;
 }
 
+export async function userInteractions() { // Select all bought items for each user. (Only members). Used in product-controller.
+  const [rows] = await dbPool.query(`SELECT customer_order.member_id AS account_id,
+                                            order_line.product_item_id
+                                     FROM 
+                                            order_line
+                                     JOIN 
+                                            customer_order ON order_line.order_number = customer_order.order_number
+                                     WHERE 
+                                            customer_order.member_id IS NOT NULL;`);
+}
+
 
 

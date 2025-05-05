@@ -7,6 +7,8 @@ export async function renderTextElem(type, id, text, parent = main) {
 
     //append to the main element from html so it isn't hid behind navn bar
     parent.appendChild(textElement);
+
+    return textElement;
 }
 
 //function that creates an img with given  id and the src from database 
@@ -37,12 +39,63 @@ export async function renderInputElem(id, placeholder, parent = main) {
     parent.appendChild(inputElement);
 }
 
-//function that add the member to the sign up at an event
-export async function renderBtn(id, text, parent = main) {
-    let btn = document.createElement("button"); 
-    btn.setAttribute("id", id);
-    btn.innerText = text; 
+
+export function renderButtonElem(id, text, parent = document) {
+    let buttonElement = document.createElement("button");
+    buttonElement.setAttribute("id", id);
+    buttonElement.innerText = text;
+   
+    parent.appendChild(buttonElement);
+    return buttonElement;
+}
+
+
+export function renderDivElem({id, className, parent = document.body} = {}) {
     
-    //append to the main element from html so it isn't hid behind navn bar
-    parent.appendChild(btn);
+    let divElem = document.createElement("div");
+
+    if(id) {
+        divElem.setAttribute("id", id);
+    }
+
+    if (className) {
+        divElem.setAttribute("class", className);
+    }
+
+    parent.appendChild(divElem);
+
+    return divElem;
+}
+
+
+/* Creates a label and a select (dropdown) element, appends both to the same parent supplied
+* @param {*} associatingId - for atribute of label, id attribute of select must match
+* @param {string} labelText - text displayed in the label
+* @param {string} selectName - not sure
+* @param {HTMLElement} parent - parent to attach both to
+* @returns 
+*/
+export function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document) {
+  //Create a label for the select element
+  let labelElement = document.createElement("label");
+  labelElement.setAttribute("for", associatingId); //associates label w dropdown
+  labelElement.innerText = labelText; //Display name 
+  parent.appendChild(labelElement);
+
+  //Create dropdown menu for this label 
+  let selectElement = document.createElement("select");
+  selectElement.setAttribute("id", associatingId); //associates dropdown w label                this is the important one!!!!!!!!!!!!
+  selectElement.setAttribute("name", selectName); //maybe not needed if not using form /should it be id?
+  parent.appendChild(selectElement);
+
+  return selectElement;
+}
+
+export function renderOptionElem(value, text, parent = document) {
+ let optionElement = document.createElement("option");
+ optionElement.setAttribute("value", value);
+ optionElement.innerText = text;
+
+ parent.appendChild(optionElement);
+ return optionElement;
 }

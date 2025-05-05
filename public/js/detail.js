@@ -5,7 +5,7 @@ let infoContainer = document.querySelector("#infoTop");
 let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
 //import dom utile functions
-import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
+import { renderButtonElem, renderInputElem, renderTextElem, renderImgElem, renderDivElem, renderSelectWLabelElem, renderOptionElem} from "./dom-utils.js";
 
 //Function that displays all functions that are both on event and product detail pages
 async function commonDetail() {
@@ -25,12 +25,13 @@ async function commonDetail() {
 }
 
 async function eventHandler() {
+  console.log("Entered event handler");
   try {
     const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
     renderTextElem("P", "dateEvent", data.date, infoContainer);
     renderInputElem("emailEvent", "Insert your email", actionContainer);
-    renderBtn("btnSignUpEvent", "Sign up", actionContainer);
+    renderButtonElem("btnSignUpEvent", "Sign up", actionContainer);
 
   }catch (error) {
     console.error('Error:', error);
@@ -44,7 +45,7 @@ async function signUpBtn() {
   //join table customer with event, customer_id (fælles), event_id customer_email
 }
 
-fetchEventData();
+//fetchEventData();
 async function fetchEventData() {
   try {
     const response = await fetch(`/event/${detailId}`);
@@ -87,7 +88,7 @@ addEventListener("DOMContentLoaded", (event) => {
 
 
 //PRODUCT STUFF
-/* ---------------------------- GLOBAL VARIABLES  ---------------------------------------- */
+/* ---------------------------- GLOBAL VARIABLES - DETERMINE STATE ---------------------------------------- */
 //Contains all fetched product items
 let allProductItems;
 
@@ -108,25 +109,19 @@ async function productHandler() {
     //Select the general 'action' container from detail.html
     let actionContainer = document.querySelector("#actionContainer");
     
-    // Fetch all data, 
-    await fetchProductDetails();                            //for common data
-    const variationData = await fetchProductVariations();   //for variation selectors data
-    allProductItems = await fetchProductItems();               //to match against
+    // Fetch all data,                      
+    const variationData = await fetchProductVariations();   //For variation selectors data
+    allProductItems = await fetchProductItems();            //To match against
 
-    //Create and append the exstra DOM elements
-    let variationSelector = renderVariationSelector(variationData, actionContainer);
-    let storeSelector = renderStoreSelector(actionContainer);
-    renderButtonElem("cartButton", "Add to Cart", actionContainer);
+    //actionContainer UI specific to product page
+    renderActionUI(variationData, actionContainer);
 
-    //Add eventlistener to handle changes - "listen to "change" events on any <select> inside variationSelector/storeSelector"
-    addDelegatedEventListener("change","select", handleVariationChange, variationSelector);
-    addDelegatedEventListener("change","select", handleStoreChange, storeSelector);
+    //handleChange branches depending on target within actionContainer, (is <select> within variationSelector or storeSelector?)
+    addDelegatedEventListener("change","select", handleChange, actionContainer);
+    
 
-    // TESTING, MAY CHANGE. Trigger change events to initialize state
-    variationSelector.querySelectorAll('select').forEach(select => {
-      console.log("Fired initialization event on variationSelector");
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-    });
+    //POSSIBLY CHANGE IMPLEMENTATION: Trigger "change" events to initialize state with pre-chosen options. Targets: all the variationSelector's <select> children & storeSelector's <select> child
+    initSelections();
     
   } catch (error) {
     console.error('Error while fetching data or rendering:', error);
@@ -164,8 +159,8 @@ async function fetchProductItems() {
   try {
     const response = await fetch(`/product/${detailId}/allItems`);
     const data = await response.json();
-    //console.log("here should all items be");
-    //console.dir(data, { depth: null });
+    console.log("here should all items be");
+    console.dir(data, { depth: null });
     return data;
   } catch (error) {
     console.error('Error:', error);
@@ -173,6 +168,14 @@ async function fetchProductItems() {
 }
 
 /* -------------------------- DOM RENDERING - HAPPENS ONCE ---------------------------------------- */
+
+function renderActionUI(variationData, parentElem) {
+  //Create and append the exstra DOM elements
+  renderVariationSelector(variationData, parentElem);
+  renderStoreSelector(parentElem);
+  renderPurchaseContainer(parentElem);
+}
+
 function groupVariations(data) {
   /* Initialize an empty object which contains all groups. 
   Each property corresponds to one variation identified by variation-id as the key
@@ -206,56 +209,97 @@ function groupVariations(data) {
   return Object.values(groups);
 }
 
-function renderVariationSelector(groupedVariations, parent) {
+function renderVariationSelector(groupedVariations, parentElem) {
 
-  //Create unique variationSelector element, a wrapper for all variations
-  let variationSelector = document.createElement("div");
-  variationSelector.setAttribute("id", "variationSelector");
-  parent.appendChild(variationSelector);
+  //Unique variationSelector div, a wrapper for all variation related selections
+  let variationSelector = renderDivElem({id:"variationSelector", parent: parentElem});
 
-  //render all variations
+  //Render all variations
   for (let variation of groupedVariations) {
 
-    //Create a wrapper for the variation in question
-    let variationWrapper = document.createElement("div");
-    variationWrapper.setAttribute("class", `variationWrapper`);
+    //Wrapper for current variation
+    let variationWrapper = renderDivElem({className:"variationWrapper", parent: variationSelector});
     
-    //Create a label and select (dropdown) element for the variation, append to its variationWrapper
+    //Label and select (dropdown) element for current, append to its variationWrapper
     let selectElement = renderSelectWLabelElem(`selectVariation:${variation.variation_id}`, variation.variation_name, variation.variation_name, variationWrapper);
 
-    //Create options for dropdown menu from variation_options array,    //if (Array.isArray(variation.variation_options)) maybe check if array exists
+    //Options for dropdown menu, from variation_options array,    //if (Array.isArray(variation.variation_options)) maybe check if array exists
     for (let option of variation.variation_options) {
       renderOptionElem(option.id, option.value, selectElement);
     }
-
-    //Append this variation to the DOM
-    variationSelector.appendChild(variationWrapper);
   }
   return variationSelector;
 }
 
-function renderStoreSelector(parent) {
-  //Create unique variationSelector element, a wrapper for all variations
-  let storeSelector = document.createElement("div");
-  storeSelector.setAttribute("id", "storeSelector");
-  parent.appendChild(storeSelector);
+function renderStoreSelector(parentElem) {
+  //<div> wrapper
+  let storeSelector = renderDivElem({id:"storeSelector", parent: parentElem});
 
+  //The actual <select>
   let selectElement = renderSelectWLabelElem(`selectStore`, "Store", "Store", storeSelector);
   return storeSelector;
 }
 
+function renderPurchaseContainer(parentElem) {
+  //Overall wrapper
+  let purchaseContainer = renderDivElem({id:"purchaseContainer", parent: parentElem});
+
+  //Stock info element, text set dynamically 
+  renderTextElem("p", "stockInfo", "Stock Info should be here", purchaseContainer);
+
+  //Price info element
+  renderTextElem("p", "priceInfo", "Price Info should be here", purchaseContainer);
+
+  //Add to cart button
+  renderButtonElem("cartButton", "Add to Cart", purchaseContainer);
+
+  return purchaseContainer;
+}
+
+
 
 /* -------------------------- EVENT HANDLERS ---------------------------------------- */
+
+function updateProductState() {
+  //filters allProductItems into variationMatchedItems. If no match is found, variationMatchedItems = empty array.
+  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
+
+  updateFinalItem();
+
+  renderUIfromState();
+}
+
+function initSelections() {
+  variationSelector.querySelectorAll('select').forEach(select => {
+    console.log("Fired initialization event on variationSelector");
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  console.log("Fired initialization event on storeSelector");
+  storeSelector.querySelector('select').dispatchEvent(new Event('change', { bubbles: true })); // <-- Infinite loop starts here
+}
+
+function handleChange(e) {
+  const target = e.target;
+
+  //element.closest() traverses the element and its parents (heading toward the document root) until it finds a node that matches the specified css selector, here id
+  if (target.closest("#variationSelector")) {
+    handleVariationChange(e);
+  } else if (target.closest("#storeSelector")) {
+    handleStoreChange(e);
+  }
+}
+
 function handleVariationChange(e) {
   console.log("Entered handleVariationChange");
   //The selection updated
   const selectElement = e.target;
 
+  //updates the selectedVariationOptions {1: 9, 6: target.value}
   updateSelectedVariationOption(selectElement);
   console.log("Selected Variation Options:", selectedVariationOptions);
 
-  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
-  updateStoreOptions(variationMatchedItems);
+  updateProductState();
 }
 
 //Called when the store is changed
@@ -263,7 +307,8 @@ function handleStoreChange(e) {
   console.log("Entered handleStoreChange");
   //Update the global variable, that describes which store is selected
   selectedStoreId = e.target.value;
-  updateFinalItem();
+
+  updateProductState();
 }
 
 
@@ -294,11 +339,6 @@ function findVariationMatches(selectedVariationOptions, allProductItems) {
 
   console.log("Items matching variations:",variationMatchedItems);
 
-  //Quick fake final item, for Benjamin and Markus to test
-  //finalItem = variationMatchedItems[0]
-
-  //Now prints picture associated with the product_item instead of the product
-  //document.querySelector(".mainIMG").setAttribute("src", finalItem.item_img);
   return variationMatchedItems;
 }
 
@@ -335,20 +375,25 @@ function isProductItemMatch(selectedVariationOptions, productItem) {
 function updateStoreOptions(variationMatchedItems) {
   let selectElement = document.querySelector("#selectStore");
 
+  if (variationMatchedItems.length == 0) {
+    selectElement.disabled = true;
+    return;
+  }
+
+  selectElement.disabled = false;
+
   // Clear old options clearing doesnt work
   while (selectElement.options.length > 0) {
       selectElement.remove(0);
   }
 
   for (let item of variationMatchedItems) {
-    renderOptionElem(item.store_id, item.store_name, selectElement);
+    renderOptionElem(item.store_id, item.store_name +` - Price: ${item.price}`+ ` - Stock: ${item.stock_qty}`, selectElement);
   }
 
   //Store options have been updated, meaning may have been updated
   if (selectElement.options.length > 0) {
     selectElement.selectedIndex = 0;
-    const event = new Event('change', { bubbles: true });
-    selectElement.dispatchEvent(event);
   }
 }
 
@@ -360,34 +405,78 @@ function updateFinalItem() {
   if (fullyMatchingItems.length == 1) {
       fullyMatchedItem = fullyMatchingItems[0];
       console.log("Final fully matching item: ", fullyMatchedItem);
-
-      //Now prints picture associated with the product_item instead of the product
-      document.querySelector(".mainIMG").setAttribute("src", fullyMatchedItem.item_img);
   } else if (fullyMatchingItems.length > 1) {
       console.log("fullyMatchingItems is more than one? duplicate item?");
   } else {
       console.log("No fully matching item found");
+      
   }    
 }
 
 
+//  ----------------------------- RENDEr - Updates from state  ------------------------------------------
+
 // Display stock price
 
-function updateDisplay() {
+function renderUIfromState() {
+   //variationMatchedItems > 0,  update the options to chose from in store, which should narrow to a final product_item (Assuming stores does NOT have duplicates)
+   // Render store options only if needed (no unnecessary updates)
+   if (variationMatchedItems.length > 0) {
+    updateStoreOptions(variationMatchedItems);
+  }
 
-  //Update the picture
+  //If final item was not found
+  if (!fullyMatchedItem) {
+    updateDisplay({ stockQty: "Not available", itemPrice: "N/A", disable: true });
+  } else {
+    updateDisplay({
+      imgSrc: fullyMatchedItem.item_img,
+      stockQty: fullyMatchedItem.stock_qty,
+      itemPrice: fullyMatchedItem.price,
+      disable: (fullyMatchedItem.stock_qty <= 0)
+    });
+  }
+}
 
-  //Update the store options
+function updateDisplay({imgSrc, stockQty, itemPrice, disableCartButton = false} = {}) {
+  updateMainImg(imgSrc);
+
+  updateStockInfo(stockQty);
+
+  updatePriceInfo(itemPrice);
+  
+  //Disables cart if explicitly stated by options, otherwise defaults to false
+  document.querySelector("#cartButton").disabled = disableCartButton;
 
   //Update maps
-
 }
 
-function updateStockDisplay(){
-
+function updateMainImg(src) {
+  //Only update if the src is defined/not null, otherwise keep previous
+  if (src) {
+    document.querySelector(".mainIMG").setAttribute("src", src);
+  }
 }
 
-//  ----------------------------- Add to cart stuff ------------------------------------------
+function updateStockInfo(stock) {
+  const stockElem = document.querySelector("#stockInfo");
+  
+  if (stock > 0) {
+    stockElem.innerText = `In stock: ${stock}`;
+  } else {
+    stockElem.innerText = `Out of stock: ${stock}`;
+  }
+}
+
+function updatePriceInfo(price) {
+  const priceElem = document.querySelector("#priceInfo");
+  
+  if (price > 0) {
+    priceElem.innerText = `Price: ${price}kr`;
+  } else {
+    priceElem.innerText = ``;
+  }
+}
 
 
 
@@ -411,45 +500,4 @@ function addDelegatedEventListener(type, selector, callback, parent = document){
       callback(e);
     }
   });
-}
-/**
- * Creates a label and a select (dropdown) element, appends both to the same parent supplied
- * @param {*} associatingId - for atribute of label, id attribute of select must match
- * @param {string} labelText - text displayed in the label
- * @param {string} selectName - not sure
- * @param {HTMLElement} parent - parent to attach both to
- * @returns 
- */
-function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document) {
-   //Create a label for the select element
-   let labelElement = document.createElement("label");
-   labelElement.setAttribute("for", associatingId); //associates label w dropdown
-   labelElement.innerText = labelText; //Display name 
-   parent.appendChild(labelElement);
-
-   //Create dropdown menu for this label 
-   let selectElement = document.createElement("select");
-   selectElement.setAttribute("id", associatingId); //associates dropdown w label                this is the important one!!!!!!!!!!!!
-   selectElement.setAttribute("name", selectName); //maybe not needed if not using form /should it be id?
-   parent.appendChild(selectElement);
-
-   return selectElement;
-}
-
-function renderOptionElem(value, text, parent = document) {
-  let optionElement = document.createElement("option");
-  optionElement.setAttribute("value", value);
-  optionElement.innerText = text;
-
-  parent.appendChild(optionElement);
-  return optionElement;
-}
-
-function renderButtonElem(id, text, parent = document) {
-  let buttonElement = document.createElement("button");
-  buttonElement.setAttribute("id", id);
-  buttonElement.innerText = text;
-
-  parent.appendChild(buttonElement);
-  return buttonElement;
 }

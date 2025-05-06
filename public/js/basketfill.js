@@ -10,7 +10,7 @@ for (let i = 0; i < basket.length ; i++) {
     
 }
 
-//  Cookie Utilities (reuse from Untitled-1, but for JSON) 
+//  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
     date.setTime(date.getTime() + (daysToLive * 24 * 60 * 60 * 1000));

@@ -1,21 +1,16 @@
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('userId');
-
 document.addEventListener("DOMContentLoaded", async () => {
-    if (userId) {
+    // Hent brugerdata fra localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user.id; // Hent brugerens ID
+
+    if (user) {
         try {
-            // Fetch user information
-            const userResponse = await fetch(`http://localhost:3350/user/${userId}`);
-            if (userResponse.ok) {
-                const userData = await userResponse.json();
-                document.getElementById("userName").innerText = `Name: ${userData.firstname} ${userData.lastname}`;
-                document.getElementById("userEmail").innerText = `Email: ${userData.email}`;
-            } else {
-                throw new Error("Failed to fetch user information.");
-            }
+            // Vis brugerens navn og e-mail
+            document.getElementById("userName").innerText = `Name: ${user.first_name} ${user.last_name}`;
+            document.getElementById("userEmail").innerText = `Email: ${user.email}`;
 
             // Fetch user favorites
-            const favoritesResponse = await fetch("http://localhost:3350/get-favorites", {
+            const favoritesResponse = await fetch(`http://localhost:3350/get-favorites?userId=${userId}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
@@ -34,11 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
-            window.location.href = "login.html";
+            window.location.href = "/html/login.html"; // Opdateret sti
         }
     } else {
-        alert("User ID not found. Please log in again.");
-        window.location.href = "login.html";
+        // Hvis brugerdata ikke findes, send brugeren tilbage til login-siden
+        alert("User not found. Please log in again.");
+        window.location.href = "/html/login.html"; // Opdateret sti
     }
 });
-

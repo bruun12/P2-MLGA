@@ -4,6 +4,7 @@ import url from 'url';
 import htmlRoutes from './routes/html-routes.js';
 import accountRoutes from './routes/account-routes.js'; 
 import adminRoutes from './routes/admin-routes.js'; 
+import eventRoutes from './routes/event-routes.js';
 import bcrypt from 'bcrypt'; // For password hashing
 import dbPool from './database/database.js'; // For database connection
 import bodyParser from 'body-parser';
@@ -29,6 +30,8 @@ app.use('/', htmlRoutes);
 app.use('/', accountRoutes);
 
 app.use('/', adminRoutes);
+
+app.use('/', eventRoutes);
 
 //Reveal error if any
 app.use((error, request, response, next) => {

@@ -72,6 +72,7 @@ h1 {
 #rec {
     margin-left: 300px;
     padding: 20px;
+    border: 2px solid black;
     display: none;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;

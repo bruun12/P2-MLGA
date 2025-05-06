@@ -62,7 +62,7 @@ document.querySelectorAll('.add-cart').forEach(btn => {
     });
 });
 
-// On page load, you can access the cart:
+// on page load, you can access the cart, same load as cookiet.js:
 window.addEventListener('load', () => {
     const cart = getCart();
     // Update your cart UI here

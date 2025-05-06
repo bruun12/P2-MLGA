@@ -83,11 +83,11 @@ export async function userInteractions() { // Select all bought items for each u
   return rows;
 }
 
-export async function getProductsByIds(productIds) {
-  if (!Array.isArray(productIds) || productIds.length === 0) return [];
+export async function getProductsByIds(product_id) {
+  if (!Array.isArray(product_id) || product_id.length === 0) return [];
 
   const [rows] = await dbPool.query(
-      `SELECT * FROM product WHERE product_item_id IN (?)`, [productIds]
+      `SELECT * FROM product WHERE product_item_id IN (?)`, [product_id]
   );
 
   return rows;

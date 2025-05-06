@@ -3,11 +3,11 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 
-function displayItem(name, price, img, id){ // Note if event instead of product price = date.
+function displayItem(name, price, img, id, div){ // Note if event instead of product price = date.
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
     itemA.setAttribute("class", `${urlParams.get('type')}Div`);
-    document.querySelector("#displayer").appendChild(itemA);
+    document.querySelector(`#${div}`).appendChild(itemA);
     itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
 
 
@@ -263,14 +263,19 @@ async function recommendProducts() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ productIds: productRecArr })
+            body: JSON.stringify({ product_id: productRecArr })
         });
         
         const data2 = await response2.json();
         console.log("Product data from DB:", data2);
 
         // Show recommended products.
+        let recdiv = document.querySelector('#rec');
+        recdiv.style.display = 'grid';
 
+        for (const item of data2) {
+            displayItem(item.title, item.price, item.img, item.id, 'rec');
+        }
         } else {
             console.log("No similar users found for recommendation.")
         }
@@ -297,7 +302,7 @@ async function fetchAndDisplayItems() {
 
         // Display event or product depending on input
         for (const item of data) {
-            displayItem(item.title, getValue(item), item.img, item.id);
+            displayItem(item.title, getValue(item), item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data:", error);
@@ -311,7 +316,7 @@ async function fetchAndDisplayFilteredItems(id) {
         
         // Display filtered items
         for (const item of data) {
-            displayItem(item.title, item.price, item.img, item.id);
+            displayItem(item.title, item.price, item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -326,7 +331,7 @@ async function fetchAndDisplaySearchedItems(searchWord) {
         
         // Display searched items
         for (const item of data) {
-            displayItem(item.title, item.price, item.img, item.id);
+            displayItem(item.title, item.price, item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -366,7 +371,7 @@ async function fetchAndDisplayStoreEvents(id) {
 
         // Display events.
         for (const item of data) {
-            displayItem(item.title, item.date, item.img, item.store_id);
+            displayItem(item.title, item.date, item.img, item.store_id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -380,7 +385,7 @@ async function fetchStoreOverview() {
         
         // Display stores
         for (const store of data) {
-            displayItem(store.name, store.phone, store.img, store.id)
+            displayItem(store.name, store.phone, store.img, store.id, 'displayer')
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -416,7 +421,8 @@ const routeHandlers = {
         } else if (urlParams.get('search') !== null) {
             fetchAndDisplaySearchedItems(urlParams.get('search')); // Display searched items
         } else {
-            fetchAndDisplayItems(); // Display all items
+            recommendProducts() // Display recommendations
+            //fetchAndDisplayItems(); // Display all items
         }
 
     }, // Display all products

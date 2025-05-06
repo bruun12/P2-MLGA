@@ -6,6 +6,6 @@ import express from 'express';
 
 const router = express.Router();
 
-router.post('/api/events', createEvent);
+router.post('/events', createEvent);
 
 export default router;

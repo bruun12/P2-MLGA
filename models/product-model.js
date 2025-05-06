@@ -56,6 +56,13 @@ export async function filteredProducts(categoryId) {
   return rows;
 }
 
+export async function productItemById(productItemId) {
+  const [rows] = await dbPool.query(`SELECT *
+                                     FROM product_item
+                                     WHERE id = ?`, [productItemId]);
+  return rows;
+}
+
 export async function searchedProducts(searchWord) {
   let key = "%"+searchWord+"%" //the % means that anything can be infront of it.
   const [rows] = await dbPool.query(`SELECT p.id, p.name AS title, pi.price, pi.img

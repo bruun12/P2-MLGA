@@ -6,7 +6,7 @@ let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
 //import dom utile functions
 import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
-
+import {addToCart} from "./basketfill.js";
 //Function that displays all functions that are both on event and product detail pages
 async function commonDetail() {
   try {
@@ -20,7 +20,7 @@ async function commonDetail() {
     
     return data;
   }catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
   }
 }
 
@@ -33,12 +33,12 @@ async function eventHandler() {
     renderBtn("btnSignUpEvent", "Sign up", actionContainer);
 
   }catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
   }
 }
 
 async function signUpBtn() {
-  console.log("sign up btn works");
+    //console.log("sign up btn works");
   
   //get from event (via member_id) account get e*mail
   //join table customer with event, customer_id (fælles), event_id customer_email
@@ -49,9 +49,9 @@ async function fetchEventData() {
   try {
     const response = await fetch(`/event/${detailId}`);
     const data = await response.json();
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
   }
 }
 
@@ -76,7 +76,7 @@ addEventListener("DOMContentLoaded", (event) => {
   if (detailHandler) {
       detailHandler(id);
   } else{
-      console.error("FEJL")
+      //console.error("FEJL")
   }
 });
 
@@ -117,7 +117,8 @@ async function productHandler() {
     // Now, render the variation selectors
     let variationSelector = renderVariationSelector(variationData, actionContainer);
     renderStoreSelector(productItems, actionContainer);
-    renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
+    let addToCartBtn = renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
+    addToCartBtn.addEventListener("click", addToCartFunc);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/
@@ -132,7 +133,7 @@ async function productHandler() {
         });
     
   } catch (error) {
-    console.error('Error while fetching data or rendering:', error);
+    //console.error('Error while fetching data or rendering:', error);
   }
 }
 
@@ -145,7 +146,7 @@ async function fetchProductDetails() {
     const data = await response.json();
     //console.dir(data, { depth: null });
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
   }
 }
 
@@ -158,7 +159,7 @@ async function fetchProductVariations() {
     
     return groupedVariations;
   } catch (error) {
-    console.error('Error: ', error);
+    //console.error('Error: ', error);
   }
 }
 
@@ -167,10 +168,10 @@ async function fetchProductItems() {
     const response = await fetch(`/product/${detailId}/allItems`);
     const data = await response.json();
     //console.log("here should all items be");
-    console.dir(data, { depth: null });
+    //console.dir(data, { depth: null });
     return data;
   } catch (error) {
-    console.error('Error:', error);
+    //console.error('Error:', error);
   }
 }
 
@@ -251,7 +252,7 @@ function renderStoreSelector(productItems, parent) {
 
 /* -------------------------- VARIATION CHANGES - HAPENS MULTIPLE TIMES ---------------------------------------- */
 function handleVariationChange(e) {
-  console.log("Entered handlevar change");
+  //console.log("Entered handlevar change");
   //The selection updated
   const selectElement = e.target;
 
@@ -262,7 +263,7 @@ function handleVariationChange(e) {
   //selectedOptions is a global variable in this script
   selectedOptions[variationId] = parseInt(selectElement.value, 10);
 
-  console.log(selectedOptions);
+  //console.log(selectedOptions);
 
   findMatchingProductItems(selectedOptions, productItems);
   updateStoreOptions(matchingItems);
@@ -278,7 +279,7 @@ function findMatchingProductItems(selectedOptions, productItems) {
       matchingItems.push(productItem);
     }
   }
-  console.log(matchingItems);
+  //console.log(matchingItems);
 
   //Quick fake final item, for Benjamin and Markus to test
   finalItem = matchingItems[0]
@@ -316,16 +317,16 @@ function isProductItemMatch(selectedOptions, productItem) {
 function updateStoreOptions(matchingItems) {
   let selectElement = document.querySelector("#selectStore");
 
-  console.log("Entered updateStoreOptions with matching items:");
-  console.dir(matchingItems, { depth: null });
+  /* console.log("Entered updateStoreOptions with matching items:");
+  console.dir(matchingItems, { depth: null }); */
 
     // Clear old options clearing doesnt work
   while (selectElement.options.length > 0) {
       selectElement.remove(0);
   }
 
-  console.log("After removin options, printin selecElement.options");
-  console.dir(selectElement, { depth: null });
+/*   console.log("After removin options, printin selecElement.options");
+  console.dir(selectElement, { depth: null }); */
 
   for (let item of matchingItems) {
     //console.dir(productItem, { depth: null });
@@ -337,7 +338,7 @@ function updateStoreOptions(matchingItems) {
 
 //Called when the store is changed
 function handleStoreChange(e) {
-  console.log("Entered handlevar change");
+  //console.log("Entered handlevar change");
   //The selection updated
   const selectElement = e.target;
 
@@ -412,4 +413,8 @@ function renderButtonElem(id, text, parent = document) {
 
   parent.appendChild(buttonElement);
   return buttonElement;
+}
+
+function addToCartFunc(){
+  addToCart(2);
 }

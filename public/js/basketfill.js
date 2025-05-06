@@ -1,15 +1,3 @@
-console.log("hvis du læser dette, så er det femdreng der elsker agurk");
-
-let carts = document.querySelector('.add-cart');
-
-for (let i = 0; i < basket.length ; i++) {
-    carts[i].addEventListener('click', () => {
-        console.log("clicked");
-        cartNumbers();
-    });
-    
-}
-
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -38,16 +26,19 @@ function getCart() {
 
 function saveCart(cart) {
     setCookie("cart", JSON.stringify(cart), 7); // 7 days expiry
-}
+} 
 
-function addToCart(itemId, itemInfo) {
+export function addToCart(itemId) {
+    
+    console.log("added to cart " + itemId);
+    let product = fetchProductItem(itemId);
+    
+    console.log(product);
+
     let cart = getCart();
     if (cart[itemId]) {
-        cart[itemId].quantity += 1;
-    } else {
-        cart[itemId] = { ...itemInfo, quantity: 1 };
+        
     }
-    saveCart(cart);
 }
 
 //  Example Usage 
@@ -57,7 +48,7 @@ document.querySelectorAll('.add-cart').forEach(btn => {
         const itemId = btn.getAttribute('data-id');
         const itemName = btn.getAttribute('data-name');
         const itemPrice = btn.getAttribute('data-price');
-        addToCart(itemId, { name: itemName, price: itemPrice });
+        addToCart(itemId);
         console.log(getCart());
     });
 });
@@ -67,8 +58,14 @@ window.addEventListener('load', () => {
     const cart = getCart();
     // Update your cart UI here
     console.log(cart);
-});
+}); 
 
-// html knap
-
-<button class="add-cart" data-id="123" data-name="Apple" data-price="2.99">Add to Cart</button>
+async function fetchProductItem(id) {
+    try {
+        const response = await fetch(`/ProductItemById/${id}`);
+        const data = await response.json();         
+        return data;
+    } catch (error) {
+        console.error("Error fetching or processing data", error);
+    }
+}

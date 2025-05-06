@@ -100,7 +100,7 @@ let selectedStoreId = null;
 let variationMatchedItems = [];
 
 //Final item after variation and store selection. Can be empty. Currently hardcoded to the first element in the mactching items array. May therefore be empty. //finalItem.product_item_id for id currently
-let fullyMatchedItem;
+let fullyMatchedItem = null;
 
 
 /* ---------------------------- MAIN FLOW ---------------------------------------- */
@@ -259,56 +259,99 @@ function renderPurchaseContainer(parentElem) {
 
 
 /* -------------------------- EVENT HANDLERS ---------------------------------------- */
-
-function updateProductState() {
-  //filters allProductItems into variationMatchedItems. If no match is found, variationMatchedItems = empty array.
-  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
-
-  updateFinalItem();
-
-  renderUIfromState();
-}
-
 function initSelections() {
-  variationSelector.querySelectorAll('select').forEach(select => {
-    console.log("Fired initialization event on variationSelector");
-    select.dispatchEvent(new Event('change', { bubbles: true }));
+  // 1. Load the selected variation options from DOM
+  //Collect all variation selections 
+  document.querySelectorAll('#variationSelector select').forEach(select => {
+    updateSelectedVariationOption(select);
   });
 
-  console.log("Fired initialization event on storeSelector");
-  storeSelector.querySelector('select').dispatchEvent(new Event('change', { bubbles: true })); // <-- Infinite loop starts here
+  updateVariationMatches();
+  /*
+  
+  // 2. Compute variation matching items based on the selections, (DO NOT render UI yet)
+  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
+
+
+  // 3. Populate the store dropdown, triggers storechange event and we should be golen
+  updateStoreOptions(variationMatchedItems);
+
+  // --- 4. Read current store selection from DOM
+  const storeSelect = document.querySelector("#selectStore");
+  selectedStoreId = storeSelect?.value || null;
+
+  // --- 5. Finalize matched item and render everything
+  updateFinalMatchAndRender();*/
 }
 
 function handleChange(e) {
   const target = e.target;
 
-  //element.closest() traverses the element and its parents (heading toward the document root) until it finds a node that matches the specified css selector, here id
+  //element.closest() traverses the element and its parents (up the tree, toward the document root) until it finds a node that matches the specified css selector, here id¨
+
   if (target.closest("#variationSelector")) {
     handleVariationChange(e);
+
   } else if (target.closest("#storeSelector")) {
     handleStoreChange(e);
   }
 }
 
 function handleVariationChange(e) {
-  console.log("Entered handleVariationChange");
-  //The selection updated
-  const selectElement = e.target;
+    console.log("Entered handleVariationChange");
 
-  //updates the selectedVariationOptions {1: 9, 6: target.value}
-  updateSelectedVariationOption(selectElement);
-  console.log("Selected Variation Options:", selectedVariationOptions);
+  //1. update the users selcted options {1: 9, 6: target.value}
+  updateSelectedVariationOption(e.target);
+  
+    console.log("Selected Variation Options:", selectedVariationOptions);
 
-  updateProductState();
+  //2. User selections have changed, update the variationMatchingItems
+  updateVariationMatches();
 }
 
-//Called when the store is changed
+/**  user changes store
+ * @param {*} e 
+ */
 function handleStoreChange(e) {
-  console.log("Entered handleStoreChange");
-  //Update the global variable, that describes which store is selected
+    console.log("Entered handleStoreChange");
+
+  //1. update the users selected store
   selectedStoreId = e.target.value;
 
-  updateProductState();
+    console.log("in handleStoreChange, selectedStoreId=", selectedStoreId);
+
+  //2. Find the final match and render
+  updateFinalMatchAndRender();
+}
+
+/** Fully handles what happens, when a user changes variations */
+function updateVariationMatches() {
+    console.log("entered updateVariationMatches")
+  
+  // 1. Recomputate matching product items based on user's new VARIATION selections.  filters allProductItems -> variationMatchedItems. If no match is found, variationMatchedItems = empty array.
+  variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
+
+  // 2.Render store <select> options based on variation matches,  (possibly new set of items -> possibly new set of stores)
+  updateStoreOptions(variationMatchedItems);
+
+  //WHY DO I NEED THIS
+  const storeSelect = document.querySelector("#selectStore");
+  selectedStoreId = storeSelect?.value || null;
+
+  //4. Since variationMatched item has changed stores might have changed also
+  updateFinalMatchAndRender();
+}
+
+/** Find final item, then show result to the user." 
+ * Used in two places
+ * After a user pics store manually
+ * After variations have change*/
+function updateFinalMatchAndRender() {
+    console.log("entered updateFinalMatch and render with selectedStoreId:", selectedStoreId)
+    
+  //finds the final item in
+  updateFinalItem();
+  renderUIfromState();
 }
 
 
@@ -375,6 +418,7 @@ function isProductItemMatch(selectedVariationOptions, productItem) {
 function updateStoreOptions(variationMatchedItems) {
   let selectElement = document.querySelector("#selectStore");
 
+  console.log("in update Store options varMatched items",variationMatchedItems);
   if (variationMatchedItems.length == 0) {
     selectElement.disabled = true;
     return;
@@ -387,9 +431,9 @@ function updateStoreOptions(variationMatchedItems) {
       selectElement.remove(0);
   }
 
-  for (let item of variationMatchedItems) {
+  variationMatchedItems.forEach( item => {
     renderOptionElem(item.store_id, item.store_name +` - Price: ${item.price}`+ ` - Stock: ${item.stock_qty}`, selectElement);
-  }
+  });
 
   //Store options have been updated, meaning may have been updated
   if (selectElement.options.length > 0) {
@@ -399,6 +443,8 @@ function updateStoreOptions(variationMatchedItems) {
 
 function updateFinalItem() {
     //Should only be one, long
+
+    console.log("Entered update final item with selectedStoreId", selectedStoreId)
     const fullyMatchingItems = variationMatchedItems.filter( (varMatchingItem) => varMatchingItem.store_id == selectedStoreId);
     
 
@@ -408,6 +454,7 @@ function updateFinalItem() {
   } else if (fullyMatchingItems.length > 1) {
       console.log("fullyMatchingItems is more than one? duplicate item?");
   } else {
+      fullyMatchedItem = null;
       console.log("No fully matching item found");
       
   }    
@@ -419,21 +466,18 @@ function updateFinalItem() {
 // Display stock price
 
 function renderUIfromState() {
-   //variationMatchedItems > 0,  update the options to chose from in store, which should narrow to a final product_item (Assuming stores does NOT have duplicates)
-   // Render store options only if needed (no unnecessary updates)
-   if (variationMatchedItems.length > 0) {
-    updateStoreOptions(variationMatchedItems);
-  }
-
+  console.log("renderUIFromState")
   //If final item was not found
   if (!fullyMatchedItem) {
-    updateDisplay({ stockQty: "Not available", itemPrice: "N/A", disable: true });
-  } else {
+    console.log("Not available screen should be")
+    updateDisplay({ stockQty: "Not available", itemPrice: "N/A", disableCartButton: true });
+  }  else {
+    console.log("available")
     updateDisplay({
       imgSrc: fullyMatchedItem.item_img,
       stockQty: fullyMatchedItem.stock_qty,
       itemPrice: fullyMatchedItem.price,
-      disable: (fullyMatchedItem.stock_qty <= 0)
+      disableCartButton: (fullyMatchedItem.stock_qty <= 0)
     });
   }
 }

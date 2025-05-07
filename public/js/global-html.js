@@ -11,7 +11,7 @@ const navTmpl = (event) =>
         <div class="nav-icons">
             <a href="login"><i class="fa-solid fa-circle-user"></i></a>
             <a href="profile"><i class="fa-solid fa-heart"></i></a>
-            <a href=""><class="cartIcon" href=""><i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="cartIcon" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Div used to box search container elements -->

@@ -56,7 +56,6 @@ export const getSearchedProducts = async (req, res) => {
 
 export const getProductItemById = async (req, res) => {
   const {id} = req.params;
-  console.log(id);
   try {
     const products = await productItemById(id);
     res.json(products); // Return JSON response

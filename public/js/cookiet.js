@@ -39,7 +39,7 @@ function setCookie(name, value, daysToLive){
 } 
 
 //Delete cookie function, sets expiration date to a past date.
-function deleteCookie(name){
+export function deleteCookie(name){
   document.cookie = `${name}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
 };
 

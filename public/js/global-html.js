@@ -11,7 +11,7 @@ const navTmpl = (event) =>
         <div class="nav-icons">
             <a href="login"><i class="fa-solid fa-circle-user"></i></a>
             <a href="profile"><i class="fa-solid fa-heart"></i></a>
-            <a class="cartIcon" href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a class="cartIcon" href=""><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
 
         <!-- Div used to box search container elements -->
@@ -102,7 +102,11 @@ let cartClose = document.querySelector(".closeCart");
 
 cartIcon.addEventListener("click", function(event){
     event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
-    cartTab.style.display = "block";
+    if(cartTab.style.display !== "block"){
+        cartTab.style.display = "block";
+    } else {
+        cartTab.style.display = "none";
+    }
 })
 
 cartClose.addEventListener("click", function(){

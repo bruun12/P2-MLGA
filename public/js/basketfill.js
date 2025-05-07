@@ -21,6 +21,7 @@ function getCookie(name) {
 //  Cart Functions 
 function getCart() {
     const cart = getCookie("cart");
+    console.log(cart);
     return cart ? JSON.parse(cart) : {};
 }
 
@@ -34,19 +35,20 @@ export async function addToCart(itemId) {
     let cart = getCart();
     // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.
     if (cart[itemId]) {
-        cart[itemId].cartQty = cart[itemId].cartQty + 1;
+        cart[itemId].cartQty += 1;
+        console.log(cart[itemId].cartQty);
     } else {
-        // opretter produkt og gemmer det på dets item nummer
+        // opretter produkt og gemmer det på dets itemId
         product.cartQty = 1;
         cart[itemId] = product;
     }
     saveCart(cart);
 }
 
-function productExits(product, cart){
-
-    return true
+function deleteCookie(cookie){
+        document.cookie = `${cookie}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
 }
+
 
 //  Example Usage 
 // Suppose you have buttons with data attributes for item id/info

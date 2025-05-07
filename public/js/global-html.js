@@ -1,3 +1,5 @@
+import {getCart} from '/js/basketfill.js';
+import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `
@@ -86,6 +88,7 @@ insGlb()
 /* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
+let cartDiv = document.querySelector(".listCart");
 
 product.addEventListener("mouseenter", function(event){
     productLink.style.display = "block";
@@ -94,6 +97,16 @@ product.addEventListener("mouseenter", function(event){
 productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
+
+let cart = getCart();
+console.log(cart);
+
+for (const id in cart) {
+    renderTextElem(`p`, `cartItem${id}`, cart[id].name, cartDiv);
+
+    console.log(cart[id]);
+}
+
 
 /* JS to display and hide shopping cart */
 let cartIcon = document.querySelector(".cartIcon");

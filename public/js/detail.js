@@ -416,5 +416,5 @@ function renderButtonElem(id, text, parent = document) {
 }
 
 function addToCartFunc(){
-  addToCart(5);
+  addToCart(143);
 }

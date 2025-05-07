@@ -57,9 +57,10 @@ export async function filteredProducts(categoryId) {
 }
 
 export async function productItemById(productItemId) {
-  const [rows] = await dbPool.query(`SELECT *
-                                     FROM product_item
-                                     WHERE id = ?`, [productItemId]);
+  const [rows] = await dbPool.query(`SELECT product_item.id, name, stock_qty, product_item.img, price, store_id
+                                     FROM product_item JOIN product
+                                     ON product_item.product_id = product.id
+                                     WHERE product_item.id = ?;`, [productItemId]);
   return rows;
 }
 

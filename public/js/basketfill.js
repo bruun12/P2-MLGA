@@ -19,9 +19,8 @@ function getCookie(name) {
 }
 
 //  Cart Functions 
-function getCart() {
+export function getCart() {
     const cart = getCookie("cart");
-    console.log(cart);
     return cart ? JSON.parse(cart) : {};
 }
 

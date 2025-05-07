@@ -1,4 +1,3 @@
-
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -22,7 +21,6 @@ function getCookie(name) {
 //  Cart Functions 
 function getCart() {
     const cart = getCookie("cart");
-    console.log(cart);
     return cart ? JSON.parse(cart) : {};
 }
 
@@ -31,26 +29,23 @@ function saveCart(cart) {
 } 
 
 export async function addToCart(itemId) {
-    
     console.log("added to cart " + itemId);
-    
     const product = await fetchProductItem(itemId);
-
-
     let cart = getCart();
-
-    if (cart.cartQty == null){
-        cart.cartQty = 1;
-        console.log(cart.cartQty);
-        saveCart(cart);
+    // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.
+    if (cart[itemId]) {
+        cart[itemId].cartQty = cart[itemId].cartQty + 1;
     } else {
-        cart.cartQty = cart.cartQty + 1;
-        saveCart(cart)
-        console.log(cart.cartQty);
-    } 
+        // opretter produkt og gemmer det på dets item nummer
+        product.cartQty = 1;
+        cart[itemId] = product;
+    }
+    saveCart(cart);
+}
 
+function productExits(product, cart){
 
-
+    return true
 }
 
 //  Example Usage 

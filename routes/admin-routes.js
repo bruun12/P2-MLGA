@@ -3,9 +3,9 @@ import { addProduct, createNewStore } from "../controllers/admin-controller.js";
 
 const router = express.Router(); 
 
-router.post('/api/products/add', addProduct);
+router.post('/products/add', addProduct);
 
-router.post('/api/createStore', createNewStore);
+router.post('/createStore', createNewStore);
 
 
 

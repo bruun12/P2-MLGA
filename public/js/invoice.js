@@ -34,26 +34,18 @@ function rabat() {
     }
 }
 
-let checkOutBtn = document.querySelector("#maddog");
-checkOutBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    fetch('/create-checkout-session', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            items: [
-                { id: 1, quantity: 3 },
-                { id: 2, quantity: 1 }
-            ]
-        })
-    }).then(res => {
-        if (res.ok) return res.json();
-        return res.json().then(json => Promise.reject(json));
-    }).then(({ url }) => {
-        window.location = url
-    }).catch(error => {
-        console.error(error.error);
-    });
-});
+
+let basket=document.querySelector("#basket"); 
+
+function getCookie(name){
+    const cDecoded = decodeURIComponent(document.cookie);
+    const cArray = cDecoded.split("; ");
+    let result = null;
+    
+    cArray.forEach(element => {
+        if(element.indexOf(name) == 0){
+            result = element.substring(name.length + 1)
+        }
+    })
+    return result;
+} 

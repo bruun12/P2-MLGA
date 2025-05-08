@@ -11,11 +11,18 @@ export async function insertAccount (email, firstname, lastname, phone, hashedPa
 
 // Fetch user from the database
 export const checkMember = async (email) => {
-    const [rows] = await dbPool.execute(
-        'SELECT * FROM member WHERE email = ?',
+    try {
+        console.log("Checking member with email:", email);
+        const [rows] = await dbPool.execute(
+        'SELECT * FROM account WHERE email = ?',
         [email]
     );
+    console.log("Rows fetched:", rows);
     return rows[0]; // Return the first row (user) if found, otherwise undefined
+    } catch (error) {
+        console.error("Error fetching member:", error);
+        throw error; // Rethrow the error to be handled by the calling function
+    }
 };
 
 
@@ -30,10 +37,12 @@ export async function updateCustomerPassword(email, tempPassword) {
 
 export async function sendEmail(to, subject, text) {
     const transporter = nodemailer.createTransport({
-        service: 'Gmail', 
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, 
         auth: {
             user: 'Byhjerte@gmail.com', 
-            pass: ''  
+            pass: 'pash dfvd dkep fqwf'  
         }
     });
 
@@ -49,13 +58,14 @@ export async function sendEmail(to, subject, text) {
         console.log('Email sent successfully', info.response);
     } catch (error) {
         console.error('Error sending email:', error);
+        console.error('full error:', error); // Log the full error for debugging
         throw error;
     }
 }
 
 export const getUserFavorites = async (userId) => {
     const [rows] = await dbPool.execute(
-        "SELECT * FROM favorites WHERE user_id = ?",
+        "SELECT * FROM favorite WHERE user_id = ?",
         [userId]
     );
     return rows;

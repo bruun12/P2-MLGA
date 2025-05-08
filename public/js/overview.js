@@ -1,3 +1,4 @@
+import { formatDates } from '../js/dom-utils.js';
 //uses the query set in the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -297,7 +298,8 @@ async function fetchAndDisplayItems() {
         if (itemType === 'product') {
             getValue = (item) => item.price;
         } else {
-            getValue = (item) => item.date;
+            formatDates(data, 'date', 'newDate')
+            getValue = (item) => item.newDate;
         }
 
         // Display event or product depending on input

@@ -7,7 +7,9 @@ let actionContainer = document.querySelector("#actionContainer");
 //import dom utile functions
 import { renderBtn, renderInputElem, renderTextElem, renderImgElem} from "./dom-utils.js";
 import {addToCart} from "./basketfill.js";
+import { loadCart } from "./global-html.js";
 //Function that displays all functions that are both on event and product detail pages
+
 async function commonDetail() {
   try {
     const response = await fetch(`/${urlParams.get('type')}/${detailId}`); //make sure to get the information based on the type (product/event)
@@ -119,6 +121,7 @@ async function productHandler() {
     renderStoreSelector(productItems, actionContainer);
     let addToCartBtn = renderButtonElem("cartButton", "Add to Cart" ,actionContainer);
     addToCartBtn.addEventListener("click", addToCartFunc);
+    addToCartBtn.addEventListener("click", loadCart);
 
     //Add eventlistener to handle changes
     /*  "listen to "change" events on any <select> inside variationSelector".*/
@@ -416,5 +419,5 @@ function renderButtonElem(id, text, parent = document) {
 }
 
 function addToCartFunc(){
-  addToCart(143);
+  addToCart(1);
 }

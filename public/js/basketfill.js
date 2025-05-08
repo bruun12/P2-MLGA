@@ -1,3 +1,5 @@
+import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
+
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -28,6 +30,9 @@ function saveCart(cart) {
     setCookie("cart", JSON.stringify(cart), 7); // 7 days expiry
 } 
 
+
+
+
 export async function addToCart(itemId) {
     console.log("added to cart " + itemId);
     const product = await fetchProductItem(itemId);
@@ -44,7 +49,7 @@ export async function addToCart(itemId) {
     saveCart(cart);
 }
 
-function deleteCookie(cookie){
+export function deleteCookie(cookie){
         document.cookie = `${cookie}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
 }
 
@@ -77,3 +82,5 @@ async function fetchProductItem(id) {
         console.error("Error fetching or processing data", error);
     }
 }
+
+

@@ -1,4 +1,4 @@
-import {getCart} from '/js/basketfill.js';
+import {getCart, deleteCookie} from '/js/basketfill.js';
 import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
 /* HTML Navbar Template */
 const navTmpl = (event) =>
@@ -33,26 +33,13 @@ const navTmpl = (event) =>
     <div class="cartTab">
         <h2>Shopping Cart</h2>
         <div class="listCart">
-            <div class="item">
-                <div class="image">
-                    
-                </div>
-                <div class="name">
-                    
-                </div>
-                <div class="totalPrice">
-                    
-                </div>
-                <div class="quantity">
-                    <span class="minus"><</span>
-                    
-                    <span class="plus">></span>
-                </div>
-            </div>
+           
         </div>
-        <div class=btn>
+        <div class="btn">
             <button class="closeCart">Close</button>
-            <a href="/basket"<button class="checkOut">Check Out</button>
+            <a href="/basket"><button class="checkOut">Check Out</button></a>
+            <button class="closeCart" id="clearBasket">Clear basket</button>
+
         </div>
     </div>
     `
@@ -89,6 +76,15 @@ insGlb()
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
 let cartDiv = document.querySelector(".listCart");
+let clearBasketBtn = document.querySelector("#clearBasket");
+
+
+clearBasketBtn.addEventListener("click", function(){
+    const itemInfoDivs = document.querySelectorAll(".itemInfo"); 
+    itemInfoDivs.forEach(div => div.remove()); // Removes all items in cart
+    deleteCookie("cart"); //Deletes items in cookie
+    loadCart();
+})
 
 product.addEventListener("mouseenter", function(event){
     productLink.style.display = "block";
@@ -98,14 +94,35 @@ productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
 
-let cart = getCart();
-console.log(cart);
 
-for (const id in cart) {
-    renderTextElem(`p`, `cartItem${id}`, cart[id].name, cartDiv);
+export function loadCart(){
+    setTimeout(() => {
+        let cart = getCart();
 
-    console.log(cart[id]);
+        for (const id in cart) {
+            let cartItem = document.querySelector(`#cartItemDiv${id}`);
+    
+            if (cartItem === null){
+                let cartItemDiv = document.createElement("div");
+                cartItemDiv.setAttribute("id", `cartItemDiv${id}`);
+                cartDiv.appendChild(cartItemDiv);
+                
+                let itemInfo = document.createElement("div");
+                itemInfo.setAttribute("class", "itemInfo");
+                cartItemDiv.appendChild(itemInfo);
+                
+                renderTextElem(`p`, `item${id}Qty`, `${cart[id].cartQty} x `, itemInfo);
+                renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
+                let price = cart[id].price * cart[id].cartQty;
+                renderTextElem(`p`, `item${id}Price`, `${price} kr.`, itemInfo);
+            } else {
+                document.querySelector(`#item${id}Qty`).innerText = `${cart[id].cartQty} x `;
+            }
+        }
+    }, 100);  // adjust delay as needed
+
 }
+
 
 
 /* JS to display and hide shopping cart */
@@ -117,6 +134,7 @@ cartIcon.addEventListener("click", function(event){
     event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
     if(cartTab.style.display !== "block"){
         cartTab.style.display = "block";
+        loadCart();
     } else {
         cartTab.style.display = "none";
     }

@@ -33,8 +33,8 @@ const navTmpl = (event) =>
     <div class="cartTab">
         <h2>Shopping Cart</h2>
         <div class="listCart">
-           
         </div>
+        <div class="listCart"> <p id="finalPrice"> </p> </div>
         <div class="btn">
             <button class="closeCart">Close</button>
             <a href="/basket"><button class="checkOut">Check Out</button></a>
@@ -79,8 +79,9 @@ let cartDiv = document.querySelector(".listCart");
 let clearBasketBtn = document.querySelector("#clearBasket");
 
 
+
 clearBasketBtn.addEventListener("click", function(){
-    const itemInfoDivs = document.querySelectorAll(".itemInfo"); 
+    const itemInfoDivs = document.querySelectorAll(".cartItemDiv"); 
     itemInfoDivs.forEach(div => div.remove()); // Removes all items in cart
     deleteCookie("cart"); //Deletes items in cookie
     loadCart();
@@ -98,13 +99,17 @@ productLink.addEventListener("mouseleave", function(){
 export function loadCart(){
     setTimeout(() => {
         let cart = getCart();
+        let sum = 0;
+        let price = 0
 
         for (const id in cart) {
             let cartItem = document.querySelector(`#cartItemDiv${id}`);
-    
+            
+            let priceRounded;    
             if (cartItem === null){
                 let cartItemDiv = document.createElement("div");
                 cartItemDiv.setAttribute("id", `cartItemDiv${id}`);
+                cartItemDiv.setAttribute("class", `cartItemDiv`);
                 cartDiv.appendChild(cartItemDiv);
                 
                 let itemInfo = document.createElement("div");
@@ -113,12 +118,23 @@ export function loadCart(){
                 
                 renderTextElem(`p`, `item${id}Qty`, `${cart[id].cartQty} x `, itemInfo);
                 renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
-                let price = cart[id].price * cart[id].cartQty;
-                renderTextElem(`p`, `item${id}Price`, `${price} kr.`, itemInfo);
+
+                price = cart[id].price * cart[id].cartQty;
+                priceRounded = price.toFixed(2)
+                renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
             } else {
                 document.querySelector(`#item${id}Qty`).innerText = `${cart[id].cartQty} x `;
+
+                price = cart[id].price * cart[id].cartQty;
+                priceRounded = price.toFixed(2)
+                document.querySelector(`#item${id}Price`).innerText = `${priceRounded} kr.`;
             }
+
         }
+        sum = sum + price;
+        let sumRounded = sum.toFixed(2);
+        document.querySelector("#finalPrice").innerText = `Total ${sumRounded} kr.`;
+        
     }, 100);  // adjust delay as needed
 
 }

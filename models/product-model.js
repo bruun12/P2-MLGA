@@ -83,14 +83,27 @@ export async function userInteractions() { // Select all bought items for each u
   return rows;
 }
 
-export async function getProductsByIds(product_id) {
-  if (!Array.isArray(product_id) || product_id.length === 0) return [];
+export async function getProductsByIds(product_ids) {
+  if (!Array.isArray(product_ids) || product_ids.length === 0) return [];
 
   const [rows] = await dbPool.query(
-      `SELECT * FROM product WHERE product_item_id IN (?)`, [product_id]
+      `SELECT 
+          p.id, 
+          p.name AS title, 
+          pi.price, 
+          pi.img
+       FROM product p
+       JOIN (
+           SELECT product_id, MIN(price) AS min_price
+           FROM product_item
+           GROUP BY product_id
+       ) min_prices ON p.id = min_prices.product_id
+       JOIN product_item pi 
+           ON pi.product_id = min_prices.product_id 
+           AND pi.price = min_prices.min_price
+       WHERE p.id IN (?)`,
+      [product_ids]
   );
 
   return rows;
 }
-
-

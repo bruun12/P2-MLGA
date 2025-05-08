@@ -68,8 +68,8 @@ export const getUserInteractions = async (req,res) => {
 // Get recommended products from database using array of product ids
 export const getRecommendedProducts = async (req, res) => {
   try {
-      const { productIds } = req.body;
-      const products = await getProductsByIds(productIds);
+      const { product_id } = req.body;
+      const products = await getProductsByIds(product_id);
       res.json(products);
   } catch (error) {
       console.error(error);

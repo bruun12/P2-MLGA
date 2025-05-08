@@ -28,7 +28,7 @@ async function commonDetail() {
 
 async function eventHandler() {
   try {
-    renderInputElem("emailEvent", "Insert your email", actionContainer);
+    renderInputElem("inputEmailEvent", "Insert your email", actionContainer);
     renderBtn("btnSignUpEvent", "Sign up", actionContainer);
 
     btnSignUpEvent.addEventListener("click", signUpBtn);
@@ -37,45 +37,69 @@ async function eventHandler() {
   }
 }
 //få mailen til at komme med i popup
+//obs lave 
 async function signUpBtn() {
-    console.log("sign up btn clicked");
-    let emailPromt;
- 
-    if(emailPromt == ""){
-      prompt("Do you want to sign up with following mail:", "Enter email");
-    } else if (emailPromt == null){
-      prompt("Do you want to sign up with following mail:", "Enter email");
-    } else{
-      promts("Do you want to sign up with following mail:", "");
-    }
-  //get from event (via member_id) account get e*mail
-  //join table customer with event, customer_id (fælles), event_id customer_email
-}
-
-//Makes a map from the data in the databse
-async function getAddress() {
-  const response = await fetch(`/${urlParams.get('type')}/${detailId}/address`); //make sure to get the information based on the type (product/event)
+  let emailInput = document.getElementById("inputEmailEvent").value; //Gets the value from the inputfield
+  //!!!!!!!!!!!!
+  //lav ny sti for at få joined account.id, account.email full joined med event_members 
+  //for at kunne sammenigne om email har et id samt indsætte account id i event_memeber med event_id
+  const response = await fetch(`/${urlParams.get('type')}/${detailId}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
-  console.dir(data, {depth: null});
+  console.dir(data)
 
-  //filters data so the id numbers will not be part of the address search
-  const excludedKeys = ['ev_id', 'add_id'];
-  const filteredAddressData = Object.fromEntries(
-    Object.entries(data).filter(([key, value]) => !excludedKeys.includes(key))
-  );
-  const address = Object.values(filteredAddressData).join(' ');
-  //insert map  with address from database
-  renderMap("map", address);
+  const emailsAcc = data.map(account => account.email) //return a string with all the value (email)
+  console.log("The Account email is:" + emailsAcc);
+
+
+// Print emails as array
+console.log("All emails:", data.map(acc => acc.email));
+
+// Print each email on a separate line
+data.forEach(account => console.log("Email:", account.email));
+  
+
+  if (confirm("Do you want to sign up for the event with the email: " + email)) {
+    //forEach(data.map(acc => acc.email)) //tjek alle output den får så den kan se om man er member
+      if(email==account.email){
+        addMemberToEvent(email); //!!!!!!!!!!Lav funktion evt bare lav den i if statement for sjov
+        console.log("SUccess getting email");
+      } else{
+        console.error("Error getting email");
+      }
+    
+  } else {
+    alert("you have not signed up for the event")
+  }
 }
-//!!!!!!!!!!!!!!!!!!!!if not null get store_add til product
 
+//Makes a map from the data in the database
+//!!!!!!!!!!!!!!  if not null get store_add til product
+async function getAddress() {
+  try {
+    const response = await fetch(`/${urlParams.get('type')}/${detailId}/address`); //make sure to get the information based on the type (product/event)
+    const data = await response.json();
+    //console.dir(data, {depth: null});
+
+    //filters data so the id numbers will not be part of the address search
+    const excludedKeys = ['ev_id', 'add_id', 'st_id'];
+    const filteredAddressData = Object.fromEntries(
+      Object.entries(data).filter(([key, value]) => !excludedKeys.includes(key))
+    );
+    const address = Object.values(filteredAddressData).join(' ');
+    //insert map  with address from database
+    renderMap("map", address);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 //fetchEventData();
 async function fetchEventData() {
   try {
-    const response = await fetch(`/event/${detailId}`);
+    const response = await fetch(`/${urlParams.get('type')}/${detailId}/account`);
     const data = await response.json();
-    //console.dir(data, { depth: null });
+
+    console.dir(data, { depth: null });
   } catch (error) {
     console.error('Error:', error);
   }

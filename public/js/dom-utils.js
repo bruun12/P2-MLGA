@@ -1,5 +1,6 @@
+//setAttribute class?
+
 //function that creates a text element with given type/class, id and the text from database 
-//Return elements!!!ABTIN request
 export async function renderTextElem(type, id, text, parent = main) {
     //hent data fra json 
     
@@ -10,6 +11,7 @@ export async function renderTextElem(type, id, text, parent = main) {
     //append to the main element from html so it isn't hid behind navn bar
     parent.appendChild(textElement);
     } 
+    return textElement;
 }
 
 //function that creates an img with given  id and the src from database 
@@ -29,6 +31,7 @@ export async function renderImgElem(id, src, parent = main) {
             parent.appendChild(imgElement);
         }
     }
+    return imgElement;
 }
 
 //function that creates a text element with given type/class, id and the text from database 
@@ -39,6 +42,8 @@ export async function renderInputElem(id, placeholder, parent = main) {
     inputElement.placeholder = placeholder; //the text that is shown when there is no input
     
     parent.appendChild(inputElement);
+    
+    return inputElement;
 }
 
 //function that add the member to the sign up at an event
@@ -48,6 +53,8 @@ export async function renderBtn(id, text, parent = main) {
     btn.innerText = text; 
     
     parent.appendChild(btn);
+
+    return btn;
 }
 
 //Function to create map
@@ -71,4 +78,5 @@ export async function renderMap(id, address) {
     if(address!=null){
         parent.appendChild(iframe);   
     }
+    return iframe;
 }

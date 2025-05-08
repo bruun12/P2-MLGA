@@ -10,16 +10,68 @@ They decide what happens when a specific route is hit.
 */
 import { getProductInfo } from '../models/product-model4Tim.js';
 import { getProductVariations } from '../models/product-model4Tim.js';
-import {getProductItems } from '../models/product-model4Tim.js';
-import { getEventInfo } from '../models/product-model4Tim.js';
-import { getStoreInfo } from '../models/product-model4Tim.js';
-import { getAddressJoinEventInfo } from '../models/product-model4Tim.js';
-import { getAddressJoinStoreInfo } from '../models/product-model4Tim.js';
+import { getProductItems } from '../models/product-model4Tim.js';
+import { getEventInfo, getStoreInfo } from '../models/product-model4Tim.js';
+import { getAddressJoinEventInfo, getAddressJoinStoreInfo } from '../models/product-model4Tim.js';
+import { getAccountEventInfo } from '../models/product-model4Tim.js';
+import { getAccountInfo } from '../models/product-model4Tim.js';
+
+export const getAccounts = async (req, res) => {
+  try {
+    const accountInfo = await getAccountInfo(); 
+
+    if (Array.isArray(accountInfo) && accountInfo.length > 0) {
+      res.json(accountInfo);
+    } else {
+      res.status(404).json({ error: 'No accounts found :-(' });
+    }
+  } catch (error) {
+    console.error("Error getting accounts", error.stack || error);
+    res.status(500).json({ error: 'Server error ;-(' });
+  }
+}
+
+
+/*
+export const getAccounts = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const accountInfo = await getAccountInfo(); 
+
+    if(Array.isArray(accountInfo)) {
+      res.json(accountInfo);
+    } else {
+      res.status(404).json({error: 'accounts not found for event:-('});
+    }
+  } catch (error) {
+    console.error("Error getting accounts: event", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+*/
+
+//gets event_id from URL and then uses it to get the correct account
+export const getAccountForEvent = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const id = req.params.id;
+    const accountInfo = await getAccountEventInfo(id); 
+
+    if(accountInfo) {
+      res.json(accountInfo);
+    } else {
+      res.status(404).json({error: 'account not found for event:-('});
+    }
+  } catch (error) {
+    console.error("Error getting account: event", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
 
 //gets event_id from URL and then uses it to get the correct address
 export const getAddressJoinEvent = async (req, res)=> {
   try {
-    // Extract product id from request parameters
+    // Extract event id from request parameters
     const id = req.params.id;
     const addressInfo = await getAddressJoinEventInfo(id); 
 
@@ -37,7 +89,7 @@ export const getAddressJoinEvent = async (req, res)=> {
 //gets event_id from URL and then uses it to get the correct address
 export const getAddressJoinStore = async (req, res)=> {
   try {
-    // Extract product id from request parameters
+    // Extract store id from request parameters
     const id = req.params.id;
     const storeInfo = await getAddressJoinStoreInfo(id); 
 
@@ -55,8 +107,9 @@ export const getAddressJoinStore = async (req, res)=> {
 //gets event_id from URL and then uses it to get the correct address
 export const getAddressJoinStoreProduct = async (req, res)=> {
   try {
-    // Extract product id from request parameters
-    const id = req.params.id;
+    // Extract store id from request parameters????
+    
+    const id = req.body.addressInfo; //!!!!!!virker ikke som ønsket
     const storeInfo = await getAddressJoinStoreInfo(id); 
 
     if(storeInfo) {
@@ -75,7 +128,6 @@ export const getEventDetails = async (req, res)=> {
   try {
     // Extract event id from request parameters
     const id = req.params.id;
-
     const eventInfo = await getEventInfo(id);
 
     if(eventInfo) {

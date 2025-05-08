@@ -5,6 +5,10 @@ import dbPool from "../database/database.js";
 /*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
   i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
+export async function getAccountInfo() {
+  const [rows] = await dbPool.query(`SELECT id, email FROM account`);
+  return rows;
+}
 
 //Basic information to make event page level #3
 export async function getEventInfo(event_id) {
@@ -38,15 +42,18 @@ export async function getAddressJoinEventInfo(event_id) {
   return rows[0];
 }
 
-//joins account and event to have accound, event id, and account.email
-export async function getAccEmailForEvent(account_email) {
-  const [row] = await dbPool.query(`
-    SELECT account.id AS acc_id, event.id AS ev_id , account.email
-    from account
-    LEFT JOIN event ON account.id = event.member_id`)
+//joins joiningtable with accoun to get email to sign up
+export async function getAccountEventInfo(event_id) {
+ const [rows] = await dbPool.query(`
+  SELECT em.event_id AS em_ev_id, em.account_id AS em_acc_id, acc.email AS acc_email
+  FROM event_members AS em
+  JOIN account AS acc ON em.account_id = acc.id
+  WHERE em.event_id = ?
+`, [event_id]); //returns the members that are signed up for the event 
+return rows;
 }
 
-export async function insertEventEmail(email, member_id, ) {
+export async function insertEventEmail(email, account_id, ) {
   
 }
 

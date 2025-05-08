@@ -5,6 +5,7 @@ import dbPool from "../database/database.js";
 /*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
   i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
+//gets info from account to compare to evement member
 export async function getAccountInfo() {
   const [rows] = await dbPool.query(`SELECT id, email FROM account`);
   return rows;
@@ -14,21 +15,6 @@ export async function getAccountInfo() {
 export async function getEventInfo(event_id) {
   const [rows] = await dbPool.query("SELECT `title` AS name, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
   return rows[0];                                                                     //Only return the element, not the array
-}
-//Basic information to make store page level #3 
-export async function getStoreInfo(store_id) {
-  const [rows] = await dbPool.query("SELECT `name`, img, address_id FROM store WHERE id = ?", [store_id]); //Returns an array with the element with a matching primary key
-  return rows[0];                                                                     //Only return the element, not the array
-}
-//joins address and Store
-export async function getAddressJoinStoreInfo(store_id) {
-  const [rows] = await dbPool.query(`
-    SELECT st.id AS st_id, ad.id AS add_id, ad.city, ad.street, ad.zip
-    FROM store AS st
-    JOIN address AS ad ON st.address_id = ad.id
-    WHERE st.id = ?
-  `, [store_id]); //returns an array with an adress with an adress an event_id matching  
-  return rows[0];
 }
 
 //joins address and event
@@ -53,9 +39,27 @@ export async function getAccountEventInfo(event_id) {
 return rows;
 }
 
-export async function insertEventEmail(email, account_id, ) {
+export async function insertEventEmail(event_id) {
   
 }
+
+//Basic information to make store page level #3 
+export async function getStoreInfo(store_id) {
+  const [rows] = await dbPool.query("SELECT `name`, img, address_id FROM store WHERE id = ?", [store_id]); //Returns an array with the element with a matching primary key
+  return rows[0];                                                                     //Only return the element, not the array
+}
+//joins address and Store
+export async function getAddressJoinStoreInfo(store_id) {
+  const [rows] = await dbPool.query(`
+    SELECT st.id AS st_id, ad.id AS add_id, ad.city, ad.street, ad.zip
+    FROM store AS st
+    JOIN address AS ad ON st.address_id = ad.id
+    WHERE st.id = ?
+  `, [store_id]); //returns an array with an adress with an adress an event_id matching  
+  return rows[0];
+}
+
+
 
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {

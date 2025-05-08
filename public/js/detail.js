@@ -4,7 +4,7 @@ const detailId = urlParams.get("id");
 let infoContainer = document.querySelector("#infoTop");
 let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
-//import dom utile functions
+//import dom util functions
 import { renderBtn, renderInputElem, renderTextElem, renderImgElem, renderMap} from "./dom-utils.js";
 
 //Function that displays all functions that are both on event and product detail pages
@@ -32,45 +32,48 @@ async function eventHandler() {
     renderBtn("btnSignUpEvent", "Sign up", actionContainer);
 
     btnSignUpEvent.addEventListener("click", signUpBtn);
-    }catch (error) {
+    } catch (error) {
     console.error('Error:', error);
   }
 }
-//få mailen til at komme med i popup
-//obs lave 
+
 async function signUpBtn() {
-  let emailInput = document.getElementById("inputEmailEvent").value; //Gets the value from the inputfield
   //!!!!!!!!!!!!
   //lav ny sti for at få joined account.id, account.email full joined med event_members 
   //for at kunne sammenigne om email har et id samt indsætte account id i event_memeber med event_id
   const response = await fetch(`/${urlParams.get('type')}/${detailId}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
-  console.dir(data)
-
-  const emailsAcc = data.map(account => account.email) //return a string with all the value (email)
-  console.log("The Account email is:" + emailsAcc);
-
-
-// Print emails as array
-console.log("All emails:", data.map(acc => acc.email));
-
-// Print each email on a separate line
-data.forEach(account => console.log("Email:", account.email));
+  console.dir(data);
   
+  let emailInput = document.getElementById("inputEmailEvent").value.trim(); //Gets the value from the inputfield. Removes the whitespace with .trim
+  let matchedAccount = null; //variable to determine if an email matched the input to the database members
+  
+  //Checks if the input email is also in the database. Goes through all account is the array data
+  for (const account of data) {
+    if (await compareEmails(account.email, emailInput)) { //when true it assigns the matched account to the variable matchedAccount
+      matchedAccount = account;
+      break;
+    }
+  }
 
-  if (confirm("Do you want to sign up for the event with the email: " + email)) {
-    //forEach(data.map(acc => acc.email)) //tjek alle output den får så den kan se om man er member
-      if(email==account.email){
-        addMemberToEvent(email); //!!!!!!!!!!Lav funktion evt bare lav den i if statement for sjov
-        console.log("SUccess getting email");
-      } else{
-        console.error("Error getting email");
-      }
-    
+  //if there is a matching email in the database the account can sign up for an event
+  if (matchedAccount){
+    if (confirm("Do you want to sign up for the event with the email: " + emailInput)) {
+      console.log("Account: " + matchedAccount.id + " with email: " + matchedAccount.email + ". Ready to sign up")
+      //indsæt function der tilføjer email til event_member
+    } else {
+      alert("You have NOT signed up for the event")
+    }
   } else {
-    alert("you have not signed up for the event")
+    alert("The email; " + emailInput + " is not a member. Please use an email which is a memeber to sign up for the event.")
   }
 }
+
+async function compareEmails(emailDatabase, emailInput) {
+  console.log("Compare:" + emailInput + "to:" + emailDatabase);
+  return emailInput === emailDatabase; //return true if a match is found
+}
+
 
 //Makes a map from the data in the database
 //!!!!!!!!!!!!!!  if not null get store_add til product
@@ -114,7 +117,6 @@ const detailHandlers = {
   event: (id) => {
     commonDetail(id);
     eventHandler(id);
-    //addEventListener("click", signUpBtn);
   },
   store: (id) => {
     commonDetail(id);

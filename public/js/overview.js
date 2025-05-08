@@ -422,7 +422,7 @@ const routeHandlers = {
             fetchAndDisplaySearchedItems(urlParams.get('search')); // Display searched items
         } else {
             recommendProducts() // Display recommendations
-            //fetchAndDisplayItems(); // Display all items
+            fetchAndDisplayItems(); // Display all items
         }
 
     }, // Display all products

@@ -29,18 +29,32 @@ export async function renderImgElem(id, src, parent = main) {
 }
 
 //function that creates a text element with given type/class, id and the text from database 
-export async function renderInputElem(id, placeholder, parent = main) {
-    let inputElement = document.createElement("input"); 
-    inputElement.type = "text";
-    inputElement.setAttribute("id", id);
-    inputElement.placeholder = placeholder; //the text that is shown when there is no input
+export function renderInputElem({id, className = "", inputType = "text", placeholder = "", defaultValue = "", minValue, parent = document.body}={}) {
+    let inputElem = document.createElement("input"); 
     
-    //append to the main element from html so it isn't hid behind navn bar
-    parent.appendChild(inputElement);
+    inputElem.setAttribute("type", inputType);
+    inputElem.setAttribute("id", id);
+
+    //Optionals
+    if (placeholder) {
+        inputElem.setAttribute("placeholder", placeholder); //text shown when there is no input
+    }
+
+    // if (value !== "") instead of (value) to allow 0, which otherwise is falsy
+    if (defaultValue !=="") { 
+        inputElem.setAttribute("value", defaultValue);; //specifies the default value 
+    }
+
+    if (className) { 
+        inputElem.setAttribute("class", className);
+    }
+    
+    parent.appendChild(inputElem);
+    return inputElem;
 }
 
 
-export function renderButtonElem(id, text, parent = document) {
+export function renderButtonElem(id, text, parent = document.body) {
     let buttonElement = document.createElement("button");
     buttonElement.setAttribute("id", id);
     buttonElement.innerText = text;
@@ -77,10 +91,7 @@ export function renderDivElem({id, className, parent = document.body} = {}) {
 */
 export function renderSelectWLabelElem(associatingId, labelText, selectName, parent = document) {
   //Create a label for the select element
-  let labelElement = document.createElement("label");
-  labelElement.setAttribute("for", associatingId); //associates label w dropdown
-  labelElement.innerText = labelText; //Display name 
-  parent.appendChild(labelElement);
+  renderLabelElem({forId: associatingId, text: labelText, parent: parent});
 
   //Create dropdown menu for this label 
   let selectElement = document.createElement("select");
@@ -89,6 +100,19 @@ export function renderSelectWLabelElem(associatingId, labelText, selectName, par
   parent.appendChild(selectElement);
 
   return selectElement;
+}
+
+export function renderLabelElem({forId, className, text, parent = document.body} ={}) {
+    //Create a label for the select element
+  let labelElement = document.createElement("label");
+  labelElement.setAttribute("for", forId); //associates label w dropdown
+
+  if (className) {
+    labelElement.setAttribute("class", className);
+  }
+
+  labelElement.innerText = text; //Display name 
+  parent.appendChild(labelElement);
 }
 
 export function renderOptionElem(value, text, parent = document) {

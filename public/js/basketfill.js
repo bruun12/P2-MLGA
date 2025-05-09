@@ -31,17 +31,17 @@ function saveCart(cart) {
 
 
 
-export async function addToCart(itemId) {
+export async function addToCart(itemId, selectedQty) {
     console.log("added to cart " + itemId);
     const product = await fetchProductItem(itemId);
     let cart = getCart();
     // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.
     if (cart[itemId]) {
-        cart[itemId].cartQty += 1;
+        cart[itemId].cartQty += selectedQty;
         console.log(cart[itemId].cartQty);
     } else {
         // opretter produkt og gemmer det på dets itemId
-        product.cartQty = 1;
+        product.cartQty = selectedQty;
         cart[itemId] = product;
     }
     saveCart(cart);

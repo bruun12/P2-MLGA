@@ -27,7 +27,8 @@ export async function getAddressJoinEventInfo(event_id) {
   `, [event_id]); //returns an array with an adress with an adress an event_id matching  
   return rows[0];
 }
-
+/*
+//!!!!!!!!!!!!!!bliver IKKE brugt
 //joins joiningtable with accoun to get email to sign up
 export async function getAccountEventInfo(event_id) {
  const [rows] = await dbPool.query(`
@@ -38,9 +39,14 @@ export async function getAccountEventInfo(event_id) {
 `, [event_id]); //returns the members that are signed up for the event 
 return rows;
 }
+*/
 
-export async function insertEventEmail(event_id) {
-  
+//============
+export async function insertEventMemberModel(event_id, account_id) {
+  const [eventMemberInsert] = await connection.query(`
+  INSERT INTO event_members (event_members.event_id, event_members.account_id)
+  VALUES  (?, ?);`,[event_id, account_id]);
+  return eventMemberInsert;
 }
 
 //Basic information to make store page level #3 
@@ -58,8 +64,6 @@ export async function getAddressJoinStoreInfo(store_id) {
   `, [store_id]); //returns an array with an adress with an adress an event_id matching  
   return rows[0];
 }
-
-
 
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {

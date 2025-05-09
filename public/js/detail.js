@@ -60,7 +60,7 @@ async function signUpBtn() {
   if (matchedAccount){
     if (confirm("Do you want to sign up for the event with the email: " + emailInput)) {
       console.log("Account: " + matchedAccount.id + " with email: " + matchedAccount.email + ". Ready to sign up")
-      //indsæt function der tilføjer email til event_member
+      addEventMember(1,2);
     } else {
       alert("You have NOT signed up for the event")
     }
@@ -74,6 +74,26 @@ async function compareEmails(emailDatabase, emailInput) {
   return emailInput === emailDatabase; //return true if a match is found
 }
 
+//!!!!!!!!!Virker ikke helt (meget inspo fra chat) men du er nået hertil til fin i de andre filer med ============
+//Kig på ting der ikke bruges og evt slet...
+//add en member to event_member table
+async function addEventMember(eventId, accountId) {
+  const response = await fetch(`/${urlParams.get('type')}/${detailId}/eventMember`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify({ eventId, accountId})
+  });
+  
+  const result = await response.json();
+  if(result.success) {
+    console.log("succesfully add to event_member");
+  }else {
+    console.error(result.error);
+    console.log("error adding to event-member");
+  }
+}
 
 //Makes a map from the data in the database
 //!!!!!!!!!!!!!!  if not null get store_add til product

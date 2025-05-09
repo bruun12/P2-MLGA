@@ -14,8 +14,8 @@ import { getEventDetails, getStoreDetails} from '../controllers/product-controll
 //Slet getAddressJoinStoreProduct??????
 import { getAddressJoinEvent, getAddressJoinStore, getAddressJoinStoreProduct } from '../controllers/product-controller4Tim.js';
 
-//
-import { getAccountForEvent } from '../controllers/product-controller4Tim.js';
+import { insertEventMember } from '../controllers/product-controller4Tim.js';
+//import { getAccountForEvent } from '../controllers/product-controller4Tim.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -98,8 +98,11 @@ router.get("/product/:id/address", getAddressJoinStoreProduct); //virker ikke ri
 
 router.get("/event/:id", getEventDetails);
 router.get("/event/:id/address", getAddressJoinEvent);
-router.get("/event/:id/account", getAccountForEvent);
+//router.get("/event/:id/account", getAccountForEvent); //Bruges ikke
 router.get("/event/:id/accounts", getAccounts);
+
+//============
+router.post("/event/:id/eventMember", insertEventMember);
 
 router.get("/store/:id", getStoreDetails);
 router.get("/store/:id/address", getAddressJoinStore);

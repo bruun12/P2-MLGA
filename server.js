@@ -57,10 +57,6 @@ app.listen(port, () => {
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
-const storeItems = new Map([
-    [1, {priceInCents: 10000, name: 'Learn Fortnite Today'}],
-    [2, {priceInCents: 20000, name: 'Peters fødselvideo'}]
-])
 // https://www.youtube.com/watch?v=1r-F3FIONl8 stripe guide
 app.post('/create-checkout-session', async (req, res) => {
     try {

@@ -199,3 +199,14 @@ export function formatDates(array, dateKey, outputKey) {
     // Return the modified array with formatted date strings added
     return array;
 }
+
+/** Utility function for clampAndUpdateQty  */
+export function clampQty(inputVal, minVal, maxVal) {
+  //When field is empty, isNaN = true. Reset it to min, exit
+  if (isNaN(inputVal)) {
+    console.log("was NaN");
+    return minVal;
+  }
+  //Clamping it to either minimum or maxQty - if it is outside interval
+  return Math.min( Math.max(inputVal, minVal), maxVal);
+}

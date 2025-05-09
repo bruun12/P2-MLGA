@@ -1,3 +1,4 @@
+import { clampQty } from "./dom-utils.js";
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -38,7 +39,7 @@ export async function addToCart(itemId, selectedQty) {
     // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.
     if (cart[itemId]) {
         cart[itemId].cartQty += selectedQty;
-        console.log(cart[itemId].cartQty);
+        //console.log(cart[itemId].cartQty);
     } else {
         // opretter produkt og gemmer det på dets itemId
         product.cartQty = selectedQty;
@@ -46,6 +47,25 @@ export async function addToCart(itemId, selectedQty) {
     }
     saveCart(cart);
 }
+
+export function updateCartQty(itemId, clampedQty) {
+    console.log("entered updateCartQTy");
+    let cart = getCart();
+
+    console.log(cart);
+    console.log(clampedQty);
+    
+    // Early exit if item is not in the cart
+     if (!cart[itemId]) {
+      console.warn(`Item ${itemId} not found in cart.`);
+        return;
+    }
+
+    cart[itemId].cartQty = parseInt(clampedQty);
+
+    saveCart(cart);
+}
+
 
 export function deleteCookie(cookie){
         document.cookie = `${cookie}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;

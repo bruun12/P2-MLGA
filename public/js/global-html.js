@@ -1,5 +1,6 @@
-import {getCart, deleteCookie} from '/js/basketfill.js';
-import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
+import {getCart, deleteCookie, updateCartQty} from '/js/basketfill.js';
+import { renderTextElem, renderImgElem, renderDivElem, renderInputElem } from '/js/dom-utils.js';
+import {clampAndUpdateQty} from '/js/product.js';
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `
@@ -99,39 +100,50 @@ productLink.addEventListener("mouseleave", function(){
 export function loadCart(){
     setTimeout(() => {
         let cart = getCart();
+        //console.log(cart);
         let sum = 0;
         let price = 0
 
         for (const id in cart) {
             let cartItem = document.querySelector(`#cartItemDiv${id}`);
             
-            let priceRounded;    
+            let priceRounded;
+            //If cartItemDiv does not exist for a unique pi_id, - create it  
             if (cartItem === null){
-                let cartItemDiv = document.createElement("div");
-                cartItemDiv.setAttribute("id", `cartItemDiv${id}`);
-                cartItemDiv.setAttribute("class", `cartItemDiv`);
-                cartDiv.appendChild(cartItemDiv);
+                // Create container div for the cart item
+                let cartItemDiv = renderDivElem({id: `cartItemDiv${id}`, className: `cartItemDiv`, parent: cartDiv});
+
+                // Sub-container for item details
+                let itemInfo = renderDivElem({className: "itemInfo", parent: cartItemDiv});
                 
-                let itemInfo = document.createElement("div");
-                itemInfo.setAttribute("class", "itemInfo");
-                cartItemDiv.appendChild(itemInfo);
-                
-                renderTextElem(`p`, `item${id}Qty`, `${cart[id].cartQty} x `, itemInfo);
+                //create a quantity input element and add event listener
+                 let qtyInputElem = renderInputElem({id: `item${id}Qty`, inputType: "number", defaultValue: cart[id].cartQty, minValue: 1, parent: itemInfo});
+                 qtyInputElem.addEventListener("change", () => {
+                    let clampedQty = clampAndUpdateQty({inputElemOrSelector: qtyInputElem, max: cart[id].stock_qty});
+                    updateCartQty(id, clampedQty);
+                    loadCart();
+                });
+
+                // Product name display
                 renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
 
+                //Create a text for the price
                 price = cart[id].price * cart[id].cartQty;
                 priceRounded = price.toFixed(2)
                 renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
             } else {
-                document.querySelector(`#item${id}Qty`).innerText = `${cart[id].cartQty} x `;
+                // Update the quantity <input> element's value, so its visible to user
+                const qtyInputElem = document.querySelector(`#item${id}Qty`);
+                if (qtyInputElem) qtyInputElem.value = cart[id].cartQty;
 
                 price = cart[id].price * cart[id].cartQty;
                 priceRounded = price.toFixed(2)
                 document.querySelector(`#item${id}Price`).innerText = `${priceRounded} kr.`;
             }
-
+            
+            sum = sum + price;
         }
-        sum = sum + price;
+
         let sumRounded = sum.toFixed(2);
         document.querySelector("#finalPrice").innerText = `Total ${sumRounded} kr.`;
         

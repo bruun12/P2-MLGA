@@ -7,6 +7,7 @@
     "start": "node --env-file=.env server",
     "dev": "node --watch-path ./ --env-file=.env server",
     "test": "jest"
+  
   },
   "repository": {
     "type": "git",
@@ -30,10 +31,18 @@
     "stripe": "^18.0.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "@babel/preset-env": "^7.27.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   },
   "directories": {
     "test": "tests"
   },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "description": ""
 }
+
+
+

@@ -8,6 +8,8 @@ import eventRoutes from './routes/event-routes.js';
 import bcrypt from 'bcrypt'; // For password hashing
 import dbPool from './database/database.js'; // For database connection
 import bodyParser from 'body-parser';
+import Stripe from 'stripe';
+import { getCart } from './public/js/basketfill.js'
 
 
 // Get the directory name from the current file's URL
@@ -51,7 +53,7 @@ app.listen(port, () => {
 });
 
 // Stripe
-import Stripe from 'stripe';
+
 
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 
@@ -63,6 +65,7 @@ const storeItems = new Map([
 app.post('/create-checkout-session', async (req, res) => {
     try {
         // Create stripe checkout session
+        const cart = await getCart();
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',

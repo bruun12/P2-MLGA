@@ -118,6 +118,8 @@ export function loadCart(){
                 
                 //create a quantity input element and add event listener
                  let qtyInputElem = renderInputElem({id: `item${id}Qty`, inputType: "number", defaultValue: cart[id].cartQty, minValue: 1, parent: itemInfo});
+                 
+                 //NOT IDEAL, REMEMBER TO MOVE THIS
                  qtyInputElem.addEventListener("change", () => {
                     let clampedQty = clampAndUpdateQty({inputElemOrSelector: qtyInputElem, max: cart[id].stock_qty});
                     updateCartQty(id, clampedQty);

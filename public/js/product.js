@@ -11,6 +11,9 @@ import {
     addDelegatedEventListener
 } from "./dom-utils.js";
 
+import {addToCart} from "./basketfill.js";
+import { loadCart } from "./global-html.js";
+
 
 //PRODUCT STUFF
 /* ---------------------------- GLOBAL VARIABLES - DERRIVE FROM CURRENT USER CONTEXT  ---------------------------------------- */
@@ -189,7 +192,9 @@ function renderPurchaseContainer(parentElem) {
   renderQtySelector(purchaseContainer);
 
   //Add to cart button
-  renderButtonElem("cartButton", "Add to Cart", purchaseContainer);
+  let addToCartBtn = renderButtonElem({id: "cartButton", text: "Add to Cart", parent: purchaseContainer});
+  addToCartBtn.addEventListener("click", (findFullyMatchedItem, selectedQty) => addToCart(findFullyMatchedItem, selectedQty));
+  addToCart.addEventListener("click", loadCart);
 
 
   return purchaseContainer;

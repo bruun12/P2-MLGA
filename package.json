@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file=.env server",
-    "dev": "node --watch-path ./ --env-file=.env server"
+    "dev": "node --watch-path ./ --env-file=.env server",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,12 @@
     "nodemailer": "^6.10.1",
     "session": "^0.1.0",
     "stripe": "^18.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "directories": {
+    "test": "tests"
   },
   "description": ""
 }

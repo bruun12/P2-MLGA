@@ -115,3 +115,5 @@ export async function getProductsByIds(product_ids) {
 
   return rows;
 }
+
+module.exports = { productItemById }

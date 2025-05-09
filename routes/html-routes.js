@@ -8,8 +8,13 @@ import { getProducts, getCategories, getFilteredProducts, getSearchedProducts } 
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 import { getStores } from "../controllers/store-controller.js";
 
-import { getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
-import { getEventDetails } from '../controllers/product-controller4Tim.js';
+import { getAccounts, getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
+import { getEventDetails, getStoreDetails} from '../controllers/product-controller4Tim.js';
+//Import database address
+//Slet getAddressJoinStoreProduct??????
+import { getAddressJoinEvent, getAddressJoinStore, getAddressJoinStoreProduct } from '../controllers/product-controller4Tim.js';
+
+import { insertEventMember } from '../controllers/product-controller4Tim.js';
 
 // Get the directory name from the current file's URL
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -20,7 +25,6 @@ const router = express.Router();
 router.get("/", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'front-page.html'));
 });
-
 
 // Product pages in some regard
 router.get("/overview", (request, response) => {
@@ -85,12 +89,20 @@ router.get("/allCategories", getCategories);
 // Endpoints used for stores in overview.js, store-model.js, and store-controller.js
 router.get("/allStores", getStores);
 
-//KIG HER ABTIN ASTA
+//Routes for level #3
 router.get("/product/:id", getProductDetails);
 router.get("/product/:id/variations", getVariationData);
 router.get("/product/:id/allItems", getAllProductItems);
+router.get("/product/:id/address", getAddressJoinStoreProduct); //virker ikke rigtigt!!!!!!!!!
 
 router.get("/event/:id", getEventDetails);
+router.get("/event/:id/address", getAddressJoinEvent);
+router.get("/event/:id/accounts", getAccounts);
 
+//============
+router.post("/event/:id/eventMember", insertEventMember);
+
+router.get("/store/:id", getStoreDetails);
+router.get("/store/:id/address", getAddressJoinStore);
 
 export default router;

@@ -8,18 +8,58 @@ Acts as the business logic layer: Contains functions or methods that process inc
 
 They decide what happens when a specific route is hit.
 */
+import dbPool from '../database/database.js';
 import { getProductInfo } from '../models/product-model4Tim.js';
 import { getProductVariations } from '../models/product-model4Tim.js';
-import {getProductItems } from '../models/product-model4Tim.js';
-import { getEventInfo } from '../models/product-model4Tim.js';
-//import { eventJoinStore } from '../models/product-model4Tim.js';
+import { getProductItems } from '../models/product-model4Tim.js';
+import { getEventInfo, getStoreInfo } from '../models/product-model4Tim.js';
+import { getAddressJoinEventInfo, getAddressJoinStoreInfo } from '../models/product-model4Tim.js';
+//import { getAccountEventInfo } from '../models/product-model4Tim.js';
+import { getAccountInfo } from '../models/product-model4Tim.js';
+import { insertEventMemberModel } from '../models/product-model4Tim.js';
+
+export const getAccounts = async (req, res) => {
+  try {
+    const accountInfo = await getAccountInfo(); 
+
+    if (Array.isArray(accountInfo) && accountInfo.length > 0) {
+      res.json(accountInfo);
+    } else {
+      res.status(404).json({ error: 'No accounts found :-(' });
+    }
+  } catch (error) {
+    console.error("Error getting accounts", error.stack || error);
+    res.status(500).json({ error: 'Server error ;-(' });
+  }
+}
+//inserts account id and event id into membe_event table ============
+export async function insertEventMember(req, res) {
+  const connection = await dbPool.getConnection();
+  const eventId = req.params.id;
+  const {accountId} = req.body;//får det rigtig data/info???? nope
+  try {
+    await connection.beginTransaction();
+    const result = await insertEventMemberModel(connection, eventId, accountId);
+    await connection.commit();
+
+    res.status(200).json({ success: true, result });
+
+  } catch (error) {
+    await connection.rollback();
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
 
 //gets detail from the event table
 export const getEventDetails = async (req, res)=> {
   try {
     // Extract event id from request parameters
     const id = req.params.id;
-
     const eventInfo = await getEventInfo(id);
 
     if(eventInfo) {
@@ -30,6 +70,81 @@ export const getEventDetails = async (req, res)=> {
 
   } catch (error) {
     console.error("Error getting event:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinEvent = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const id = req.params.id;
+    const addressInfo = await getAddressJoinEventInfo(id); 
+
+    if(addressInfo) {
+      res.json(addressInfo);
+    } else {
+      res.status(404).json({error: 'address not found for event:-('});
+    }
+  } catch (error) {
+    console.error("Error getting address: event", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets detail from the store table
+export const getStoreDetails = async (req, res)=> {
+  try {
+    // Extract event id from request parameters
+    const id = req.params.id;
+
+    const storeInfo = await getStoreInfo(id);
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'Store not found :-('});
+    }
+
+  } catch (error) {
+    console.error("Error getting store:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinStore = async (req, res)=> {
+  try {
+    // Extract store id from request parameters
+    const id = req.params.id;
+    const storeInfo = await getAddressJoinStoreInfo(id); 
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'address not found for store :-('});
+    }
+  } catch (error) {
+    console.error("Error getting address from store:", error);
+    res.status(500).json({error: 'Server error ;-('});
+  }
+}
+
+//gets event_id from URL and then uses it to get the correct address
+export const getAddressJoinStoreProduct = async (req, res)=> {
+  try {
+    // Extract store id from request parameters????
+    
+    const id = req.body.addressInfo; //!!!!!!virker ikke som ønsket
+    const storeInfo = await getAddressJoinStoreInfo(id); 
+
+    if(storeInfo) {
+      res.json(storeInfo);
+    } else {
+      res.status(404).json({error: 'address not found for store :-('});
+    }
+  } catch (error) {
+    console.error("Error getting address from store:", error);
     res.status(500).json({error: 'Server error ;-('});
   }
 }

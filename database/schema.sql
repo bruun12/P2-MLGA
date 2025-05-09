@@ -179,7 +179,6 @@ CREATE TABLE IF NOT EXISTS `event` (
 CREATE TABLE IF NOT EXISTS event_member (
   event_id INT NOT NULL,
   member_id INT NOT NULL,
-  PRIMARY KEY (event_id, member_id),
   FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE,
   FOREIGN KEY (member_id) REFERENCES member(account_id) ON DELETE CASCADE
 );

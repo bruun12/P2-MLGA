@@ -123,3 +123,23 @@ export function renderOptionElem(value, text, parent = document) {
  parent.appendChild(optionElement);
  return optionElement;
 }
+
+
+//Helper function to streamline event listeners with event delegation, modular
+/**
+ * Adds a delegated event listener to a specified parent element.
+ * The event only triggers when the target element matches the given selector
+ * Useful for dynamically created elements.
+ * 
+ * @param {string} type - The type of event (e.g., "click", "input").
+ * @param {string} selector - The CSS selector to match elements.
+ * @param {function} callback - The function to execute when the event fires.
+ * @param {HTMLElement} [parent=document] - The parent element to attach the event to.
+ */
+export function addDelegatedEventListener(type, selector, callback, parent = document){
+  parent.addEventListener(type, (e) => {
+    if (e.target.matches(selector)){
+      callback(e);
+    }
+  });
+}

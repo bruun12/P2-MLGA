@@ -84,7 +84,7 @@ function setHeaders(name, id){
     }
 }
 
-function categoryDisplay(name, id){
+export function categoryDisplay(name, id){
     //This checks if there is an existing subCat with the same name  
     //This makes the subCat appear on the side of the page 
     setHeaders(name, id);
@@ -98,6 +98,8 @@ function categoryDisplay(name, id){
     //Make subCategoryDiv for subCategories
     //A box that makes the subcategories for this item.
     makeSubCategoryDiv(id, categoryA);
+
+    return categoryA;
 }
 
 function subCategoryDisplay(name, id, parent_id){

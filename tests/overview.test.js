@@ -1,4 +1,4 @@
-import { dotProduct, cosineSimilarity } from '../public/js/overview.js';
+import { dotProduct, cosineSimilarity, categoryDisplay } from '../public/js/overview.js';
 
 // Mock fetch
 //global.fetch = jest.fn();
@@ -17,6 +17,15 @@ describe('math in overview', () => {
     test('dotProduct2', () => {
       expect(dotProduct(vecC, vecD)).toBe(32);
     });
+
+    test('dotProduct3', () => {
+      expect(dotProduct(vecC, vecB)).toBe(4);
+    });
+
+    test('dotProduct4', () => {
+      expect(dotProduct(vecA, vecD)).toBe(90);
+    });
+
   });
 
   describe('Cosine Similarity Testing', () => {
@@ -27,6 +36,29 @@ describe('math in overview', () => {
     test('cosineSimilarity2', () => {
       expect(cosineSimilarity(vecC, vecD)).toBeCloseTo(0.974); //Tim ret gerne til forventede værdier
     }) 
+
+    test('cosineSimilarity3', () => {
+      expect(cosineSimilarity(vecC, vecB)).toBeCloseTo(0.0934); //Tim ret gerne til forventede værdier
+    }) 
+
+    test('cosineSimilarity4', () => {
+      expect(cosineSimilarity(vecA, vecD)).toBeCloseTo(0.903); //Tim ret gerne til forventede værdier
+    }) 
+  });
+});
+
+describe('DOM-test', () => {
+  document.body.innerHTML = `<div id="categorySelector"> 
+                                <a id="tester"  href="/overview?type=product&sortId=1"></a>
+                             </div>`; 
+
+
+  let HTMLCategoryA = document.querySelector("#tester");
+  HTMLCategoryA.innerText = "Tester";
+
+  test('categoryA', () => {
+    expect(categoryDisplay("Tester", 1)).toHaveProperty(HTMLCategoryA);
+    
   });
 });
 

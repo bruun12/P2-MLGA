@@ -64,27 +64,25 @@ const storeItems = new Map([
 // https://www.youtube.com/watch?v=1r-F3FIONl8 stripe guide
 app.post('/create-checkout-session', async (req, res) => {
     try {
+        const items = req.body.items;
         // Create stripe checkout session
-        const cart = await getCart();
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            line_items: req.body.items.map(item => {
-                const storeItem = storeItems.get(item.id)
-                return {
-                    price_data: {
-                        currency: 'dkk',
-                        product_data: {
-                            name: storeItem.name
-                        },
-                        unit_amount: storeItem.priceInCents
+            line_items: items.map(item => ({
+                price_data: {
+                    currency: 'dkk',
+                    product_data: {
+                        name: item.name
                     },
-                    quantity: item.quantity
-                }
-            }),
+                    unit_amount: Math.round(parseFloat(item.price) * 100) // Convert "24.99" → 2499
+                },
+                quantity: item.quantity
+            })),
             success_url: `${process.env.SERVER_URL}/success.html`,
             cancel_url: `${process.env.SERVER_URL}/cancel.html`
-        })
+        });
+        
         res.json({url: session.url }) // return url from session
     } catch (error) {
         res.status(500).json({ error: error.message })

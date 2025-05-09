@@ -35,11 +35,11 @@ export const getAccounts = async (req, res) => {
 //inserts account id and event id into membe_event table ============
 export async function insertEventMember(req, res) {
   const connection = await dbPool.getConnection();
-  const {eventId, accountId} = req.body;//får det rigtig data/info????
+  const eventId = req.params.id;
+  const {accountId} = req.body;//får det rigtig data/info???? nope
   try {
     await connection.beginTransaction();
-    
-    const result = await insertEventMemberModel(eventId, accountId);
+    const result = await insertEventMemberModel(connection, eventId, accountId);
     await connection.commit();
 
     res.status(200).json({ success: true, result });
@@ -73,26 +73,6 @@ export const getEventDetails = async (req, res)=> {
     res.status(500).json({error: 'Server error ;-('});
   }
 }
-/*
-//!!!!!!!!!!!!Bruges IKKE
-//gets event_id from URL and then uses it to get the correct account
-export const getAccountForEvent = async (req, res)=> {
-  try {
-    // Extract event id from request parameters
-    const id = req.params.id;
-    const accountInfo = await getAccountEventInfo(id); 
-
-    if(accountInfo) {
-      res.json(accountInfo);
-    } else {
-      res.status(404).json({error: 'account not found for event:-('});
-    }
-  } catch (error) {
-    console.error("Error getting account: event", error);
-    res.status(500).json({error: 'Server error ;-('});
-  }
-}
-*/
 
 //gets event_id from URL and then uses it to get the correct address
 export const getAddressJoinEvent = async (req, res)=> {

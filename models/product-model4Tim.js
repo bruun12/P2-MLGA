@@ -8,13 +8,13 @@ import dbPool from "../database/database.js";
 //gets info from account to compare to evement member
 export async function getAccountInfo() {
   const [rows] = await dbPool.query(`SELECT id, email FROM account`);
-  return rows;
+  return rows; //Returns the array
 }
 
 //Basic information to make event page level #3
 export async function getEventInfo(event_id) {
-  const [rows] = await dbPool.query("SELECT `title` AS name, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); //Returns an array with the element with a matching primary key
-  return rows[0];                                                                     //Only return the element, not the array
+  const [rows] = await dbPool.query("SELECT `title` AS name, `description`, img, address_id, date, store_id FROM event WHERE id = ?", [event_id]); 
+  return rows[0];
 }
 
 //joins address and event
@@ -27,32 +27,19 @@ export async function getAddressJoinEventInfo(event_id) {
   `, [event_id]); //returns an array with an adress with an adress an event_id matching  
   return rows[0];
 }
-/*
-//!!!!!!!!!!!!!!bliver IKKE brugt
-//joins joiningtable with accoun to get email to sign up
-export async function getAccountEventInfo(event_id) {
- const [rows] = await dbPool.query(`
-  SELECT em.event_id AS em_ev_id, em.account_id AS em_acc_id, acc.email AS acc_email
-  FROM event_members AS em
-  JOIN account AS acc ON em.account_id = acc.id
-  WHERE em.event_id = ?
-`, [event_id]); //returns the members that are signed up for the event 
-return rows;
-}
-*/
 
-//============
-export async function insertEventMemberModel(event_id, account_id) {
+//============ Gør så det ikke kan dublikeres
+export async function insertEventMemberModel(connection, event_id, account_id) {
   const [eventMemberInsert] = await connection.query(`
-  INSERT INTO event_members (event_members.event_id, event_members.account_id)
+  INSERT INTO event_member (event_member.event_id, event_member.member_id)
   VALUES  (?, ?);`,[event_id, account_id]);
   return eventMemberInsert;
 }
 
 //Basic information to make store page level #3 
 export async function getStoreInfo(store_id) {
-  const [rows] = await dbPool.query("SELECT `name`, img, address_id FROM store WHERE id = ?", [store_id]); //Returns an array with the element with a matching primary key
-  return rows[0];                                                                     //Only return the element, not the array
+  const [rows] = await dbPool.query("SELECT `name`, img, address_id FROM store WHERE id = ?", [store_id]); 
+  return rows[0];
 }
 //joins address and Store
 export async function getAddressJoinStoreInfo(store_id) {
@@ -68,7 +55,7 @@ export async function getAddressJoinStoreInfo(store_id) {
 //1. Get product basic info - for detailed view: name, desc, img
 export async function getProductInfo(product_id) {
   const [rows] = await dbPool.query("SELECT `name`, `description`, img, category_id FROM product WHERE id = ?", [product_id]); //Returns an array with the element with a matching primary key
-  return rows[0];                                                                     //Only return the element, not the array
+  return rows[0];
 }
 
 /*2. Get the id and name for variations and options for a product i.e. providing a product id

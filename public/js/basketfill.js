@@ -1,5 +1,3 @@
-import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
-
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -52,26 +50,6 @@ export async function addToCart(itemId) {
 export function deleteCookie(cookie){
         document.cookie = `${cookie}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;
 }
-
-
-//  Example Usage 
-// Suppose you have buttons with data attributes for item id/info
-document.querySelectorAll('.add-cart').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const itemId = btn.getAttribute('data-id');
-        const itemName = btn.getAttribute('data-name');
-        const itemPrice = btn.getAttribute('data-price');
-        addToCart(itemId);
-        console.log(getCart());
-    });
-});
-
-// on page load, you can access the cart, same load as cookiet.js:
-window.addEventListener('load', () => {
-    const cart = getCart();
-    // Update your cart UI here
-    console.log(cart);
-}); 
 
 async function fetchProductItem(id) {
     try {

@@ -34,19 +34,19 @@ async function commonDetail(type, id) {
 }
 
 // Handles rendering and actions for event detail pages
-async function eventHandler(type, id ) {
+async function eventHandler(id) {
   try {
-    renderInputElem("inputEmailEvent", "Insert your email", actionContainer);
-    renderBtn("btnSignUpEvent", "Sign up", actionContainer);
+    renderInputElem({id: "inputEmailEvent", placeholder: "Insert your email", parent: actionContainer});
+    let button = renderButtonElem({id: "btnSignUpEvent", text: "Sign up", parent: actionContainer});
 
-    btnSignUpEvent.addEventListener("click", signUpBtn);
+    button.addEventListener("mouseover", (id) => signUpBtn(id));
     } catch (error) {
     console.error('Error in Event Handler', error);
   }
 }
 
-async function signUpBtn() {
-  const response = await fetch(`/${urlParams.get('type')}/${detailId}/accounts`);//der skal laves en sti der finder memberid ud fra mail
+async function signUpBtn(id) {
+  const response = await fetch(`/event/${id}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
   console.dir(data);
   
@@ -83,7 +83,7 @@ async function compareEmails(emailDatabase, emailInput) {
 //Kig på ting der ikke bruges og evt slet...
 //add en member to event_member table
 async function addEventMember(eventId, accountId) {
-  const response = await fetch(`/${urlParams.get('type')}/${detailId}/eventMember`, {
+  const response = await fetch(`/${urlParams.get('type')}/${id}/eventMember`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json'
@@ -105,7 +105,7 @@ async function addEventMember(eventId, accountId) {
 //!!!!!!!!!!!!!!  if not null get store_add til product
 async function getAddress() {
   try {
-    const response = await fetch(`/${urlParams.get('type')}/${detailId}/address`); //make sure to get the information based on the type (product/event)
+    const response = await fetch(`/${urlParams.get('type')}/${id}/address`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
     //console.dir(data, {depth: null});
 
@@ -132,8 +132,10 @@ async function detailHandlers(type, id) {
 
     } else if (type === "event") {
       await commonDetail(type, id);
-      await eventHandler(type, id);
-      
+      await eventHandler(id);
+
+    } else if (type === "store") {
+      await commonDetail(type, id);      
     } else {
       console.error(`Unknown type '${type}'`);
     }

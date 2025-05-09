@@ -39,7 +39,7 @@ async function eventHandler(id) {
     renderInputElem({id: "inputEmailEvent", placeholder: "Insert your email", parent: actionContainer});
     let button = renderButtonElem({id: "btnSignUpEvent", text: "Sign up", parent: actionContainer});
 
-    button.addEventListener("mouseover", (id) => signUpBtn(id));
+    button.addEventListener("click", (id) => signUpBtn(id));
     } catch (error) {
     console.error('Error in Event Handler', error);
   }
@@ -48,11 +48,11 @@ async function eventHandler(id) {
 async function signUpBtn(id) {
   const response = await fetch(`/event/${id}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
-  console.dir(data);
+  //console.dir(data);
   
   let emailInput = document.getElementById("inputEmailEvent").value.trim(); //Gets the value from the inputfield. Removes the whitespace with .trim
   let matchedAccount = null; //variable to determine if an email matched the input to the database members
-  
+
   //Checks if the input email is also in the database. Goes through all account is the array data
   for (const account of data) {
     if (await compareEmails(account.email, emailInput)) { //when true it assigns the matched account to the variable matchedAccount
@@ -63,9 +63,12 @@ async function signUpBtn(id) {
 
   //if there is a matching email in the database the account can sign up for an event
   if (matchedAccount){
+    console.log(matchedAccount.member_id);
+    //if(matchedAccount.member_id !== null){}
+    let matchedAccountId = matchedAccount.id;
+
     if (confirm("Do you want to sign up for the event with the email: " + emailInput)) {
-      console.log("Account: " + matchedAccount.id + " with email: " + matchedAccount.email + ". Ready to sign up")
-      addEventMember(1,2);
+      addEventMember(matchedAccountId);
     } else {
       alert("You have NOT signed up for the event")
     }
@@ -75,29 +78,26 @@ async function signUpBtn(id) {
 }
 
 async function compareEmails(emailDatabase, emailInput) {
-  console.log("Compare:" + emailInput + "to:" + emailDatabase);
   return emailInput === emailDatabase; //return true if a match is found
 }
 
-//!!!!!!!!!Virker ikke helt,  men du er nået hertil til find i de andre filer med ============
-//Kig på ting der ikke bruges og evt slet...
-//add en member to event_member table
-async function addEventMember(eventId, accountId) {
+//add a member to event_member table
+async function addEventMember(accountId) {
   const response = await fetch(`/${urlParams.get('type')}/${id}/eventMember`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json'
     },
-    body: JSON.stringify({ eventId, accountId})
+    body: JSON.stringify({ id, accountId})
   });
-  console.log("Check for eventId: " + eventId +" accountId: " + accountId);
+  console.log("Check for eventId: " + id +" accountId: " + accountId);
     
   const result = await response.json();
   if(result.success) {
     console.log("succesfully add to event_member");
   }else {
     console.error(result.error);
-    console.log("error adding to event-member");
+    console.error("error adding to event-member");
   }
 }
 
@@ -116,7 +116,11 @@ async function getAddress() {
     );
     const address = Object.values(filteredAddressData).join(' ');
     //insert map  with address from database
-    renderMap("map", address);
+    if(address != "address not found for store :-("){
+      renderMap("map", address);
+    } else (
+      console.error("ERROR: addresss is not found for the product")
+    )
   } catch (error) {
     console.error('Error:', error);
   }

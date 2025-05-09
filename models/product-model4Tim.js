@@ -5,7 +5,7 @@ import dbPool from "../database/database.js";
 /*SYNTAX called Prepared Statement: sending sql and the values completely seperately to prevent sql injenction attacks 
   i.e.   dbPool.query("?", [id])    instead of     dbPool.query("${id}")    */
 
-//gets info from account to compare to evement member
+//gets info from account to compare to event member
 export async function getAccountInfo() {
   const [rows] = await dbPool.query(`SELECT id, email FROM account`);
   return rows; //Returns the array

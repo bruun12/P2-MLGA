@@ -134,6 +134,7 @@ export const getAddressJoinStore = async (req, res)=> {
 export const getAddressJoinStoreProduct = async (req, res)=> {
   try {
     // Extract store id from request parameters????
+    //der er ikke nogetadresse id på fullymatchedITem så det kan ikke hentens (er der er heller ikke sat op til at den kan så ved ikke om det er det eneste problem der er)
     
     const id = req.body.addressInfo; //!!!!!!virker ikke som ønsket
     const storeInfo = await getAddressJoinStoreInfo(id); 

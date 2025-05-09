@@ -193,7 +193,7 @@ function renderPurchaseContainer(parentElem) {
 
   //Add to cart button
   let addToCartBtn = renderButtonElem({id: "cartButton", text: "Add to Cart", parent: purchaseContainer});
-  addToCartBtn.addEventListener("click", () => { addToCart(fullyMatchedItem.product_id, selectedQty)});
+  addToCartBtn.addEventListener("click", () => { addToCart(fullyMatchedItem.product_item_id, selectedQty)});
   addToCartBtn.addEventListener("click", loadCart);
 
 

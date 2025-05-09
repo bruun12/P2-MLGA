@@ -32,7 +32,7 @@ function saveCart(cart) {
 
 
 export async function addToCart(itemId, selectedQty) {
-    console.log("added to cart " + itemId);
+    console.log(`Added to cart: itemId:${itemId}, Quantity: ${selectedQty}`);
     const product = await fetchProductItem(itemId);
     let cart = getCart();
     // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.

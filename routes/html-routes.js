@@ -62,8 +62,14 @@ router.get("/createStore", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'));
 });
 
+
+// Checkout
 router.get("/basket", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'invoice.html'));
+});
+
+router.get("/success", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'success.html'));
 });
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.

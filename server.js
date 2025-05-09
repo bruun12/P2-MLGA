@@ -75,12 +75,12 @@ app.post('/create-checkout-session', async (req, res) => {
                     product_data: {
                         name: item.name
                     },
-                    unit_amount: Math.round(parseFloat(item.price) * 100) // Convert "24.99" → 2499
+                    unit_amount: Math.round(parseFloat(item.price) * 100) // Convert from kroner to ører / dollar to cent:  "24.99" -> 2499
                 },
                 quantity: item.quantity
             })),
-            success_url: `${process.env.SERVER_URL}/success.html`,
-            cancel_url: `${process.env.SERVER_URL}/cancel.html`
+            success_url: `${process.env.SERVER_URL}/success`,
+            cancel_url: `${process.env.SERVER_URL}/basket`
         });
         
         res.json({url: session.url }) // return url from session

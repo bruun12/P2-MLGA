@@ -13,7 +13,7 @@ import {
 } from "./dom-utils.js";
 
 import {addToCart} from "./basketfill.js";
-import { loadCart } from "./global-html.js";
+import { loadCart } from "./cart.js";
 
 
 //PRODUCT STUFF

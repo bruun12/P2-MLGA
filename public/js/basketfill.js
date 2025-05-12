@@ -54,7 +54,7 @@ export async function addToCart(itemId, selectedQty) {
         //console.log(cart[itemId].cartQty);
     } else {
         // opretter produkt og gemmer det på dets itemId
-        product.cartQty = selectedQty;
+        product.cartQty = clampQty(selectedQty, 1, stockQty);
         cart[itemId] = product;
     }
     saveCart(cart);

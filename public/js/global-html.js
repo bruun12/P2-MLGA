@@ -1,5 +1,5 @@
-import {getCart, deleteCookie, updateCartQty} from '/js/basketfill.js';
-import { renderTextElem, renderImgElem, renderDivElem, renderInputElem } from '/js/dom-utils.js';
+import {getCart, deleteCookie, updateCartQty, deleteCartItem} from '/js/basketfill.js';
+import { renderTextElem, renderImgElem, renderDivElem, renderInputElem, renderButtonElem } from '/js/dom-utils.js';
 import {clampAndUpdateQty} from '/js/product.js';
 /* HTML Navbar Template */
 console.log("entered global-html.js");
@@ -105,7 +105,7 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
 
     setTimeout(() => {
         let cart = getCart();
-        //console.log(cart);
+        console.log(cart);
         let sum = 0;
         let price = 0
 
@@ -138,6 +138,19 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
                 price = cart[id].price * cart[id].cartQty;
                 priceRounded = price.toFixed(2)
                 renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
+
+                //Create "delete item" button
+                let deleteBtn = renderButtonElem({className: "deleteBtn", text: "x", parent: itemInfo});
+
+                //NOT IDEAL, REMEMBER TO MOVE THIS
+                deleteBtn.addEventListener("click", () => {
+                    console.log("before deletion", cart)
+                    deleteCartItem(id);
+                    
+                    //Call loadCart to update UI
+                    loadCart({containerSelector, finalPriceSelector });
+                });
+
             } else {
                 // Update the quantity <input> element's value, so its visible to user
                 const qtyInputElem = document.querySelector(`#item${id}Qty`);

@@ -60,9 +60,17 @@ export function renderInputElem({id, className = "", inputType = "text", placeho
 }
 
 
-export function renderButtonElem({id, text, parent = document.body}={}) {
+export function renderButtonElem({id, className, text, parent = document.body}={}) {
     let buttonElement = document.createElement("button");
-    buttonElement.setAttribute("id", id);
+    
+    if(id) {
+        buttonElement.setAttribute("id", id);
+    }
+
+    if (className) {
+        buttonElement.setAttribute("class", className);
+    }
+
     buttonElement.innerText = text;
    
     parent.appendChild(buttonElement);

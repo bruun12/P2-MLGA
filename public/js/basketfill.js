@@ -51,9 +51,6 @@ export async function addToCart(itemId, selectedQty) {
 export function updateCartQty(itemId, clampedQty) {
     console.log("entered updateCartQTy");
     let cart = getCart();
-
-    console.log(cart);
-    console.log(clampedQty);
     
     // Early exit if item is not in the cart
      if (!cart[itemId]) {
@@ -61,11 +58,25 @@ export function updateCartQty(itemId, clampedQty) {
         return;
     }
 
+    //Updates quantity
     cart[itemId].cartQty = parseInt(clampedQty);
-
     saveCart(cart);
 }
 
+export function deleteCartItem(itemId) {
+    console.log("to delete", itemId);
+    //Get the current cart
+    let cart = getCart();
+
+    //Early exit if item is not in the cart, log it
+    if (!cart[itemId]) {
+        console.warn(`Item ${itemId} not found in cart.`);
+        return;
+    }
+    //Item exists, delete it, "delete" operator removes a property from an object. 
+    delete cart[itemId];
+    saveCart(cart);
+}
 
 export function deleteCookie(cookie){
         document.cookie = `${cookie}=; expires=Thu, 11 Sep 2001 00:00:00 UTC; path=/;`;

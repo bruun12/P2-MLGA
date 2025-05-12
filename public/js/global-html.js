@@ -2,6 +2,7 @@ import {getCart, deleteCookie, updateCartQty} from '/js/basketfill.js';
 import { renderTextElem, renderImgElem, renderDivElem, renderInputElem } from '/js/dom-utils.js';
 import {clampAndUpdateQty} from '/js/product.js';
 /* HTML Navbar Template */
+console.log("entered global-html.js");
 const navTmpl = (event) =>
     `
     <nav class="topnav">
@@ -97,7 +98,11 @@ productLink.addEventListener("mouseleave", function(){
 });
 
 
-export function loadCart(){
+export function loadCart({ containerSelector = ".listCart",  finalPriceSelector = "#finalPrice"} = {}){
+    //To allow flexible use in other pages, choose container for cart
+    const cartDiv = document.querySelector(containerSelector);
+    if (!cartDiv) return;
+
     setTimeout(() => {
         let cart = getCart();
         //console.log(cart);
@@ -123,7 +128,7 @@ export function loadCart(){
                  qtyInputElem.addEventListener("change", () => {
                     let clampedQty = clampAndUpdateQty({inputElemOrSelector: qtyInputElem, max: cart[id].stock_qty});
                     updateCartQty(id, clampedQty);
-                    loadCart();
+                    loadCart({ containerSelector,  finalPriceSelector});
                 });
 
                 // Product name display
@@ -147,7 +152,10 @@ export function loadCart(){
         }
 
         let sumRounded = sum.toFixed(2);
-        document.querySelector("#finalPrice").innerText = `Total ${sumRounded} kr.`;
+
+        //To allow flexible use in other pages, choose container for finalPrice
+        const finalPriceElem = document.querySelector(finalPriceSelector);
+        if (finalPriceElem) finalPriceElem.innerText = `Total ${sumRounded} kr.`;
         
     }, 100);  // adjust delay as needed
 

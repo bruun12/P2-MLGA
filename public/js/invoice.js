@@ -1,4 +1,5 @@
 import { getCart } from '../js/basketfill.js'
+import { loadCart } from './global-html.js';
 
 // This script handles the form submission and validation for the information page
 document.querySelector("#info").addEventListener("submit", function(event) {
@@ -78,4 +79,8 @@ checkOutBtn.addEventListener("click", (event) => {
     }).catch(error => {
         console.error(error.error);
     });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCart({containerSelector: "#cart", finalPriceSelector: "#orderTotal" });
 });

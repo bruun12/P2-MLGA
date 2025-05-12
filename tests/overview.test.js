@@ -28,21 +28,22 @@ describe('math in overview', () => {
 
   });
 
+  // Calculations double checked using https://www.omnicalculator.com/math/cosine-similarity
   describe('Cosine Similarity Testing', () => {
     test('cosineSimilarity1', () => {
-      expect(cosineSimilarity(vecA, vecB)).toBeCloseTo(0.0346); //Tim ret gerne til forventede værdier
+      expect(cosineSimilarity(vecA, vecB)).toBeCloseTo(0.0384); 
     }) 
 
     test('cosineSimilarity2', () => {
-      expect(cosineSimilarity(vecC, vecD)).toBeCloseTo(0.974); //Tim ret gerne til forventede værdier
+      expect(cosineSimilarity(vecC, vecD)).toBeCloseTo(0.974); 
     }) 
 
     test('cosineSimilarity3', () => {
-      expect(cosineSimilarity(vecC, vecB)).toBeCloseTo(0.0934); //Tim ret gerne til forventede værdier
+      expect(cosineSimilarity(vecC, vecB)).toBeCloseTo(0.0934); 
     }) 
 
     test('cosineSimilarity4', () => {
-      expect(cosineSimilarity(vecA, vecD)).toBeCloseTo(0.903); //Tim ret gerne til forventede værdier
+      expect(cosineSimilarity(vecA, vecD)).toBeCloseTo(0.903); 
     }) 
   });
 });

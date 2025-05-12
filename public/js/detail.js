@@ -48,7 +48,6 @@ async function eventHandler(id) {
 async function signUpBtn(id) {
   const response = await fetch(`/event/${id}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
-  //console.dir(data);
   
   let emailInput = document.getElementById("inputEmailEvent").value.trim(); //Gets the value from the inputfield. Removes the whitespace with .trim
   let matchedAccount = null; //variable to determine if an email matched the input to the database members
@@ -63,7 +62,6 @@ async function signUpBtn(id) {
 
   //if there is a matching email in the database the account can sign up for an event
   if (matchedAccount){
-    console.log(matchedAccount.member_id);
     //if(matchedAccount.member_id !== null){}
     let matchedAccountId = matchedAccount.id;
 
@@ -73,7 +71,7 @@ async function signUpBtn(id) {
       alert("You have NOT signed up for the event")
     }
   } else {
-    alert("The email; " + emailInput + " is not a member. Please use an email which is a memeber to sign up for the event.")
+    alert("The email " + emailInput + " is not a member.\nPlease use an email which is a member to sign up for the event.")
   }
 }
 
@@ -90,24 +88,21 @@ async function addEventMember(accountId) {
     },
     body: JSON.stringify({ id, accountId})
   });
-  console.log("Check for eventId: " + id +" accountId: " + accountId);
-    
+ 
   const result = await response.json();
   if(result.success) {
-    console.log("succesfully add to event_member");
+    console.log("Succesfully added to event_member");
   }else {
-    console.error(result.error);
-    console.error("error adding to event-member");
+    console.error("error adding to event-member", error);
   }
 }
 
+
 //Makes a map from the data in the database
-//!!!!!!!!!!!!!!  if not null get store_add til product
 async function getAddress() {
   try {
     const response = await fetch(`/${urlParams.get('type')}/${id}/address`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
-    //console.dir(data, {depth: null});
 
     //filters data so the id numbers will not be part of the address search
     const excludedKeys = ['ev_id', 'add_id', 'st_id'];
@@ -115,14 +110,15 @@ async function getAddress() {
       Object.entries(data).filter(([key, value]) => !excludedKeys.includes(key))
     );
     const address = Object.values(filteredAddressData).join(' ');
+    console.log(address);
     //insert map  with address from database
     if(address != "address not found for store :-("){
       renderMap("map", address);
     } else (
-      console.error("ERROR: addresss is not found for the product")
+      console.error("ERROR: addresss is not found for the product", error)
     )
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching the address', error);
   }
 }
 

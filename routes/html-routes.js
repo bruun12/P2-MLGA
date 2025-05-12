@@ -12,7 +12,7 @@ import { getAccounts, getAllProductItems, getProductDetails, getVariationData } 
 import { getEventDetails, getStoreDetails} from '../controllers/product-controller4Tim.js';
 //Import database address
 //Slet getAddressJoinStoreProduct??????
-import { getAddressJoinEvent, getAddressJoinStore, getAddressJoinStoreProduct } from '../controllers/product-controller4Tim.js';
+import { getAddressJoinEvent, getAddressJoinStore } from '../controllers/product-controller4Tim.js';
 
 import { insertEventMember } from '../controllers/product-controller4Tim.js';
 
@@ -93,7 +93,6 @@ router.get("/allStores", getStores);
 router.get("/product/:id", getProductDetails);
 router.get("/product/:id/variations", getVariationData);
 router.get("/product/:id/allItems", getAllProductItems);
-router.get("/product/:id/address", getAddressJoinStoreProduct); //virker ikke rigtigt!!!!!!!!!
 
 router.get("/event/:id", getEventDetails);
 router.get("/event/:id/address", getAddressJoinEvent);

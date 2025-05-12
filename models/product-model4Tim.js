@@ -28,10 +28,10 @@ export async function getAddressJoinEventInfo(event_id) {
   return rows[0];
 }
 
-//============ Gør så det ikke kan dublikeres
+//Inserts event_id and member_id into event_member without duplicates
 export async function insertEventMemberModel(connection, event_id, account_id) {
   const [eventMemberInsert] = await connection.query(`
-  INSERT INTO event_member (event_member.event_id, event_member.member_id)
+  INSERT IGNORE INTO event_member (event_member.event_id, event_member.member_id)
   VALUES  (?, ?);`,[event_id, account_id]);
   return eventMemberInsert;
 }

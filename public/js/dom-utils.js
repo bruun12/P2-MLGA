@@ -156,7 +156,6 @@ export async function renderMap(id, address) {
     const formatAddress = encodeURIComponent(address);
     //create url to insert the given addressses in the google maps map creater thing
     const mapUrl = `https://www.google.com/maps?q=${formatAddress}&output=embed`;
-    
     let iframe = document.createElement('iframe')
     const parent = document.querySelector("main .location-map")
 
@@ -166,10 +165,6 @@ export async function renderMap(id, address) {
     //I know det skal være i css men ville bare lige se det :-))
     iframe.style.height="100%";
     iframe.style.width="100%";
-     
-    //bruges ikke længere men der skal nok være en anden for for tjek ved manglende addresse
-    if(address!=null){
-        parent.appendChild(iframe);   
-    }
-    return iframe;
+
+    parent.appendChild(iframe); 
 }

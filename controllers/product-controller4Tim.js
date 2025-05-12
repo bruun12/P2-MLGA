@@ -13,11 +13,13 @@ import { getProductInfo } from '../models/product-model4Tim.js';
 import { getProductVariations } from '../models/product-model4Tim.js';
 import { getProductItems } from '../models/product-model4Tim.js';
 import { getEventInfo, getStoreInfo } from '../models/product-model4Tim.js';
+//Get genral info to make level #3
 import { getAddressJoinEventInfo, getAddressJoinStoreInfo } from '../models/product-model4Tim.js';
-//import { getAccountEventInfo } from '../models/product-model4Tim.js';
+//Gets information to insert into event_member
 import { getAccountInfo } from '../models/product-model4Tim.js';
 import { insertEventMemberModel } from '../models/product-model4Tim.js';
 
+//Goes through all accounts
 export const getAccounts = async (req, res) => {
   try {
     const accountInfo = await getAccountInfo(); 
@@ -32,13 +34,13 @@ export const getAccounts = async (req, res) => {
     res.status(500).json({ error: 'Server error ;-(' });
   }
 }
-//inserts account id and event id into membe_event table ============
+//inserts account id and event id into membe_event table
 export async function insertEventMember(req, res) {
   const connection = await dbPool.getConnection();
-  const eventId = req.params.id;
-  const {accountId} = req.body;//får det rigtig data/info???? nope
+  const eventId = req.params.id; //Get id from URL
+  const {accountId} = req.body; //Get id from the body from another databse table
   try {
-    await connection.beginTransaction();
+    await connection.beginTransaction(); //Checks connection
     const result = await insertEventMemberModel(connection, eventId, accountId);
     await connection.commit();
 
@@ -130,27 +132,6 @@ export const getAddressJoinStore = async (req, res)=> {
   }
 }
 
-//gets event_id from URL and then uses it to get the correct address
-export const getAddressJoinStoreProduct = async (req, res)=> {
-  try {
-    // Extract store id from request parameters????
-    //der er ikke nogetadresse id på fullymatchedITem så det kan ikke hentens (er der er heller ikke sat op til at den kan så ved ikke om det er det eneste problem der er)
-    
-    const id = req.body.addressInfo; //!!!!!!virker ikke som ønsket
-    const storeInfo = await getAddressJoinStoreInfo(id); 
-
-    if(storeInfo) {
-      res.json(storeInfo);
-    } else {
-      res.status(404).json({error: 'address not found for store :-('});
-    }
-  } catch (error) {
-    console.error("Error getting address from store:", error);
-    res.status(500).json({error: 'Server error ;-('});
-  }
-}
-
-// KIG HER ABTIN PASTA
 /* Uses ... from product-model to return a product in json format */
 export const getProductDetails = async (req, res)=> {
     try {

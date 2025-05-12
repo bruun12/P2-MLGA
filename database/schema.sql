@@ -181,5 +181,5 @@ CREATE TABLE IF NOT EXISTS event_member (
   member_id INT NOT NULL,
   FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE,
   FOREIGN KEY (member_id) REFERENCES member(account_id) ON DELETE CASCADE
-  UNIQUE (event_id, member_id);
+  UNIQUE (event_id, member_id); /*Makes sure no pair is duplicated*/
 );

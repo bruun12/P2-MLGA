@@ -36,9 +36,21 @@ export async function addToCart(itemId, selectedQty) {
     console.log(`Added to cart: itemId:${itemId}, Quantity: ${selectedQty}`);
     const product = await fetchProductItem(itemId);
     let cart = getCart();
+
+    const stockQty = product.stock_qty;
     // Hvis den findes incrementer vi bare, hvor mange vi har i kurv.
     if (cart[itemId]) {
-        cart[itemId].cartQty += selectedQty;
+        
+        //Ensure newQty, does not surpass stockQty
+
+        //Alert user
+        const newQty = cart[itemId].cartQty + selectedQty;
+        if (newQty > stockQty) {
+            alert(`Only ${stockQty} units in stock. Cart quantity adjusted to maximum allowed.`);
+        }
+
+        //Update quantity
+        cart[itemId].cartQty = clampQty(newQty, 1, stockQty );
         //console.log(cart[itemId].cartQty);
     } else {
         // opretter produkt og gemmer det på dets itemId

@@ -8,8 +8,12 @@ import {
     renderSelectWLabelElem, 
     renderOptionElem, 
     renderLabelElem,
-    addDelegatedEventListener
+    addDelegatedEventListener,
+    clampQty
 } from "./dom-utils.js";
+
+import {addToCart} from "./basketfill.js";
+import { loadCart } from "./global-html.js";
 
 
 //PRODUCT STUFF
@@ -189,7 +193,11 @@ function renderPurchaseContainer(parentElem) {
   renderQtySelector(purchaseContainer);
 
   //Add to cart button
-  renderButtonElem("cartButton", "Add to Cart", purchaseContainer);
+  let addToCartBtn = renderButtonElem({id: "cartButton", text: "Add to Cart", parent: purchaseContainer});
+  addToCartBtn.addEventListener("click", () => { 
+    addToCart(fullyMatchedItem.product_item_id, selectedQty)
+  });
+  addToCartBtn.addEventListener("click", loadCart);
 
 
   return purchaseContainer;
@@ -203,7 +211,14 @@ function renderQtySelector(parentElem) {
 
   let inputElem = renderInputElem({id: "qtyInput", inputType: "number", defaultValue: 1, minValue: 1, parent: qtySelector})
 
-  inputElem.addEventListener("change", handleQtyChange);
+  inputElem.addEventListener("change", (e) => {
+    clampAndUpdateQty({
+        inputElemOrSelector: e.target, 
+        max: fullyMatchedItem?.stock_qty, 
+        updateGlobal: true 
+    });
+    console.log("selectedQty:", selectedQty);
+});
 }
 
 /* -------------------------- STARTING STATE ---------------------------------------- */
@@ -234,12 +249,12 @@ function handleChange(e) {
 }
 // Handles variation dropdown change, stores value and triggers downstream updates
 function handleVariationChange(e) {
-    console.log("Entered handleVariationChange");
+    //console.log("Entered handleVariationChange");
 
   //1. update the users selcted options {1: 9, 6: target.value}
   updateSelectedVariationOption(e.target);
   
-    console.log("Selected Variation Options:", selectedVariationOptions);
+    //console.log("Selected Variation Options:", selectedVariationOptions);
 
   //2. User selections have changed, update the variationMatchingItems
   filterFromVariationSelection();
@@ -249,62 +264,46 @@ function handleVariationChange(e) {
  * @param {*} e 
  */
 function handleStoreChange(e) {
-    console.log("Entered handleStoreChange");
+    //console.log("Entered handleStoreChange");
 
   //1. update the users selected store
   selectedStoreId = e.target.value;
 
-    console.log("in handleStoreChange, selectedStoreId=", selectedStoreId);
+    //console.log("in handleStoreChange, selectedStoreId=", selectedStoreId);
 
   //2. Find the final match and render
   filterFinalMatchAndRender();
 }
 
-/** Handles Quantity Input element changes - updates selectedQty within acceptable range  */
-function handleQtyChange(e) {
-  //Gather the input element and value
-  let inputElem = e.target;
-  const inputVal = parseInt(inputElem.value, 10);
-  
-  //Gather maxQty for ensuring inputval is within range.    ?. nullsafe access operator, || defaults to 1
-  const minQty = parseInt(inputElem.min, 10) || 1;
-  const maxQty = fullyMatchedItem?.stock_qty || 1; 
+export function clampAndUpdateQty({inputElemOrSelector, min = 1, max = 1, reset = false, updateGlobal = false}= {}){
+   
+    // Resolve element if input is a selector string
+    const inputElem = (typeof inputElemOrSelector === "string")     //if inputElemOrSelector is of type "string"
+     ? document.querySelector(inputElemOrSelector)                     //assume its a selector, querySelect the element
+     : inputElemOrSelector;                                         //else, assume its a DOM element already
+    
+    //Early return if input element not found.
+    if (!inputElem) return
 
-  //Update global variable & value of inputElem (recflecting possible clamping change )
-  selectedQty = clampQty(inputVal, minQty, maxQty); //clamping it to either minimum or maxQty, if inputVal is outside interval
-  inputElem.value = selectedQty;
 
-  console.log(inputElem.value);
+    // get  minQty, maxQty, and input value
+    const minQty = parseInt(inputElem.min, 10) || min;
+    const maxQty = parseInt(max, 10);
+    const rawVal = parseInt(inputElem.value, 10);
+
+    // Decide on final value, and show it (skip clamping if reset is true)
+    const clampedVal = reset ? minQty : clampQty(rawVal, minQty, maxQty);
+    inputElem.value = clampedVal;
+
+    //Optionally update external reference (like selectedQty)
+    if (updateGlobal) {
+        selectedQty = clampedVal; // Use object ref for updates
+    }
+    console.log(inputElem.value);
+    return clampedVal; 
 }
 
-/** Called when NEW fully matching item is found due to variation/store selection change (NOT DIRECT DROPDOWN CHANGE) */
-function syncQtyWithStock({reset = false} = {}) {
-  
-  //Gather the input element and value
-  let inputElem = document.querySelector("#qtyInput");
-  if (!inputElem) return;
 
-  //Gather maxQty for ensuring inputval is within range.    ?. nullsafe access operator, || defaults to 1
-  const minQty = parseInt(inputElem.min, 10) || 1;
-  const maxQty = fullyMatchedItem?.stock_qty || 1; 
-
-  //Update global variable & value of inputElem (recflecting possible clamping change )
-  selectedQty = reset ? minQty : clampQty(selectedQty, minQty, maxQty); //clamping it to either minimum or maxQty, if inputVal is outside interval
-  inputElem.value = selectedQty;
-
-  console.log(inputElem.value);
-}
-
-/** Utility function for handleQtyChange & syncQtyWithStock  */
-function clampQty(inputVal, minVal, maxVal) {
-  //When field is empty, isNaN = true. Reset it to min, exit
-  if (isNaN(inputVal)) {
-    console.log("was NaN");
-    return minVal;
-  }
-  //Clamping it to either minimum or maxQty - if it is outside interval
-  return Math.min( Math.max(inputVal, minVal), maxVal);
-}
 
 //Helper for handleVariationChange & initSelections
 function updateSelectedVariationOption(selectElement) {
@@ -321,7 +320,7 @@ function updateSelectedVariationOption(selectElement) {
 /** Provides service for:   handleVariationChange & initSelections
  * Fully handles what happens, when a user changes variations */
 function filterFromVariationSelection() {
-    console.log("entered filterFromVariationSelection")
+   // console.log("entered filterFromVariationSelection")
   
   // 1. Recomputate matching product items based on user's new VARIATION selections.  filters allProductItems -> variationMatchedItems. If no match is found, variationMatchedItems = empty array.
   variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
@@ -342,7 +341,7 @@ function findVariationMatches(selectedVariationOptions, allProductItems) {
   //Clear previous matching items, variations have changed
   variationMatchedItems = [];
   
-  console.log("Amount of selected options:",Object.keys(selectedVariationOptions).length);
+  //console.log("Amount of selected options:",Object.keys(selectedVariationOptions).length);
   
   //Check all product items for a match with utility function 
   for (let productItem of allProductItems) {
@@ -419,14 +418,19 @@ function renderStoreOptsFromMatches(variationMatchedItems) {
  * After a user pics store manually
  * After variations have change*/
 function filterFinalMatchAndRender() {
-    console.log("Entered filterFinalMatchAndRender - with selectedStoreId:", selectedStoreId)
+    //console.log("Entered filterFinalMatchAndRender - with selectedStoreId:", selectedStoreId)
     
   //finds the final item in
   findFullyMatchedItem();
 
   //new match, ensure selected qty is updated within the stock_qty
-  syncQtyWithStock();
-  
+  clampAndUpdateQty({
+        inputElemOrSelector: "#qtyInput", 
+        max: fullyMatchedItem?.stock_qty, 
+        updateGlobal: true
+    });
+
+  console.log("selectedQty:", selectedQty);
   renderItemView();
 }
 
@@ -434,7 +438,7 @@ function filterFinalMatchAndRender() {
 function findFullyMatchedItem() {
   //Should only be one, long
 
-    console.log("Entered update final item with selectedStoreId", selectedStoreId)
+    //console.log("Entered update final item with selectedStoreId", selectedStoreId)
     const fullyMatchingItems = variationMatchedItems.filter( (varMatchingItem) => varMatchingItem.store_id == selectedStoreId);
     
 
@@ -453,10 +457,10 @@ function findFullyMatchedItem() {
 
 //** Provides service to filterFinalMatchAndRender */
 function renderItemView() {
-  console.log("renderItemView")
+  //console.log("renderItemView")
   //If final item was not found
   if (!fullyMatchedItem) {
-    console.log("Not available screen should be")
+    //console.log("Not available screen should be")
     updateItemDisplay({
       imgSrc: "defaultImg",
       statusText: "Product not available for this combination.",
@@ -466,7 +470,7 @@ function renderItemView() {
     });
 
   }  else {
-    console.log("available")
+    //console.log("available")
 
     updateItemDisplay({
       imgSrc: fullyMatchedItem.item_img ? fullyMatchedItem.item_img : "No pi_img, use product_img",
@@ -487,7 +491,7 @@ function renderItemView() {
 
 //** Provides service to renderItemView */
 function updateItemDisplay({imgSrc = null, statusText = "", priceText ="", disableQtyInput = false, disableCartButton = false} = {}) {
-  console.log("selected qty", selectedQty);
+  //console.log("selected qty", selectedQty);
   //update Main Img
   const mainImgElem = document.querySelector(".mainIMG");
   if (mainImgElem && imgSrc) {

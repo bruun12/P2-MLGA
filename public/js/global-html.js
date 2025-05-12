@@ -1,3 +1,6 @@
+import {getCart, deleteCookie, updateCartQty} from '/js/basketfill.js';
+import { renderTextElem, renderImgElem, renderDivElem, renderInputElem } from '/js/dom-utils.js';
+import {clampAndUpdateQty} from '/js/product.js';
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `
@@ -31,26 +34,13 @@ const navTmpl = (event) =>
     <div class="cartTab">
         <h2>Shopping Cart</h2>
         <div class="listCart">
-            <div class="item">
-                <div class="image">
-                    
-                </div>
-                <div class="name">
-                    
-                </div>
-                <div class="totalPrice">
-                    
-                </div>
-                <div class="quantity">
-                    <span class="minus"><</span>
-                    
-                    <span class="plus">></span>
-                </div>
-            </div>
         </div>
-        <div class=btn>
+        <div class="listCart"> <p id="finalPrice"> </p> </div>
+        <div class="btn">
             <button class="closeCart">Close</button>
-            <a href="/basket"<button class="checkOut">Check Out</button>
+            <a href="/basket"><button class="checkOut">Check Out</button></a>
+            <button class="closeCart" id="clearBasket">Clear basket</button>
+
         </div>
     </div>
     `
@@ -86,6 +76,17 @@ insGlb()
 /* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
+let cartDiv = document.querySelector(".listCart");
+let clearBasketBtn = document.querySelector("#clearBasket");
+
+
+
+clearBasketBtn.addEventListener("click", function(){
+    const itemInfoDivs = document.querySelectorAll(".cartItemDiv"); 
+    itemInfoDivs.forEach(div => div.remove()); // Removes all items in cart
+    deleteCookie("cart"); //Deletes items in cookie
+    loadCart();
+})
 
 product.addEventListener("mouseenter", function(event){
     productLink.style.display = "block";
@@ -95,6 +96,65 @@ productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
 
+
+export function loadCart(){
+    setTimeout(() => {
+        let cart = getCart();
+        //console.log(cart);
+        let sum = 0;
+        let price = 0
+
+        for (const id in cart) {
+            let cartItem = document.querySelector(`#cartItemDiv${id}`);
+            
+            let priceRounded;
+            //If cartItemDiv does not exist for a unique pi_id, - create it  
+            if (cartItem === null){
+                // Create container div for the cart item
+                let cartItemDiv = renderDivElem({id: `cartItemDiv${id}`, className: `cartItemDiv`, parent: cartDiv});
+
+                // Sub-container for item details
+                let itemInfo = renderDivElem({className: "itemInfo", parent: cartItemDiv});
+                
+                //create a quantity input element and add event listener
+                 let qtyInputElem = renderInputElem({id: `item${id}Qty`, inputType: "number", defaultValue: cart[id].cartQty, minValue: 1, parent: itemInfo});
+                 
+                 //NOT IDEAL, REMEMBER TO MOVE THIS
+                 qtyInputElem.addEventListener("change", () => {
+                    let clampedQty = clampAndUpdateQty({inputElemOrSelector: qtyInputElem, max: cart[id].stock_qty});
+                    updateCartQty(id, clampedQty);
+                    loadCart();
+                });
+
+                // Product name display
+                renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
+
+                //Create a text for the price
+                price = cart[id].price * cart[id].cartQty;
+                priceRounded = price.toFixed(2)
+                renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
+            } else {
+                // Update the quantity <input> element's value, so its visible to user
+                const qtyInputElem = document.querySelector(`#item${id}Qty`);
+                if (qtyInputElem) qtyInputElem.value = cart[id].cartQty;
+
+                price = cart[id].price * cart[id].cartQty;
+                priceRounded = price.toFixed(2)
+                document.querySelector(`#item${id}Price`).innerText = `${priceRounded} kr.`;
+            }
+            
+            sum = sum + price;
+        }
+
+        let sumRounded = sum.toFixed(2);
+        document.querySelector("#finalPrice").innerText = `Total ${sumRounded} kr.`;
+        
+    }, 100);  // adjust delay as needed
+
+}
+
+
+
 /* JS to display and hide shopping cart */
 let cartIcon = document.querySelector(".cartIcon");
 let cartTab = document.querySelector(".cartTab");
@@ -102,7 +162,12 @@ let cartClose = document.querySelector(".closeCart");
 
 cartIcon.addEventListener("click", function(event){
     event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
-    cartTab.style.display = "block";
+    if(cartTab.style.display !== "block"){
+        cartTab.style.display = "block";
+        loadCart();
+    } else {
+        cartTab.style.display = "none";
+    }
 })
 
 cartClose.addEventListener("click", function(){

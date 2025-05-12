@@ -4,7 +4,8 @@ import express from 'express';
 import path from 'path';
 import url from 'url';
 //Importing database functions
-import { getProducts, getCategories, getFilteredProducts, getSearchedProducts } from '../controllers/product-controller.js';
+import { getProducts, getCategories, getFilteredProducts, getSearchedProducts, getProductItemById, getUserInteractions, getRecommendedProducts } from '../controllers/product-controller.js';
+
 import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
 import { getStores } from "../controllers/store-controller.js";
 
@@ -65,8 +66,14 @@ router.get("/createStore", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'));
 });
 
+
+// Checkout
 router.get("/basket", (request, response) => {
     response.sendFile(path.join(__dirname, '..', 'public', 'html', 'invoice.html'));
+});
+
+router.get("/success", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'success.html'));
 });
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
@@ -76,6 +83,8 @@ router.get("/filteredProducts/:id", getFilteredProducts);
 
 router.get("/searchedProducts/:searchword", getSearchedProducts);
 
+router.get("/ProductItemById/:id", getProductItemById)
+
 /* Endpoint /allEvents also used in front-page.js for slideshow */
 router.get("/allEvents", getEvents);
 
@@ -84,6 +93,12 @@ router.get("/allStoresWithEvents", getStoresWithEvents);
 router.get("/storeEvents/:id", storeEvents);
 
 router.get("/allCategories", getCategories);
+
+// Used in recommendation of products.
+router.get("/userInteractions", getUserInteractions);
+
+// Used in recommendation of products.
+router.post('/recProducts', getRecommendedProducts);
 
 
 // Endpoints used for stores in overview.js, store-model.js, and store-controller.js

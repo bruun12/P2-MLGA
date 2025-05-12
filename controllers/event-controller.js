@@ -9,7 +9,8 @@ Acts as the business logic layer: Contains functions or methods that process inc
 They decide what happens when a specific route is hit.
 */
 
-import {getAllEvents, getAllStoresWithEvents, getStoreEvents} from '../models/event-model.js';
+import {getAllEvents, getAllStoresWithEvents, getStoreEvents, insertEvent} from '../models/event-model.js';
+
 
 export const getEvents = async (req, res) => {
     try {
@@ -41,3 +42,16 @@ export const storeEvents = async (req, res) => {
       res.status(500).json({ success: false, message: 'Server Error' });
     }
 }
+
+export const createEvent = async (req, res) => {
+  const { storeId, eventImage, eventTitle, eventDescription, eventDate, addressId, memberId } = req.body;
+
+  try {
+      // Call the model function to insert the event
+      const result = await insertEvent(storeId, eventImage, eventTitle, eventDescription, eventDate, addressId, memberId);
+      res.status(201).json({ success: true, message: 'Event created successfully', eventId: result.insertId });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Failed to create event' });
+  }
+};

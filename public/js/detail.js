@@ -145,4 +145,4 @@ async function detailHandlers(type, id) {
 } 
 
 //shows information onto the page, when the document is fully loaded
-addEventListener("DOMContentLoaded", detailHandlers(type, id));
+addEventListener("DOMContentLoaded", () => {detailHandlers(type, id)});

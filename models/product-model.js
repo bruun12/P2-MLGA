@@ -56,6 +56,14 @@ export async function filteredProducts(categoryId) {
   return rows;
 }
 
+export async function productItemById(productItemId) {
+  const [rows] = await dbPool.query(`SELECT product_item.id, name, stock_qty, product_item.img, price, store_id
+                                     FROM product_item JOIN product
+                                     ON product_item.product_id = product.id
+                                     WHERE product_item.id = ?;`, [productItemId]);
+  return rows;
+}
+
 export async function searchedProducts(searchWord) {
   let key = "%"+searchWord+"%" //the % means that anything can be infront of it.
   const [rows] = await dbPool.query(`SELECT p.id, p.name AS title, pi.price, pi.img
@@ -71,5 +79,39 @@ export async function searchedProducts(searchWord) {
   return rows;
 }
 
+export async function userInteractions() { // Select all bought items for each user. (Only members). Used in product-controller.
+  const [rows] = await dbPool.query(`SELECT customer_order.member_id AS account_id,
+                                            order_line.product_item_id
+                                     FROM 
+                                            order_line
+                                     JOIN 
+                                            customer_order ON order_line.order_number = customer_order.order_number
+                                     WHERE 
+                                            customer_order.member_id IS NOT NULL;`);
+  return rows;
+}
 
+export async function getProductsByIds(product_ids) {
+  if (!Array.isArray(product_ids) || product_ids.length === 0) return [];
 
+  const [rows] = await dbPool.query(
+      `SELECT 
+          p.id, 
+          p.name AS title, 
+          pi.price, 
+          pi.img
+       FROM product p
+       JOIN (
+           SELECT product_id, MIN(price) AS min_price
+           FROM product_item
+           GROUP BY product_id
+       ) min_prices ON p.id = min_prices.product_id
+       JOIN product_item pi 
+           ON pi.product_id = min_prices.product_id 
+           AND pi.price = min_prices.min_price
+       WHERE p.id IN (?)`,
+      [product_ids]
+  );
+
+  return rows;
+}

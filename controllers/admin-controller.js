@@ -1,4 +1,5 @@
 import { insertProduct, insertProduktID, insertAddress, insertStore } from "../models/admin-model.js";
+import dbPool from "../database/database.js";
 
 export async function addProduct(req, res) {
     const { product, productItem } = req.body;
@@ -8,6 +9,7 @@ export async function addProduct(req, res) {
         !product || !product.category_id || !product.name || !product.description || !product.img ||
         !productItem || !productItem.SKU || !productItem.stock_qty || !productItem.img || !productItem.price || !productItem.store_id
     ) {
+        console.error('validation error:', {product, productItem}); // Log the request body for debugging
         return res.status(400).json({
             success: false,
             error: 'Invalid input. Please provide all required fields for product and productItem.'
@@ -19,9 +21,16 @@ export async function addProduct(req, res) {
         await connection.beginTransaction();
 
         try {
-            await insertProduct(product);
+            console.log('Product:', product);
+            const productResult = await insertProduct(product);
+            const productId = productResult.insertId; 
 
-            await insertProduktID(productItem);
+            console.log('product insertId:', productId); // Log the product ID for debugging
+
+            console.log('Product ID:', productId); // Log the product ID for debugging
+            const productItemResult = await insertProduktID({...productItem, product_id: productId}); // Pass the productId to the insert function
+
+            console.log('ProductItem inserted:', productItemResult); // Log the product item ID for debugging
 
             await connection.commit();
             connection.release();
@@ -35,7 +44,11 @@ export async function addProduct(req, res) {
         } catch (error) {
             await connection.rollback();
             connection.release();
-            throw error;
+            console.error('Error inserting product or product item:', error); // Log the error for debugging
+            res.status(500).json({
+                success: false,
+                error: 'Failed to add product or product item'
+            });
         }
     } catch (error) {
         console.error('Database error:', error);

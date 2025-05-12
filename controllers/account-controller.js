@@ -38,18 +38,12 @@ export async function memberLogin(req, res) {
     const { email, password } = req.body;
 
     try {
-        console.log("Login attempt:", { email, password });
-
-        const rows = await checkMember(email); 
-        console.log("Query result:", rows);
-
-        if (rows.length === 0) {
+        const user = await checkMember(email); 
+        
+        if (!user) {
             console.log("User not found for email:", email);
             return res.status(404).json({ message: 'User not found.' });
         }
-
-        const user = rows[0];
-        console.log("User found:", user);
 
         // Compare the provided password with the hashed password
         const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -59,8 +53,16 @@ export async function memberLogin(req, res) {
             console.log("Invalid credentials for user:", email);
             return res.status(401).json({ message: 'Invalid credentials.' });
         }
-
-        res.status(200).json({ message: 'Login successful!', user: { id: user.id, email: user.email, first_name: user.first_name } });
+        
+        res.status(200).json({
+            message: 'Login successful!',
+            user: {
+                id: user.id,
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name
+        }
+    });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Failed to log in.' });
@@ -111,7 +113,11 @@ export async function sendTestEmail(req, res) {
 
 
 export const getFavorites = async (req, res) => {
-    const userId = req.session.userId; // Assuming user ID is stored in the session
+    const userId = req.query.userId; // Assuming userId is passed as a query parameter
+
+    if (!userId) {
+        return res.status(401).json({ message: "User ID is required" });
+    }
 
     try {
         const favorites = await getUserFavorites(userId);

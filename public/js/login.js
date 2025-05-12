@@ -27,23 +27,32 @@ async function registerUser() {
 }
 
 async function loginUser() {
-    const email = document.getElementById("loginEmail").value; // Gets input from the user
-    const password = document.getElementById("loginPassword").value; // Gets input from the user
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
 
-    const response = await fetch("http://localhost:3350/login", { // Sends the data to the server
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-    });
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
 
-    const data = await response.json();
-    
-    if (response.ok) { // If the response is ok, it means the login was successful
-        alert(data.message);
-        sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
-        window.location.href = `https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/profil-page.html?userId=${data.user.id}`; 
-    } else {
-        alert(data.message);
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('user', JSON.stringify(data.user)); // Save user data to local storage
+            console.log("User data saved to localStorage:", data.user);
+
+            window.location.href = '/profile'; // Naviger til en ny side
+        } else {
+            // Login failed, show error message
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred. Please try again.');
     }
 }
 

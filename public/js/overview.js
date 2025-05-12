@@ -1,13 +1,14 @@
+import { formatDates } from '../js/dom-utils.js';
 //uses the query set in the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 
-function displayItem(name, price, img, id){ // Note if event instead of product price = date.
+function displayItem(name, price, img, id, div){ // Note if event instead of product price = date.
     //Make div and put it under the productDisplayer
     let itemA = document.createElement("a");
     itemA.setAttribute("class", `${urlParams.get('type')}Div`);
-    document.querySelector("#displayer").appendChild(itemA);
+    document.querySelector(`#${div}`).appendChild(itemA);
     itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
 
 
@@ -144,6 +145,146 @@ function sidebar(categories) {
     }
 } 
 
+
+/*  Material for understanding recommender system code:
+    [...] Spread operator: https://www.youtube.com/watch?v=NIq3qLaHCIs
+    Map & Set: https://www.youtube.com/watch?v=yJDofSGTSPQ (9:18 -> 13:50)
+    .indexOf: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+    .some: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    .sort: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+
+    
+    Choice of comparisons formula (Compairsons by ChatGippidy)
+        1. Cosine Similarity (Most popular for recommender systems from what I could see on google -> SLIAL block 1 self-study slide 3, 19)
+            - Good for sparse data, where users don't interact with majority of products
+            - Focuses on what user liked/bought, not number of interactions
+        2. Euclidean / Manhatten 
+            - Less useful in sparse data, due to less meaningful euclidean distance
+                - i.e. two users who have not interacted with 90% of products will look very similar no matter what they have interacted with.
+            - Good for dense data and quantity of matters (ex: ratings from 1-5)
+        3. Jaccard
+            - Ignores no interactions
+            - Undervalues similarity for sparse datasets.
+        4. Minkowski Distance
+            - Generalized Euclidean / Manhatten -> share same downsides.
+*/
+/**
+ * Computes the dot product between to vectors.
+ * @param {Array} vecA Array symbolizing a vector.
+ * @param {Array} vecB Array symbolizing a vector.
+ * @returns dot product of two vectors.
+ */
+export function dotProduct(vecA, vecB) {
+    let result = 0;
+    for (let i = 0; i < vecA.length; i++) { // Multiply each index in each array and add it to result.
+        result += vecA[i] * vecB[i];
+    }
+    return result;
+}
+
+/**
+ * Computes similarity between vectors
+ * @param {Array} vecA Array symbolizing a vector.
+ * @param {Array} vecB Array symbolizing a vector.
+ * @returns Angle between two vectors, i.e similarity
+ */
+export function cosineSimilarity(vecA, vecB) {
+    const dotProductValue = dotProduct(vecA, vecB); // Get dot product of both vectors.
+    const normA = Math.sqrt(dotProduct(vecA, vecA)); // Get the norm of vector A.
+    const normB = Math.sqrt(dotProduct(vecB, vecB)); // Get the norm of vector B.
+    if (normA === 0 || normB === 0) return 0; // Avoid divison by zero.
+    return dotProductValue / (normA * normB); // SLIAL Block 1 Self-Study slide 19.
+}
+
+async function recommendProducts() {
+    try {
+        const response = await fetch(`/userInteractions`);
+        const data = await response.json();
+        
+        // Choose the user recieveing recommendations (change this to test!)
+        const targetUserId = 1;
+
+        /* Step 1: Build user item matrix */
+        /* Rows = Users, Columns = Items, if cell === 1 user has bought/favorited item else 0. */
+        // NOTE: "..." is called the spread operator. It spreads the set into an array. See material for more info
+        const users = [...new Set(data.map(index => index.account_id))]; // Map each account_id into its own set, then turn it into an array.
+        const products = [...new Set(data.map(index => index.product_item_id))]; // Map each product item into its own set, then turn it into an array.
+        
+        // Find the index of the target user in the users array
+        const targetUserIndex = users.indexOf(targetUserId);
+
+        // Create user item matrix
+        const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
+            return products.map(productId => {  // For each product, check run if else check.
+                if (data.some(index => index.account_id === userId && index.product_item_id === productId)) { // Check if interaction between user and product exists.
+                    return 1;
+                } else {
+                    return 0;
+                }
+            })
+        });
+
+        // Find similarities between users
+        const similarities = users.map((currentUserId, currentIndex) => {
+            //If not same user, compare.
+            if (currentIndex !== targetUserIndex) { // Return object including userid and similarity
+                return {
+                    user: currentUserId,
+                    similarity: cosineSimilarity(userItemMatrix[targetUserIndex], userItemMatrix[currentIndex])
+                };
+            } else {
+                return null; // return null when it is the same user
+            }
+        }).filter(result => result !== null); // Filter array to not include null.
+
+        /* Step 3: Recommend products */
+        // Find most similar user by sorting list
+        const mostSimilarUsers = similarities.sort((a,b) => b.similarity - a.similarity).slice(0,3);
+
+        if (mostSimilarUsers.length > 0) {
+            const productRec = new Set(); // Use Set to avoid duplicates
+
+            for (const similarUser of mostSimilarUsers) {
+                const similarUserIndex = users.indexOf(similarUser.user);
+
+                products.forEach((productId, index) => {
+                    if (userItemMatrix[similarUserIndex][index] === 1 &&
+                        userItemMatrix[targetUserIndex][index] === 0) {
+                        productRec.add(productId); // Add unique recommendations
+                    }
+                });
+        }
+
+        const productRecArr = [...productRec] // Make set of recommendations into array.
+        console.log(`Recommended products for user ${targetUserId}:`, productRecArr);
+
+        // Get products from database
+        const response2 = await fetch('/recProducts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product_id: productRecArr })
+        });
+        
+        const data2 = await response2.json();
+        console.log("Product data from DB:", data2);
+
+        // Show recommended products.
+        let recdiv = document.querySelector('#rec');
+        recdiv.style.display = 'grid';
+
+        for (const item of data2) {
+            displayItem(item.title, item.price, item.img, item.id, 'rec');
+        }
+        } else {
+            console.log("No similar users found for recommendation.")
+        }
+    } catch (error) {
+        console.error("Error fetching or processing data:", error);
+    }
+}
+
 //skriv kommentar, og eventuelt hvor man får det fra. (pt. html routes)
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 async function fetchAndDisplayItems() {
@@ -157,12 +298,13 @@ async function fetchAndDisplayItems() {
         if (itemType === 'product') {
             getValue = (item) => item.price;
         } else {
-            getValue = (item) => item.date;
+            formatDates(data, 'date', 'newDate')
+            getValue = (item) => item.newDate;
         }
 
         // Display event or product depending on input
         for (const item of data) {
-            displayItem(item.title, getValue(item), item.img, item.id);
+            displayItem(item.title, getValue(item), item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data:", error);
@@ -176,7 +318,7 @@ async function fetchAndDisplayFilteredItems(id) {
         
         // Display filtered items
         for (const item of data) {
-            displayItem(item.title, item.price, item.img, item.id);
+            displayItem(item.title, item.price, item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -191,7 +333,7 @@ async function fetchAndDisplaySearchedItems(searchWord) {
         
         // Display searched items
         for (const item of data) {
-            displayItem(item.title, item.price, item.img, item.id);
+            displayItem(item.title, item.price, item.img, item.id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -231,7 +373,7 @@ async function fetchAndDisplayStoreEvents(id) {
 
         // Display events.
         for (const item of data) {
-            displayItem(item.title, item.date, item.img, item.store_id);
+            displayItem(item.title, item.date, item.img, item.store_id, 'displayer');
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -245,7 +387,7 @@ async function fetchStoreOverview() {
         
         // Display stores
         for (const store of data) {
-            displayItem(store.name, store.phone, store.img, store.id)
+            displayItem(store.name, store.phone, store.img, store.id, 'displayer')
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);
@@ -281,6 +423,7 @@ const routeHandlers = {
         } else if (urlParams.get('search') !== null) {
             fetchAndDisplaySearchedItems(urlParams.get('search')); // Display searched items
         } else {
+            recommendProducts() // Display recommendations
             fetchAndDisplayItems(); // Display all items
         }
 

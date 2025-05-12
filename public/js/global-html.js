@@ -146,6 +146,12 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
                 deleteBtn.addEventListener("click", () => {
                     console.log("before deletion", cart)
                     deleteCartItem(id);
+
+                    //Visually remove the div
+                    const cartItemDiv = document.querySelector(`#cartItemDiv${id}`);
+                    if (cartItemDiv) {
+                        cartItemDiv.remove();
+                    }
                     
                     //Call loadCart to update UI
                     loadCart({containerSelector, finalPriceSelector });

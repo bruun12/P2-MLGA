@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `date` DATETIME NOT NULL, /* or TIMESTAMP type */
   address_id INT,
   FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE CASCADE,
-  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL,
+  FOREIGN KEY (address_id) REFERENCES `address`(id) ON DELETE SET NULL
 );
 
 /*Members signed up for events*/
@@ -181,5 +181,5 @@ CREATE TABLE IF NOT EXISTS event_member (
   member_id INT NOT NULL,
   FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE,
   FOREIGN KEY (member_id) REFERENCES member(account_id) ON DELETE CASCADE,
-  UNIQUE (event_id, member_id);
+  UNIQUE (event_id, member_id)
 );

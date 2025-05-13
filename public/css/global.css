@@ -16,11 +16,12 @@ overflow-x: hidden;
 }
 
 body {
-height: 100%;
+min-height: 100vh;
 margin: 0;
 display: flex;
 flex-direction: column;
 overflow-x: hidden;
+position: relative;
 }
 
 /* Moves whole page when shoping cart is displayed */
@@ -49,7 +50,7 @@ z-index: 1000; /* higher z index than everything else, ensuring navbar is always
 /* Style the links inside the navigation bar */
 .topnav a {
 float: left;
-color: #f2f2f2;
+color: var(--text-light);
 text-align: center;
 padding: 14px 16px;
 text-decoration: none;
@@ -64,7 +65,7 @@ color: black;
 
 /* Add a color to the active/current link */
 .topnav a.active {
-background-color: #04AA6D;
+background-color: var(--primary-color);
 color: white;
 }
 
@@ -165,12 +166,14 @@ background: #ccc;
 /* Footer beautyfication */
 footer {
 background-color: var(--headerFooter-color);
-height: 175px;
+height: 10rem;
 width: 100%;
 overflow: hidden;
-position: fixed;
+position: absolute;
 bottom: 0;
 color: white;
+text-align: center;
+padding-top: 2rem;
 /* All links in the footer are always blue */
 a { 
   color: #0000EE;
@@ -207,8 +210,8 @@ a {
 }
 
 .cartTab .btn button {
-  background-color: #04AA6D;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
   border: none;
   padding: 12px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -219,7 +222,7 @@ a {
 }
 
 .cartTab .btn button:hover {
-  background-color: #45a049;
+  background-color: var(--primary-hover);
   transform: translateY(-2px);
 }
 
@@ -249,11 +252,11 @@ a {
 .cartTab .listCart p {
   margin: 0;
   font-size: 1rem;
-  color: #2c3e50;
+  color: var(--text-color);
 }
 
 .cartTab .listCart p:last-child {
-  color: #04AA6D;
+  color: var(--primary-color);
   font-weight: 600;
 }
 

@@ -12,6 +12,19 @@ aside {
   border: 1px solid var(--border-color);
 }
 
+#info {
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: center;
+}
+
+.infoChild {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
+}
+
 .dropbtn {
   background-color: var(--primary-color);
   color: var(--text-light);
@@ -207,3 +220,4 @@ form h2 {
     background-color: var(--text-light);
     color: var(--text-color);
 }
+

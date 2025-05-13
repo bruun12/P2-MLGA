@@ -14,7 +14,8 @@
 
 /* Hide the images by default */
 .mySlides {
-    display: none;
+    margin-top: 5rem;
+    display: none;    
 }
 
 .mySlides span {
@@ -27,6 +28,11 @@
     text-align: center;
     color: var(--text-light);
     text-shadow: var(--shadow-md);
+}
+
+.slide-image {
+    height: 100rem;
+    width: 100rem;
 }
 
 /* Next & previous buttons */
@@ -130,6 +136,7 @@
     gap: var(--spacing-lg);
     padding: var(--spacing-xl);
     background-color: var(--background-color);
+    margin-bottom: 9rem;
 }
 
 .front-buttons a {

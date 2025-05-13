@@ -1,6 +1,6 @@
-import {deleteCookie} from '/js/basketfill.js';
+import {deleteCookie} from './basketfill.js';
 import { loadCart } from './cart.js';
-
+console.log("global entered");
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `

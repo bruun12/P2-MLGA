@@ -1,120 +1,106 @@
 @import 'variables.css';
 
-body {
-    background-image: url('../images/Mr.grey.jpg');
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    padding: 0;
+.login-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    justify-content: flex-start;
+    min-height: calc(100vh - 80px);
     padding: var(--spacing-lg);
+    margin-top: 40px;
+    width: 100%;
 }
 
 .header {
     text-align: center;
     margin-bottom: var(--spacing-lg);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: var(--spacing-lg) 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
+    width: 100%;
+    max-width: 400px;
 }
 
 .header h1 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-large);
     margin-bottom: var(--spacing-sm);
-    text-shadow: var(--shadow-md);
 }
 
 .header h2 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-base);
     margin-bottom: var(--spacing-md);
-    text-shadow: var(--shadow-sm);
 }
 
-form {
+#loginform {
     background-color: var(--text-light);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
     text-align: center;
-    margin-top: 120px; /* Add space for the header */
+    margin: 0 auto;
+    position: relative;
 }
 
 .input-container {
-    display: flex;
-    flex-direction: column;
     margin-bottom: var(--spacing-md);
-    width: 100%;
+    text-align: left;
 }
 
 .input-container label {
-    font-weight: var(--font-weight-bold);
-    color: var(--text-color);
+    display: block;
     margin-bottom: var(--spacing-xs);
-}
-
-.input-container img {
-    position: absolute;
-    right: var(--spacing-sm);
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    color: var(--text-color);
+    font-weight: var(--font-weight-bold);
 }
 
 .input-wrapper {
     position: relative;
-    width: 100%;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.input-wrapper input {
     width: 100%;
     padding: var(--spacing-sm) var(--spacing-md);
-    padding-right: 40px; /* Space for the icon */
+    padding-right: 40px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-sm);
-    background-color: var(--text-light);
-    color: var(--text-color);
     font-size: var(--font-size-base);
     transition: all var(--transition-fast);
-    box-sizing: border-box;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
+.input-wrapper input:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
+.input-wrapper i {
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-color);
+}
+
 .checkbox-container {
     display: flex;
     align-items: center;
-    margin-bottom: var(--spacing-md);
     gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
 }
 
-input[type="checkbox"] {
+.checkbox-container input[type="checkbox"] {
     width: 16px;
     height: 16px;
     cursor: pointer;
 }
 
-button,
-input[type="submit"] {
+.checkbox-container label {
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+#submitBtn {
     width: 100%;
     padding: var(--spacing-md);
     background-color: var(--primary-color);
@@ -122,80 +108,68 @@ input[type="submit"] {
     border: none;
     border-radius: var(--border-radius-sm);
     cursor: pointer;
-    margin-bottom: var(--spacing-md);
     font-size: var(--font-size-base);
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: var(--spacing-sm);
     transition: background-color var(--transition-fast);
 }
 
-button:hover,
-input[type="submit"]:hover {
+#submitBtn:hover {
     background-color: var(--primary-hover);
 }
 
-button img {
-    margin-left: var(--spacing-sm);
-    width: 20px;
-    height: 20px;
-}
-
-#glemtpassword {
+.forgot-password {
+    display: block;
     color: var(--primary-color);
     text-decoration: none;
+    margin: var(--spacing-md) 0;
     transition: color var(--transition-fast);
 }
 
-#glemtpassword:hover {
+.forgot-password:hover {
     color: var(--primary-hover);
     text-decoration: underline;
 }
 
-.profil {
+.profil, .admin {
     margin-top: var(--spacing-lg);
     text-align: center;
 }
 
-.profil h3 {
+.profil h3, .admin h3 {
     color: var(--text-color);
     font-size: var(--font-size-small);
     margin-bottom: var(--spacing-sm);
 }
 
-.profil a {
+.create-account, .admin-link {
     color: var(--primary-color);
     text-decoration: none;
     transition: color var(--transition-fast);
 }
 
-.profil a:hover {
+.create-account:hover, .admin-link:hover {
     color: var(--primary-hover);
     text-decoration: underline;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
+    .login-container {
+        padding: var(--spacing-md);
+    }
+
     form {
         padding: var(--spacing-lg);
     }
 
-    .input-container {
-        flex-direction: column;
-        align-items: flex-start;
+    .header h1 {
+        font-size: var(--font-size-large);
     }
 
-    input[type="text"],
-    input[type="password"],
-    input[type="email"] {
-        width: 100%;
-    }
-
-    .input-container img {
-        position: relative;
-        right: 0;
-        top: 0;
-        transform: none;
-        margin-top: var(--spacing-sm);
+    .header h2 {
+        font-size: var(--font-size-base);
     }
 }

@@ -3,43 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login.css">
-    <title>Login page</title>
-    <script src="js/login.js" defer></script>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Login - ByHjerte</title>
+    <script type="module" src="../js/login.js" defer></script>
+    <script type="module" src="../js/global-html.js" defer></script>
 </head>
 <body>
-    <div class="header">
-        <h1> Login </h1>
-        <h2>Forside/Login</h2>
-    </div>
-    <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
-        <div class="input-container">
-            <label for="loginEmail">Email:</label>
-            <input type="email" id="loginEmail" name="email">
-            <img src="../images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+    <main>
+        <div class="login-container">
+            <div class="header">
+                <h1>Login</h1>
+                <h2>Forside/Login</h2>
+            </div>
+            <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
+                <div class="input-container">
+                    <label for="loginEmail">Email:</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="loginEmail" name="email" placeholder="Enter your email">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <label for="loginPassword">Password:</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="loginPassword" name="password" minlength="8" placeholder="Enter your password">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="husk-mig" value="Husk mig">
+                    <label for="husk-mig">Husk mig</label>
+                </div>
+                <button id="submitBtn" type="submit">
+                    Login
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+                <a href="forgot-password" class="forgot-password">Forgot your password?</a>
+                <div class="profil">
+                    <h3>Har du ikke en profil?</h3>
+                    <a href="create-account" class="create-account">Opret profil</a>
+                </div>
+                <div class="admin">
+                    <h3>Er du administrator?</h3>
+                    <a href="../html/adminFrontPage.html" class="admin-link">Login</a>
+                </div>
+            </form>
         </div>
-        <div class="input-container">
-            <label for="loginPassword">Password: </label>
-            <input type="password" id="loginPassword" name="password" minlength="8"> <br> <br>
-            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
-        </div> 
-        <div class="checkbox-container">
-            <label for="Husk mig">Husk mig</label>
-            <input type="checkbox" id="husk-mig" value="Husk mig">
-        </div>
-        <button type="submit">Login
-            <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
-        </button> <br> <br>
-        <a href="forgot-password" id="glemtpassword"> Forgot your password?</a> <br> <br>
-        <div class="profil">
-            <h3>Har du ikke en profil?</h3>
-            <a href="create-account" id="opretprofil">Opret profil</a>
-        </div>
-        <div class="admin">
-            <h3>Er du administrator?</h3>
-            <a href="../html/adminFrontPage.html" id="adminlogin">Login</a>
-        </div>
-    </form>
+    </main>
 </body>
 </html>
 

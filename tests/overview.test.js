@@ -48,21 +48,6 @@ describe('math in overview', () => {
   });
 });
 
-describe('DOM-test', () => {
-  document.body.innerHTML = `<div id="categorySelector"> 
-                                <a id="tester"  href="/overview?type=product&sortId=1"></a>
-                             </div>`; 
-
-
-  let HTMLCategoryA = document.querySelector("#tester");
-  HTMLCategoryA.innerText = "Tester";
-
-  test('categoryA', () => {
-    //expect(categoryDisplay("Tester", 1)).toHaveProperty(HTMLCategoryA); 
-    // Kan ikke lige finde den rigtige måde at teste dette på, men toHaveProperty forventer string eller array or expect returnere her <a href="/overview?type=product&sortId=1" id="tester" />
-  });
-});
-
 
 
 

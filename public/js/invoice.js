@@ -38,7 +38,7 @@ function rabat() {
 }
 
 
-let basket=document.querySelector("#basket"); 
+/* let basket=document.querySelector("#basket"); 
 
 function getCookie(name){
     const cDecoded = decodeURIComponent(document.cookie);
@@ -51,7 +51,7 @@ function getCookie(name){
         }
     })
     return result;
-} 
+}  */
 
 let checkOutBtn = document.querySelector("#maddog");
 checkOutBtn.addEventListener("click", (event) => {

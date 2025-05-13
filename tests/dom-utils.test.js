@@ -1,4 +1,4 @@
-import { renderTextElem, renderImgElem, renderInputElem, renderBtn, formatDates } from '../public/js/dom-utils.js'
+import { renderTextElem, renderImgElem, renderInputElem, renderBtn, formatDates, clampQty } from '../public/js/dom-utils.js'
 
 describe('Date formatting data', () => {
     const event1 = [
@@ -59,4 +59,24 @@ describe('Date formatting data', () => {
             expect(result[0].localDate).toBe('24/12/22 - 12:00') // Check if it converted the UTC date to expeceted output
         });
     })
+});
+
+describe('Testing clampQty', () => {
+    let minVal = 0;
+    let maxVal = 10;
+    test('to be maxVal', () => {
+        let inputVal = 15;
+        expect(clampQty(inputVal, minVal, maxVal)).toBe(maxVal);
+    });
+
+    test('to be minVal', () => {
+        let inputVal = 1;
+        expect(clampQty(inputVal, minVal, maxVal)).toBe(minVal);
+    });
+
+    test('to be inputVal', () => {
+        let inputVal = 7;
+        expect(clampQty(inputVal, minVal, maxVal)).toBe(inputVal);
+    });
+
 });

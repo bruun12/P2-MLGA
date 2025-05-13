@@ -1,6 +1,8 @@
-import {getCart, deleteCookie} from '/js/basketfill.js';
-import { renderTextElem, renderImgElem } from '/js/dom-utils.js';
+import {deleteCookie} from '/js/basketfill.js';
+import { loadCart } from './cart.js';
+
 /* HTML Navbar Template */
+console.log("entered global-html.js");
 const navTmpl = (event) =>
     `
     <nav class="topnav">
@@ -95,49 +97,6 @@ productLink.addEventListener("mouseleave", function(){
     productLink.style.display = "none";
 });
 
-
-export function loadCart(){
-    setTimeout(() => {
-        let cart = getCart();
-        let sum = 0;
-        let price = 0
-
-        for (const id in cart) {
-            let cartItem = document.querySelector(`#cartItemDiv${id}`);
-            
-            let priceRounded;    
-            if (cartItem === null){
-                let cartItemDiv = document.createElement("div");
-                cartItemDiv.setAttribute("id", `cartItemDiv${id}`);
-                cartItemDiv.setAttribute("class", `cartItemDiv`);
-                cartDiv.appendChild(cartItemDiv);
-                
-                let itemInfo = document.createElement("div");
-                itemInfo.setAttribute("class", "itemInfo");
-                cartItemDiv.appendChild(itemInfo);
-                
-                renderTextElem(`p`, `item${id}Qty`, `${cart[id].cartQty} x `, itemInfo);
-                renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
-
-                price = cart[id].price * cart[id].cartQty;
-                priceRounded = price.toFixed(2)
-                renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
-            } else {
-                document.querySelector(`#item${id}Qty`).innerText = `${cart[id].cartQty} x `;
-
-                price = cart[id].price * cart[id].cartQty;
-                priceRounded = price.toFixed(2)
-                document.querySelector(`#item${id}Price`).innerText = `${priceRounded} kr.`;
-            }
-
-        }
-        sum = sum + price;
-        let sumRounded = sum.toFixed(2);
-        document.querySelector("#finalPrice").innerText = `Total ${sumRounded} kr.`;
-        
-    }, 100);  // adjust delay as needed
-
-}
 
 
 

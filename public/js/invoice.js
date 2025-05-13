@@ -1,3 +1,6 @@
+import { getCart } from './basketfill.js'
+import { loadCart } from './cart.js';
+
 // This script handles the form submission and validation for the information page
 document.querySelector("#info").addEventListener("submit", function(event) {
     let email = document.getElementById("email").value;
@@ -49,3 +52,35 @@ function getCookie(name){
     })
     return result;
 } 
+
+let checkOutBtn = document.querySelector("#maddog");
+checkOutBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const cart = getCart(); // Get cart from cookies
+    const items = Object.values(cart).map(item => ({ // Create object matching stripe requirements
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.cartQty
+    }))
+
+    fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ items })
+    }).then(res => {
+        if (res.ok) return res.json();
+        return res.json().then(json => Promise.reject(json));
+    }).then(({ url }) => {
+        window.location = url
+    }).catch(error => {
+        console.error(error.error);
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCart({containerSelector: "#cart", finalPriceSelector: "#orderTotal" });
+});

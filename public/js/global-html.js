@@ -2,14 +2,13 @@ import {deleteCookie} from '/js/basketfill.js';
 import { loadCart } from './cart.js';
 
 /* HTML Navbar Template */
-console.log("entered global-html.js");
 const navTmpl = (event) =>
     `
     <nav class="topnav">
         <a href="/"><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
-        <a href="/overview?type=product" class="product">Produkter <i class="fa fa-caret-down"></i></a>
+        <a href="/overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
         <a href="/overview?type=event">Events</a>
-        <a href="/overview?type=store">Butikker</a>
+        <a href="/overview?type=store">Stores</a>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
@@ -54,12 +53,12 @@ const footTmpl = (event) =>
         <ul>
             <li>Get help here:
                 <ul>
-                    <li><p>Tlf nr: 8888 8888</p></li>
+                    <li><p>Phone Number: 8888 8888</p></li>
                     <li><a href="mailto:minionmail@norskemænd.dk">minionmail@norskemænd.dk</a></li>
                 </ul>
             </li>
         </ul>
-        <a href="https://chatgpt.com/">Om os</a>
+        <a href="">About us</a>
     </footer>
     `
 

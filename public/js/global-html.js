@@ -54,7 +54,7 @@ const footTmpl = (event) =>
             <li>Get help here:
                 <ul>
                     <li><p>Phone Number: 8888 8888</p></li>
-                    <li><a href="mailto:minionmail@norskemænd.dk">minionmail@norskemænd.dk</a></li>
+                    <li><a href="mailto:minionmail@norwegianmen.dk">minionmail@norwegianmen.dk</a></li>
                 </ul>
             </li>
         </ul>

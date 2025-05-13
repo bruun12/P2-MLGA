@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    // Hent brugerdata fra localStorage
+    // Get user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user.id; // Hent brugerens ID
+    const userId = user.id; // Get user's ID
 
     if (user) {
         try {
-            // Vis brugerens navn og e-mail
+            // Display user's name and email
             document.getElementById("userName").innerText = `Name: ${user.first_name} ${user.last_name}`;
             document.getElementById("userEmail").innerText = `Email: ${user.email}`;
 
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
-            window.location.href = "/html/login.html"; // Opdateret sti
+            window.location.href = "/html/login.html"; // Updated path
         }
     } else {
-        // Hvis brugerdata ikke findes, send brugeren tilbage til login-siden
+        // If user data is not found, redirect user to login page
         alert("User not found. Please log in again.");
-        window.location.href = "/html/login.html"; // Opdateret sti
+        window.location.href = "/html/login.html"; // Updated path
     }
 });

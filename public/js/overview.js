@@ -73,7 +73,7 @@ function setHeaders(name, id){
         document.querySelector("#categoryHeader").innerHTML = name;
     } else if (urlParams.get('sortId') == undefined){
         if (urlParams.get('type') === "product"){
-            document.querySelector("#categoryHeader").innerHTML = "Produkter";
+            document.querySelector("#categoryHeader").innerHTML = "Products";
         }
         if (urlParams.get('type') === "event"){
             document.querySelector("#categoryHeader").innerHTML = "Events";

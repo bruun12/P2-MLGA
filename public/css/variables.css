@@ -1,15 +1,16 @@
 :root {
     /* Colors */
-    --primary-color: #04AA6D;
-    --primary-hover: #038a5a;
-    --secondary-color: #007BFF;
-    --secondary-hover: #0056b3;
+    --primary-color: #952323;
+    --primary-hover: #A73121;
+    --secondary-color: #DAD4B5;
+    --secondary-hover: #F2E8C6;
     --background-color: #f0f0f0;
     --text-color: #333333;
     --text-light: #f2f2f2;
     --border-color: #cccccc;
     --error-color: #dc3545;
     --success-color: #28a745;
+    --headerFooter-color: #951622;
     
     /* Typography */
     --font-family: Arial, Helvetica, sans-serif;

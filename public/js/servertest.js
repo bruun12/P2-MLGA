@@ -68,7 +68,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Start serveren
+// Start the server
 app.listen(port, () => {
-    console.log(`Server kører på http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });

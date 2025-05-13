@@ -1,3 +1,5 @@
+@import 'variables.css';
+
 /* Standard CSS for all webpages */
 * {
   margin: 0;
@@ -40,7 +42,7 @@ top: 0;
 left: 0;
 height: 80px;
 width: 100%;
-background-color: #333;
+background-color: var(--headerFooter-color);
 z-index: 1000; /* higher z index than everything else, ensuring navbar is always on visible */
 }
 
@@ -162,7 +164,7 @@ background: #ccc;
 
 /* Footer beautyfication */
 footer {
-background-color: #333;
+background-color: var(--headerFooter-color);
 height: 175px;
 width: 100%;
 overflow: hidden;

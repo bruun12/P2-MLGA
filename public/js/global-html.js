@@ -1,6 +1,6 @@
 import {deleteCookie} from '/js/basketfill.js';
 import { loadCart } from './cart.js';
-import {clampAndUpdateQty} from '/js/product.js';
+
 /* HTML Navbar Template */
 console.log("entered global-html.js");
 const navTmpl = (event) =>

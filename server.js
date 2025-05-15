@@ -51,6 +51,7 @@ app.use((error, request, response, next) => {
 //Start the server & listen on a port
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log(staticDir);
 });
 
 // Stripe

@@ -168,10 +168,14 @@ function sidebar(categories) {
  */
 export function dotProduct(vecA, vecB) {
     let result = 0;
-    for (let i = 0; i < vecA.length; i++) { // Multiply each index in each array and add it to result.
-        result += vecA[i] * vecB[i];
+    if(vecA.length === vecB.length) { // Require equal length vectors to avoid undefined.
+        for (let i = 0; i < vecA.length; i++) { // Multiply each index in each array and add it to result.
+            result += vecA[i] * vecB[i];
+        }
+        return result;
+    } else {
+        throw new Error("Vectors must have equal length to compute dot product.")
     }
-    return result;
 }
 
 /**

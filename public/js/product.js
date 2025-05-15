@@ -22,7 +22,7 @@ import { loadCart } from "./cart.js";
 //Contains all fetched product items, where FK product_id = searchParams
 let allProductItems;
 
-//User selected
+//User selected, or prefilled on load
 let selectedVariationOptions = {}; //Influences variationMatchedItems
 let selectedStoreId = null;
 let selectedQty = 1; 
@@ -211,6 +211,7 @@ function renderQtySelector(parentElem) {
 
   let inputElem = renderInputElem({id: "qtyInput", inputType: "number", defaultValue: 1, minValue: 1, parent: qtySelector})
 
+  //Could be moved to handleChange(e), to follow the same pattern, but would also need a line to add delegated eventlistener in producthandler for "input" instead of "select" elements
   inputElem.addEventListener("change", (e) => {
     clampAndUpdateQty({
         inputElemOrSelector: e.target, 
@@ -264,12 +265,9 @@ function handleVariationChange(e) {
  * @param {*} e 
  */
 function handleStoreChange(e) {
-    //console.log("Entered handleStoreChange");
 
   //1. update the users selected store
   selectedStoreId = e.target.value;
-
-    //console.log("in handleStoreChange, selectedStoreId=", selectedStoreId);
 
   //2. Find the final match and render
   filterFinalMatchAndRender();
@@ -313,6 +311,7 @@ function updateSelectedVariationOption(selectElement) {
   //selectedVariationOptions is a global variable in this script
   selectedVariationOptions[variationId] = parseInt(selectElement.value, 10);
 
+  console.log(selectedVariationOptions);
 }
 
 /* -------------------------- VARIATION & STORE MATCHING -  HAPENS MULTIPLE TIMES ---------------------------------------- */
@@ -446,7 +445,8 @@ function findFullyMatchedItem() {
       fullyMatchedItem = fullyMatchingItems[0];
       console.log("Final fully matching item: ", fullyMatchedItem);
   } else if (fullyMatchingItems.length > 1) {
-      console.log("fullyMatchingItems is more than one? duplicate item?");
+      console.warn("fullyMatchingItems is more than one? duplicate item?");
+      fullyMatchedItem = fullyMatchingItems[0]; //maybe change to another criteria with stock i.e. instead of picking the first option
   } else {
       fullyMatchedItem = null;
       console.log("No fully matching item found");

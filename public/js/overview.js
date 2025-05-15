@@ -161,7 +161,7 @@ function sidebar(categories) {
             - Generalized Euclidean / Manhatten -> share same downsides.
 */
 /**
- * Computes the dot product between to vectors.
+ * Computes the dot product between two vectors.
  * @param {Array} vecA Array symbolizing a vector.
  * @param {Array} vecB Array symbolizing a vector.
  * @returns dot product of two vectors.
@@ -222,7 +222,7 @@ async function recommendProducts() {
             if (currentIndex !== targetUserIndex) { // Return object including userid and similarity
                 return {
                     user: currentUserId,
-                    similarity: cosineSimilarity(userItemMatrix[targetUserIndex], userItemMatrix[currentIndex])
+                    similarity: cosineSimilarity(userItemMatrix[targetUserIndex], userItemMatrix[currentIndex]) // Choose two rows in the matrix to compare, i.e. both will be represented as vectors.
                 };
             } else {
                 return null; // return null when it is the same user

@@ -178,7 +178,7 @@ export function dotProduct(vecA, vecB) {
  * Computes similarity between vectors
  * @param {Array} vecA Array symbolizing a vector.
  * @param {Array} vecB Array symbolizing a vector.
- * @returns Angle between two vectors, i.e similarity
+ * @returns Similarity between two vectors.
  */
 export function cosineSimilarity(vecA, vecB) {
     const dotProductValue = dotProduct(vecA, vecB); // Get dot product of both vectors.

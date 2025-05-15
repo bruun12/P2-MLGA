@@ -210,7 +210,7 @@ async function recommendProducts() {
 
         // Create user item matrix
         const userItemMatrix = users.map(userId => { // For each user return whether they have interacted with product
-            return products.map(productId => {  // For each product, check run if else check.
+            return products.map(productId => {  // For each product, run if else check.
                 if (data.some(index => index.account_id === userId && index.product_item_id === productId)) { // Check if interaction between user and product exists.
                     return 1;
                 } else {
@@ -219,6 +219,7 @@ async function recommendProducts() {
             })
         });
 
+        /* Step 2: Find similar users */
         // Find similarities between users
         const similarities = users.map((currentUserId, currentIndex) => {
             //If not same user, compare.

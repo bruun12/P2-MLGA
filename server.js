@@ -25,7 +25,8 @@ const app = express();
 app.use(express.json());
 
 //Use static files 
-app.use(express.static(__dirname + '/public'));
+const staticDir = path.join(__dirname + '/public');
+app.use(express.static(staticDir));
 
 app.use('/', htmlRoutes);
 

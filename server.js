@@ -26,7 +26,7 @@ app.use(express.json());
 
 //Use static files 
 const staticDir = path.join(__dirname + '/public');
-app.use("/node0",express.static(staticDir));
+app.use(express.static(staticDir));
 
 app.use('/', htmlRoutes);
 

@@ -181,11 +181,10 @@ export function dotProduct(vecA, vecB) {
  * @returns Similarity between two vectors.
  */
 export function cosineSimilarity(vecA, vecB) {
-    const dotProductValue = dotProduct(vecA, vecB); // Get dot product of both vectors.
     const normA = Math.sqrt(dotProduct(vecA, vecA)); // Get the norm of vector A.
     const normB = Math.sqrt(dotProduct(vecB, vecB)); // Get the norm of vector B.
     if (normA === 0 || normB === 0) return 0; // Avoid divison by zero.
-    return dotProductValue / (normA * normB); // SLIAL Block 1 Self-Study slide 19.
+    return dotProduct(vecA, vecB) / (normA * normB); // SLIAL Block 1 Self-Study slide 19.
 }
 
 async function recommendProducts() {

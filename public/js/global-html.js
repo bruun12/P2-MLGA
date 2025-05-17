@@ -4,7 +4,7 @@ import { loadCart } from '../js/cart.js';
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href=""><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href=" "><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
         <a href="overview?type=event">Events</a>
         <a href="overview?type=store">Stores</a>
@@ -17,7 +17,7 @@ const navTmpl = (event) =>
         </div>
 
         <!-- Div used to box search container elements -->
-        <form action="http://localhost:3350/overview" class="search-container">
+        <form action="overview" class="search-container">
             <input type="hidden" name="type" value="product">
             <input type="text" placeholder="Search.." name="search">
             <button type="submit"><i class="fa fa-search"></i></button>

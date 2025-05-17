@@ -66,7 +66,7 @@ export async function productHandler(productId) {
 /* ---------------------------- DATA FETCHING ------------------------------------ */
 async function fetchProductDetails(productId) {
   try {
-    const response = await fetch(`/product/${productId}`);
+    const response = await fetch(`product/${productId}`);
     const data = await response.json();
     //console.dir(data, { depth: null });
   } catch (error) {
@@ -77,7 +77,7 @@ async function fetchProductDetails(productId) {
 /** */
 async function fetchProductVariations(productId) {
   try {
-    const response = await fetch(`/product/${productId}/variations`);
+    const response = await fetch(`product/${productId}/variations`);
     const data = await response.json();
     
     //Proccess flat array into grouped and return it
@@ -92,7 +92,7 @@ async function fetchProductVariations(productId) {
 /** Fetches all product items, used once and resulting array is stored in global variable "allProductItems" */
 async function fetchProductItems(productId) {
   try {
-    const response = await fetch(`/product/${productId}/allItems`);
+    const response = await fetch(`product/${productId}/allItems`);
     const data = await response.json();
     console.log("here should all items be");
     console.dir(data, { depth: null });

@@ -6,4 +6,3 @@ dawaAutocomplete.dawaAutocomplete( document.getElementById("adresse"), {
   }
 });
 
-console.log("hej");

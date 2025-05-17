@@ -1,6 +1,6 @@
 // Import render-utilities and product handler
-import { renderButtonElem, renderInputElem, renderTextElem, renderImgElem, renderMap} from "./dom-utils.js";
-import { productHandler } from "./product.js"
+import { renderButtonElem, renderInputElem, renderTextElem, renderImgElem, renderMap} from "../js/dom-utils.js";
+import { productHandler } from "../js/product.js"
 
 
 //Exstract URL Parameters

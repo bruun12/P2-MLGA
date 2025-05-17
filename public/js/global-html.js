@@ -1,13 +1,13 @@
-import {deleteCookie} from './basketfill.js';
-import { loadCart } from './cart.js';
+import {deleteCookie} from '../js/basketfill.js';
+import { loadCart } from '../js/cart.js';
 /* HTML Navbar Template */
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="/"><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
-        <a href="/overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
-        <a href="/overview?type=event">Events</a>
-        <a href="/overview?type=store">Stores</a>
+        <a href=""><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
+        <a href="overview?type=event">Events</a>
+        <a href="overview?type=store">Stores</a>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
@@ -37,7 +37,7 @@ const navTmpl = (event) =>
         <div class="listCart"> <p id="finalPrice"> </p> </div>
         <div class="btn">
             <button class="closeCart">Close</button>
-            <a href="/basket"><button class="checkOut">Check Out</button></a>
+            <a href="basket"><button class="checkOut">Check Out</button></a>
             <button class="closeCart" id="clearBasket">Clear basket</button>
 
         </div>
@@ -132,12 +132,12 @@ function createCategory(name, id){
     productLink.appendChild(categoryNavA);
     categoryNavA.innerText = name;
     
-    categoryNavA.href = `/overview?type=product&sortId=${id}`;   
+    categoryNavA.href = `overview?type=product&sortId=${id}`;   
 }
 
 async function fetchAndDisplayCategories() {
     try {
-        const response = await fetch(`/allCategories`);
+        const response = await fetch(`allCategories`);
         const data = await response.json();
 
         //Creates the sidebar with all categories

@@ -7,7 +7,7 @@ async function registerUser() {
         const lastname = document.getElementById("registerLastname").value; // Gets input from the user
         const phone = document.getElementById("registerPhone").value; // Gets input from the user
 
-        const response = await fetch("http://localhost:3350/create-account", { // Sends the data to the server
+        const response = await fetch("create-account", { // Sends the data to the server
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, firstname, lastname, phone })
@@ -31,7 +31,7 @@ async function loginUser() {
     const password = document.getElementById("loginPassword").value;
 
     try {
-        const response = await fetch('/login', {
+        const response = await fetch('login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ async function loginUser() {
             localStorage.setItem('user', JSON.stringify(data.user)); // Save user data to local storage
             console.log("User data saved to localStorage:", data.user);
 
-            window.location.href = '/profile'; // Naviger til en ny side
+            window.location.href = 'profile'; // Naviger til en ny side
         } else {
             // Login failed, show error message
             alert(data.message);
@@ -85,7 +85,7 @@ document.getElementById("forgotPassword").addEventListener("submit", function (e
     e.preventDefault();
     const email = document.getElementById("resetEmail").value;
 
-    fetch("http://localhost:3350/forgot-password", {
+    fetch("forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })

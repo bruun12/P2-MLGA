@@ -1,4 +1,4 @@
-import { clampQty } from "./dom-utils.js";
+import { clampQty } from "../js/dom-utils.js";
 //  Cookie Utilities reuse from cookiet.js, but for JSON) 
 export function setCookie(name, value, daysToLive) {
     const date = new Date();
@@ -96,7 +96,7 @@ export function deleteCookie(cookie){
 
 async function fetchProductItem(id) {
     try {
-        const response = await fetch(`/ProductItemById/${id}`);
+        const response = await fetch(`ProductItemById/${id}`);
         const data = await response.json();        
         return data[0]; // Return the first object in the array
     } catch (error) {

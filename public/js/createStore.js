@@ -14,7 +14,7 @@ document.getElementById('createStoreForm').addEventListener('submit', async (eve
     };
 
     try {
-        const response = await fetch('/api/createStore', {
+        const response = await fetch('api/createStore', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

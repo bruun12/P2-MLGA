@@ -1,5 +1,5 @@
-import { getCart } from './basketfill.js'
-import { loadCart } from './cart.js';
+import { getCart } from '../js/basketfill.js'
+import { loadCart } from '../js/cart.js';
 
 // This script handles the form submission and validation for the information page
 document.querySelector("#info").addEventListener("submit", function(event) {
@@ -65,7 +65,7 @@ checkOutBtn.addEventListener("click", (event) => {
         quantity: item.cartQty
     }))
 
-    fetch('/create-checkout-session', {
+    fetch('create-checkout-session', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

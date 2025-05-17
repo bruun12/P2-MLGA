@@ -9,7 +9,7 @@ function displayItem(name, price, img, id, div){ // Note if event instead of pro
     let itemA = document.createElement("a");
     itemA.setAttribute("class", `${urlParams.get('type')}Div`);
     document.querySelector(`#${div}`).appendChild(itemA);
-    itemA.href = `/detail?type=${urlParams.get('type')}&id=${id}`;
+    itemA.href = `detail?type=${urlParams.get('type')}&id=${id}`;
 
 
     //Create IMG and put it to product div
@@ -93,7 +93,7 @@ export function categoryDisplay(name, id){
     document.querySelector("#categorySelector").appendChild(categoryA);
     categoryA.innerText = name;
     
-    categoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
+    categoryA.href = `overview?type=${urlParams.get('type')}&sortId=${id}`;
     
     //Make subCategoryDiv for subCategories
     //A box that makes the subcategories for this item.
@@ -118,7 +118,7 @@ function subCategoryDisplay(name, id, parent_id){
     
     subCategoryA.innerHTML = name;
 
-    subCategoryA.href = `/overview?type=${urlParams.get('type')}&sortId=${id}`;
+    subCategoryA.href = `overview?type=${urlParams.get('type')}&sortId=${id}`;
 
     makeSubCategoryDiv(id, subCategoryA);
 }
@@ -193,7 +193,7 @@ export function cosineSimilarity(vecA, vecB) {
 
 async function recommendProducts() {
     try {
-        const response = await fetch(`/userInteractions`);
+        const response = await fetch(`userInteractions`);
         const data = await response.json();
         
         // Choose the user recieveing recommendations (change this to test!)
@@ -255,7 +255,7 @@ async function recommendProducts() {
         console.log(`Recommended products for user ${targetUserId}:`, productRecArr);
 
         // Get products from database
-        const response2 = await fetch('/recProducts', {
+        const response2 = await fetch('recProducts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -285,7 +285,7 @@ async function recommendProducts() {
 //Hvis man ikke har været med til at lave det, kan det være uoverskueligt at finde hvor /allproducts kommer fra.
 async function fetchAndDisplayItems() {
     try {
-        const response = await fetch(`/all${urlParams.get('type')}s`);
+        const response = await fetch(`all${urlParams.get('type')}s`);
         const data = await response.json();
         const itemType = urlParams.get('type'); // Check whether it is products or events.
 
@@ -309,7 +309,7 @@ async function fetchAndDisplayItems() {
 
 async function fetchAndDisplayFilteredItems(id) {
     try {
-        const response = await fetch(`/filteredProducts/${id}`)
+        const response = await fetch(`filteredProducts/${id}`)
         const data = await response.json();        
         
         // Display filtered items
@@ -324,7 +324,7 @@ async function fetchAndDisplayFilteredItems(id) {
 async function fetchAndDisplaySearchedItems(searchWord) {
 
     try {
-        const response = await fetch(`/searchedProducts/${searchWord}`)
+        const response = await fetch(`searchedProducts/${searchWord}`)
         const data = await response.json();
         
         // Display searched items
@@ -338,7 +338,7 @@ async function fetchAndDisplaySearchedItems(searchWord) {
 
 async function fetchAndDisplayCategories() {
     try {
-        const response = await fetch(`/allCategories`);
+        const response = await fetch(`allCategories`);
         const data = await response.json();
 
         //Creates the sidebar with all categories
@@ -350,7 +350,7 @@ async function fetchAndDisplayCategories() {
 
 async function fetchAndDisplayStores() {
     try {
-        const response = await fetch(`/allStoresWithEvents`);
+        const response = await fetch(`allStoresWithEvents`);
         const data = await response.json();
 
         //Displays the different stores in category aside
@@ -364,7 +364,7 @@ async function fetchAndDisplayStores() {
 
 async function fetchAndDisplayStoreEvents(id) {
     try {
-        const response = await fetch(`/storeEvents/${id}`);
+        const response = await fetch(`storeEvents/${id}`);
         const data = await response.json();
 
         // Display events.
@@ -378,7 +378,7 @@ async function fetchAndDisplayStoreEvents(id) {
 
 async function fetchStoreOverview() {
     try {
-        const response = await fetch(`/allStores`);
+        const response = await fetch(`allStores`);
         const data = await response.json();
         
         // Display stores

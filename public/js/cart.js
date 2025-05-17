@@ -1,6 +1,6 @@
-import {getCart, updateCartQty, deleteCartItem} from '/js/basketfill.js';
-import { renderTextElem, renderDivElem, renderInputElem, renderButtonElem } from '/js/dom-utils.js';
-import {clampAndUpdateQty} from '/js/product.js';
+import {getCart, updateCartQty, deleteCartItem} from '../js/basketfill.js';
+import { renderTextElem, renderDivElem, renderInputElem, renderButtonElem } from '../js/dom-utils.js';
+import {clampAndUpdateQty} from '../js/product.js';
 
 
 

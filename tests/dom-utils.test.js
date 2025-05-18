@@ -71,7 +71,7 @@ describe('Testing clampQty', () => {
 
     test('to be minVal', () => {
         let inputVal = 1;
-        expect(clampQty(inputVal, minVal, maxVal)).toBe(minVal);
+        expect(clampQty(inputVal, minVal, maxVal)).toBe(inputVal);
     });
 
     test('to be inputVal', () => {

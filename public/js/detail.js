@@ -18,7 +18,7 @@ let actionContainer = document.querySelector("#actionContainer");
 //Function that displays all functions that are both on event and product detail pages
 async function commonDetail(type, id) {
   try {
-    const response = await fetch(`/${type}/${id}`); //make sure to get the information based on the type (product/event)
+    const response = await fetch(`${type}/${id}`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
     //insert alle text element from database
     renderTextElem("H1","Title", data.name, infoContainer);
@@ -46,7 +46,7 @@ async function eventHandler(id) {
 }
 
 async function signUpBtn(id) {
-  const response = await fetch(`/event/${id}/accounts`);//der skal laves en sti der finder memberid ud fra mail
+  const response = await fetch(`event/${id}/accounts`);//der skal laves en sti der finder memberid ud fra mail
   const data = await response.json();
   
   let emailInput = document.getElementById("inputEmailEvent").value.trim(); //Gets the value from the inputfield. Removes the whitespace with .trim
@@ -81,7 +81,7 @@ async function compareEmails(emailDatabase, emailInput) {
 
 //add a member to event_member table
 async function addEventMember(accountId) {
-  const response = await fetch(`/${urlParams.get('type')}/${id}/eventMember`, {
+  const response = await fetch(`${urlParams.get('type')}/${id}/eventMember`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json'
@@ -101,7 +101,7 @@ async function addEventMember(accountId) {
 //Makes a map from the data in the database
 async function getAddress() {
   try {
-    const response = await fetch(`/${urlParams.get('type')}/${id}/address`); //make sure to get the information based on the type (product/event)
+    const response = await fetch(`${urlParams.get('type')}/${id}/address`); //make sure to get the information based on the type (product/event)
     const data = await response.json();
 
     //filters data so the id numbers will not be part of the address search

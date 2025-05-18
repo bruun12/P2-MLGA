@@ -4,7 +4,7 @@ import { loadCart } from '../js/cart.js';
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="/../node0"><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="/../node0/"><img src="../images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
         <a href="overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
         <a href="overview?type=event">Events</a>
         <a href="overview?type=store">Stores</a>

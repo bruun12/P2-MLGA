@@ -29,7 +29,7 @@ async function fetchEventData() {
         // Get current date and date in three weeks.
         const now = new Date(); // Current date in ISO UTC format: "2015-06-13T22:00:00.000Z"
         const inXDays = new Date(); // Variable for date in X days.
-        const days = 60; // Variable used to add to current date.
+        const days = 100; // Variable used to add to current date.
         inXDays.setDate(now.getDate() + days); // inXDays = current date + x days. (If days = 7, it will be set to next week)
 
         // Filter events between now and x days.

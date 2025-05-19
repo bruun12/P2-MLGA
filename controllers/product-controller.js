@@ -12,7 +12,6 @@ import {getAllProducts, getAllCategories, filteredProducts, searchedProducts, pr
 
 /* Uses getAllProducts from product-model to return a list of all products in json format */
 export const getProducts = async (req, res) => {
-  console.log("jeg bliver brugt");
     try {
       const products = await getAllProducts();
       res.json(products); // Return JSON response

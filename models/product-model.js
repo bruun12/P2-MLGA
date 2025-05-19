@@ -7,6 +7,7 @@ import dbPool from "../database/database.js";
 
 // Select all products from the database - overview, potentially limit
 export async function getAllProducts() {
+  console.log("jeg bliver også brugt");
     // destructuring assignment, first item out of the resulting array,store it in rows variable. Means we don't get metadata
     const [rows] = await dbPool.query(`SELECT p.id, p.name AS title, pi.price, pi.img
                                        FROM product p

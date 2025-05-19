@@ -287,6 +287,7 @@ async function fetchAndDisplayItems() {
     try {
         const response = await fetch(`all${urlParams.get('type')}s`);
         const data = await response.json();
+        console.log(data);
         const itemType = urlParams.get('type'); // Check whether it is products or events.
 
         // Decide whether to display date or price of item.

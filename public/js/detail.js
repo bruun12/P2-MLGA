@@ -29,9 +29,14 @@ async function commonDetail(type, id) {
     renderImgElem("mainImg", data.img, galleryContainer);
     //insert map if address is in the database
     getAddress();
-    //Don't display map section if looking at product.
+    
     if(type === 'product') {
+      //on't display map on products.
       mapContainer.style.display = 'none';
+    } else if (type === 'store') {
+      //Store placeholder text.
+      renderTextElem('p', 'desc', "Welcome to our store! We offer a wide range of quality products and exceptional service to meet your needs. Shop with confidence and convenience—your satisfaction is our priority."
+                     , infoContainer);
     }
 
     

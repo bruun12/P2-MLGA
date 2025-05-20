@@ -24,14 +24,14 @@ body {
 }
 
 .header h1 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-large);
     margin-bottom: var(--spacing-sm);
     text-shadow: var(--shadow-md);
 }
 
 .header h2 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-base);
     margin-bottom: var(--spacing-md);
     text-shadow: var(--shadow-sm);
@@ -43,9 +43,10 @@ form {
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
     text-align: center;
-    margin-top: 120px; /* Add space for the header */
+    margin: 0 auto;
+    position: relative;
 }
 
 .input-container {

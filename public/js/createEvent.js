@@ -13,7 +13,7 @@ document.getElementById("createEventForm").addEventListener("submit", async func
     };
 
     try {
-        const response = await fetch("/events", { 
+        const response = await fetch("events", { 
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -119,6 +119,4 @@ router.post("/event/:id/eventMember", insertEventMember);
 router.get("/store/:id", getStoreDetails);
 router.get("/store/:id/address", getAddressJoinStore);
 
-router.post('/events', createEvent);
-
 export default router;

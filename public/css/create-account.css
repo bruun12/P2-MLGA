@@ -37,7 +37,7 @@ body {
     text-shadow: var(--shadow-sm);
 }
 
-form {
+#registerForm {
     background-color: var(--text-light);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);

@@ -113,6 +113,8 @@ router.get("/event/:id", getEventDetails);
 router.get("/event/:id/address", getAddressJoinEvent);
 router.get("/event/:id/accounts", getAccounts);
 
+router.post('/events', createEvent);
+
 //============
 router.post("/event/:id/eventMember", insertEventMember);
 

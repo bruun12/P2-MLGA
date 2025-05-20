@@ -1,9 +1,7 @@
 @import 'variables.css';
 
 body {
-    background-image: url('../images/Mr.grey.jpg');
-    background-size: cover;
-    background-position: center;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
     display: flex;

@@ -249,10 +249,10 @@ async function recommendProducts() {
                         productRec.add(productId); // Add unique recommendations
                     }
                 });
-        }
+            }
 
-        const productRecArr = [...productRec] // Make set of recommendations into array.
-        console.log(`Recommended products for user ${targetUserId}:`, productRecArr);
+            const productRecArr = [...productRec] // Make set of recommendations into array.
+            console.log(`Recommended products for user ${targetUserId}:`, productRecArr);
 
         // Get products from database
         const response2 = await fetch('recProducts', {
@@ -266,13 +266,13 @@ async function recommendProducts() {
         const data2 = await response2.json();
         console.log("Product data from DB:", data2);
 
-        // Show recommended products.
-        let recdiv = document.querySelector('#rec');
-        recdiv.style.display = 'grid';
+            // Show recommended products.
+            let recdiv = document.querySelector('#rec');
+            recdiv.style.display = 'grid';
 
-        for (const item of data2) {
-            displayItem(item.title, item.price, item.img, item.id, 'rec');
-        }
+            for (const item of data2) {
+                displayItem(item.title, item.price, item.img, item.id, 'rec');
+            }
         } else {
             console.log("No similar users found for recommendation.")
         }

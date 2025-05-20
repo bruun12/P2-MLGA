@@ -91,6 +91,7 @@ async function addEventMember(accountId) {
  
   const result = await response.json();
   if(result.success) {
+    alert("You have signed up!")
     console.log("Succesfully added to event_member");
   }else {
     console.error("error adding to event-member", error);

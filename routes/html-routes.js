@@ -55,15 +55,19 @@ router.get("/forgot-password", (request, response) => {
 });
 
 router.get("/admin", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'adminFrontPage.html'));
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'adminFrontPage.html'));
+});
+
+router.get("/addevent", (request, response) => {
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'adminEventPage.html'));
 });
 
 router.get("/addProducts", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'addProductPage.html'));
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'addProductPage.html'));
 });
 
 router.get("/createStore", (request, response) => {
-    response.sendFile(path.join(__dirname, '..', 'adminPages', 'createStorePage.html'));
+    response.sendFile(path.join(__dirname, '..', 'public', 'html', 'createStorePage.html'));
 });
 
 

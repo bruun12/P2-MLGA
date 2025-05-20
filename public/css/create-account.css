@@ -101,7 +101,7 @@ input[type="email"]:focus {
     box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
-button,
+#submitBtn,
 input[type="submit"] {
     width: 100%;
     padding: var(--spacing-md);
@@ -118,12 +118,12 @@ input[type="submit"] {
     transition: background-color var(--transition-fast);
 }
 
-button:hover,
+#submitBtn:hover,
 input[type="submit"]:hover {
     background-color: var(--primary-hover);
 }
 
-button img {
+#submitBtn img {
     margin-left: var(--spacing-sm);
     width: 20px;
     height: 20px;

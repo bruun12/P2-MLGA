@@ -319,7 +319,6 @@ function updateSelectedVariationOption(selectElement) {
 /** Provides service for:   handleVariationChange & initSelections
  * Fully handles what happens, when a user changes variations */
 function filterFromVariationSelection() {
-   // console.log("entered filterFromVariationSelection")
   
   // 1. Recomputate matching product items based on user's new VARIATION selections.  filters allProductItems -> variationMatchedItems. If no match is found, variationMatchedItems = empty array.
   variationMatchedItems = findVariationMatches(selectedVariationOptions, allProductItems);
@@ -327,7 +326,7 @@ function filterFromVariationSelection() {
   // 2.Render store <select> options based on variation matches,  (possibly new set of items -> possibly new set of stores)
   renderStoreOptsFromMatches(variationMatchedItems);
 
-  //´MAYBE RETHINK //SELECT A STORE
+  // The value of the <select> may change, ensure global variable selectedStoreId is up to date
   const storeSelect = document.querySelector("#selectStore");
   selectedStoreId = storeSelect?.value || null;
 

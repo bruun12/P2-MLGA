@@ -19,7 +19,7 @@ const navTmpl = (event) =>
         <!-- Div used to box search container elements -->
         <form action="overview" class="search-container">
             <input type="hidden" name="type" value="product">
-            <input type="text" placeholder="Search.." name="search">
+            <input type="text" placeholder="Search for products.." name="search">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
     </nav>

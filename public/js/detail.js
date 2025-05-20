@@ -1,6 +1,7 @@
 // Import render-utilities and product handler
 import { renderButtonElem, renderInputElem, renderTextElem, renderImgElem, renderMap} from "../js/dom-utils.js";
 import { productHandler } from "../js/product.js"
+import { deleteCookie } from "./basketfill.js";
 
 
 //Exstract URL Parameters
@@ -14,6 +15,7 @@ const id = urlParams.get('id');
 let infoContainer = document.querySelector("#infoTop");
 let galleryContainer = document.querySelector("#gallery");
 let actionContainer = document.querySelector("#actionContainer");
+const mapContainer = document.querySelector(".location-map");
 
 //Function that displays all functions that are both on event and product detail pages
 async function commonDetail(type, id) {
@@ -27,6 +29,16 @@ async function commonDetail(type, id) {
     renderImgElem("mainImg", data.img, galleryContainer);
     //insert map if address is in the database
     getAddress();
+    
+    if(type === 'product') {
+      //on't display map on products.
+      mapContainer.style.display = 'none';
+    } else if (type === 'store') {
+      //Store placeholder text.
+      renderTextElem('p', 'desc', "Welcome to our store! We offer a wide range of quality products and exceptional service to meet your needs. Shop with confidence and convenience—your satisfaction is our priority."
+                     , infoContainer);
+    }
+
     
   }catch (error) {
     console.error('Error Loading Common Details:', error);

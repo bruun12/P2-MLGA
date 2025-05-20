@@ -88,5 +88,5 @@ document.addEventListener("DOMContentLoaded", () => {
 let homebtn = document.querySelector("#backdog");
 homebtn.addEventListener("click", (event) => {
     event.preventDefault();
-    window.location.href = '/'
+    window.location.href = '/node0/'
 });

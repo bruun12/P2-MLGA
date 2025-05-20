@@ -37,7 +37,7 @@ body {
     text-shadow: var(--shadow-sm);
 }
 
-form {
+#registerForm {
     background-color: var(--text-light);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
@@ -54,6 +54,25 @@ form {
     flex-direction: column;
     margin-bottom: var(--spacing-md);
     width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-right: 40px; /* Space for the icon */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--text-light);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.input-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 .input-container label {
@@ -76,32 +95,10 @@ form {
     width: 100%;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="tel"],
-input[type="email"] {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    padding-right: 40px; /* Space for the icon */
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
-    background-color: var(--text-light);
-    color: var(--text-color);
-    font-size: var(--font-size-base);
-    transition: all var(--transition-fast);
-    box-sizing: border-box;
-}
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus,
-input[type="email"]:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
-}
 
-button,
+
+#submitBtn,
 input[type="submit"] {
     width: 100%;
     padding: var(--spacing-md);
@@ -118,12 +115,12 @@ input[type="submit"] {
     transition: background-color var(--transition-fast);
 }
 
-button:hover,
+#submitBtn:hover,
 input[type="submit"]:hover {
     background-color: var(--primary-hover);
 }
 
-button img {
+#submitBtn img {
     margin-left: var(--spacing-sm);
     width: 20px;
     height: 20px;

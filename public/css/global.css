@@ -276,3 +276,26 @@ a {
 .cartTab .listCart::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.deleteBtn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+  margin-left: 8px;
+}
+
+.deleteBtn:hover {
+  opacity: 1;
+  background-color: var(--background-color);
+  border-color: var(--text-color);
+}

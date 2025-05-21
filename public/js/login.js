@@ -64,7 +64,7 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
 });
 
 // Let user login
-document.getElementById("submitBtn").addEventListener("submit", function (e) {
+document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
     loginUser();
     window.location.href = "profile";

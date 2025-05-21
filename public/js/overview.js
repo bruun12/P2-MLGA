@@ -270,7 +270,7 @@ async function recommendProducts() {
         console.log("Product data from DB:", data2);
 
             // Show recommended products.
-            let recdiv = document.querySelector('#recommendations');
+            let recdiv = document.querySelector('#rec');
             recdiv.style.display = 'grid';
 
             for (const item of data2) {

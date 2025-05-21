@@ -26,6 +26,7 @@ aside {
   padding: var(--spacing-lg);
   margin: 1rem;
   border: 1px solid black;
+  padding-bottom: 10rem;
 }
 
 .infoChild {

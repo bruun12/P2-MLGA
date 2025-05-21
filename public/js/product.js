@@ -429,7 +429,6 @@ function filterFinalMatchAndRender() {
         max: fullyMatchedItem?.stock_qty, 
         updateGlobal: true
     });
-
   console.log("selectedQty:", selectedQty);
   renderItemView();
 }

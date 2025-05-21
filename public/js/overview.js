@@ -2,6 +2,8 @@ import { formatDates } from '../js/dom-utils.js';
 //uses the query set in the URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const catergorySelector = document.querySelector("#categorySelector");
+const displayer = document.querySelector("#displayer")
 
 
 function displayItem(name, price, img, id, div){ // Note if event instead of product price = date.
@@ -437,6 +439,8 @@ const routeHandlers = {
     store: () => {
         fetchStoreOverview(); // Display all stores with name and phone number
         setHeaders('Stores', undefined); // Set the header of the page
+        catergorySelector.style.display = "none"; // Remove category selector
+        displayer.style.marginLeft = "0px"; // Adjust display to work with no category
     }
     // Add more mappings here if needed
 };

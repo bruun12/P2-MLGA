@@ -11,6 +11,11 @@ body {
     padding: var(--spacing-lg);
 }
 
+#contentdiv {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+}
+
 .header {
     text-align: center;
     margin-bottom: var(--spacing-lg);

@@ -9,6 +9,7 @@
     padding: var(--spacing-lg);
     margin-top: 40px;
     width: 100%;
+    padding-bottom: 20rem;
 }
 
 .header {

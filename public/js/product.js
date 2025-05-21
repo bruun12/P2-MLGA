@@ -14,6 +14,7 @@ import {
 
 import {addToCart} from "./basketfill.js";
 import { loadCart } from "./cart.js";
+import { showCart } from "./global-html.js";
 
 
 //PRODUCT STUFF
@@ -196,6 +197,7 @@ function renderPurchaseContainer(parentElem) {
   let addToCartBtn = renderButtonElem({id: "cartButton", text: "Add to Cart", parent: purchaseContainer});
   addToCartBtn.addEventListener("click", () => { 
     addToCart(fullyMatchedItem.product_item_id, selectedQty)
+    showCart();
   });
   addToCartBtn.addEventListener("click", loadCart);
 

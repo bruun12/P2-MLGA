@@ -103,14 +103,18 @@ let cartIcon = document.querySelector(".cartIcon");
 let cartTab = document.querySelector(".cartTab");
 let cartClose = document.querySelector(".closeCart");
 
-cartIcon.addEventListener("click", function(event){
-    event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
+export function showCart(){
     if(cartTab.style.display !== "block"){
         cartTab.style.display = "block";
         loadCart();
     } else {
         cartTab.style.display = "none";
     }
+}
+
+cartIcon.addEventListener("click", function(event){
+    event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
+    showCart();
 })
 
 cartClose.addEventListener("click", function(){

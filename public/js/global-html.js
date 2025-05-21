@@ -104,17 +104,17 @@ let cartTab = document.querySelector(".cartTab");
 let cartClose = document.querySelector(".closeCart");
 
 export function showCart(){
-    if(cartTab.style.display !== "block"){
-        cartTab.style.display = "block";
-        loadCart();
-    } else {
-        cartTab.style.display = "none";
-    }
+    cartTab.style.display = "block";
 }
 
 cartIcon.addEventListener("click", function(event){
     event.preventDefault(); // Prevent default reloading of page, as button is <a></a>
-    showCart();
+    if(cartTab.style.display !== "block"){
+    cartTab.style.display = "block";
+    loadCart();
+    } else {
+        cartTab.style.display = "none";
+    }    
 })
 
 cartClose.addEventListener("click", function(){

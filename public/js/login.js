@@ -16,6 +16,7 @@ async function registerUser() {
         const data = await response.json(); // Converts the response to JSON
         if (response.ok) { // If the response is ok, it means the registration was successful
             alert(data.message);
+            window.location.href = "login"
         } else {
             alert(`Error: ${data.message}`)
         }

@@ -4,8 +4,10 @@ import { formatDates } from '../js/dom-utils.js';
 const eventTmpl = (event) =>
     `
     <div class="mySlides fade">
+    <a href="detail?type=event&id=${event.id}">
     <img class="slide-image" src="${event.img}">
     <p class="text"><span>${event.description + ' - ' + event.localDate}</span></p>
+    </a>
     </div>
     `;
 

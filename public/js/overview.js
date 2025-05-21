@@ -274,7 +274,7 @@ async function recommendProducts() {
             recdiv.style.display = 'grid';
 
             for (const item of data2) {
-                displayItem(item.title, item.price, item.img, item.id, 'rec');
+                displayItem(item.title, item.price, item.img, item.id, 'recommendations');
             }
         } else {
             console.log("No similar users found for recommendation.")

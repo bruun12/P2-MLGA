@@ -46,7 +46,7 @@ async function loginUser() {
             localStorage.setItem('user', JSON.stringify(data.user)); // Save user data to local storage
             console.log("User data saved to localStorage:", data.user);
 
-            window.location.href = 'profile'; // Naviger til en ny side
+            window.location.href = 'https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/profile'; // Naviger til en ny side
         } else {
             // Login failed, show error message
             alert(data.message);
@@ -64,10 +64,9 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
 });
 
 // Let user login
-document.getElementById("loginForm").addEventListener("submit", function (e) {
+document.getElementById("loginform").addEventListener("submit", function (e) {
     e.preventDefault();
     loginUser();
-    window.location.href = "profile";
 });
 
 // Check if user repeated password is the same as the first password

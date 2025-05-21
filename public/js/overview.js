@@ -200,7 +200,7 @@ async function recommendProducts() {
         console.log(data);
         
         // Choose the user recieveing recommendations (change this to test!)
-        const targetUserId = 1;
+        const targetUserId = 37;
 
         /* Step 1: Build user item matrix */
         /* Rows = Users, Columns = Items, if cell === 1 user has bought/favorited item else 0. */

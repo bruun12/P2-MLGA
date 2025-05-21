@@ -13,7 +13,7 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
         let cart = getCart();
         console.log(cart);
         let sum = 0;
-        let price = 0
+        let pricetot = 0
 
         for (const id in cart) {
             let cartItem = document.querySelector(`#cartItemDiv${id}`);
@@ -41,9 +41,10 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
                 renderTextElem(`p`, `cartItem${id}`, `${cart[id].name}`, itemInfo);
 
                 //Create a text for the price
-                price = cart[id].price * cart[id].cartQty;
-                priceRounded = price.toFixed(2)
-                renderTextElem(`p`, `item${id}Price`, `${priceRounded} kr.`, itemInfo);
+                pricetot = cart[id].price * cart[id].cartQty;
+                priceRounded = pricetot.toFixed(2)
+                renderTextElem('p', `item${id}Price`, `Unit Price: ${cart[id].price} kr.`, itemInfo); // Renter price pr. item.
+                renderTextElem(`p`, `item${id}TotPrice`, `Total: ${priceRounded} kr.`, itemInfo); // Render total price of product * quantity
 
                 //Create "delete item" button
                 let deleteBtn = renderButtonElem({className: "deleteBtn", text: "x", parent: itemInfo});
@@ -68,12 +69,12 @@ export function loadCart({ containerSelector = ".listCart",  finalPriceSelector 
                 const qtyInputElem = document.querySelector(`#item${id}Qty`);
                 if (qtyInputElem) qtyInputElem.value = cart[id].cartQty;
 
-                price = cart[id].price * cart[id].cartQty;
-                priceRounded = price.toFixed(2)
-                document.querySelector(`#item${id}Price`).innerText = `${priceRounded} kr.`;
+                pricetot = cart[id].price * cart[id].cartQty;
+                priceRounded = pricetot.toFixed(2)
+                document.querySelector(`#item${id}TotPrice`).innerText = `Total: ${priceRounded} kr.`;
             }
             
-            sum = sum + price;
+            sum = sum + pricetot;
         }
 
         let sumRounded = sum.toFixed(2);

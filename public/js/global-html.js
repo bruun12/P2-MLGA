@@ -4,10 +4,10 @@ import { loadCart } from '../js/cart.js';
 const navTmpl = (event) =>
     `
     <nav class="topnav">
-        <a href="/../node0/"><img src="images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
-        <a href="overview?type=product" class="product">Products <i class="fa fa-caret-down"></i></a>
-        <a href="overview?type=event">Events</a>
-        <a href="overview?type=store">Stores</a>
+        <a href="/../node0/" class="logo"><img src="images/logo.png" alt="logo taking user to frontpage" width="50" height="50"></a>
+        <a href="overview?type=product" class="product layer2">Products <i class="fa fa-caret-down"></i></a>
+        <a href="overview?type=event" class="event layer2">Events</a>
+        <a href="overview?type=store" class="store layer2">Stores</a>
         
         <!-- Div used to box elements -->
         <div class="nav-icons">
@@ -36,9 +36,9 @@ const navTmpl = (event) =>
         </div>
         <div class="listCart"> <p id="finalPrice"> </p> </div>
         <div class="btn">
-            <button class="closeCart">Close</button>
+            <button class="closeCart">Close Basket</button>
             <a href="basket"><button class="checkOut">Check Out</button></a>
-            <button class="closeCart" id="clearBasket">Clear basket</button>
+            <button class="closeCart" id="clearBasket">Clear Basket</button>
 
         </div>
     </div>
@@ -75,7 +75,9 @@ insGlb()
 /* JS to show product drop down on mouseenter and hide on mouseleave */
 let productLink = document.querySelector(".product-link");
 let product = document.querySelector(".product");
-let cartDiv = document.querySelector(".listCart");
+let eventnav = document.querySelector(".event");
+let store = document.querySelector(".store")
+let logo = document.querySelector(".logo")
 let clearBasketBtn = document.querySelector("#clearBasket");
 
 
@@ -91,9 +93,14 @@ product.addEventListener("mouseenter", function(event){
     productLink.style.display = "block";
 });
 
-productLink.addEventListener("mouseleave", function(){
+function hideProdLink() {
     productLink.style.display = "none";
-});
+}
+
+productLink.addEventListener("mouseleave", hideProdLink);
+eventnav.addEventListener("mouseenter", hideProdLink);
+store.addEventListener("mouseenter", hideProdLink);
+logo.addEventListener("mouseenter", hideProdLink);
 
 
 

@@ -197,6 +197,7 @@ async function recommendProducts() {
     try {
         const response = await fetch(`userInteractions`);
         const data = await response.json();
+        console.log(data);
         
         // Choose the user recieveing recommendations (change this to test!)
         const targetUserId = 1;

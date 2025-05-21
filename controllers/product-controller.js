@@ -58,6 +58,7 @@ export const getSearchedProducts = async (req, res) => {
 export const getUserInteractions = async (req,res) => {
   try{
     const interactions = await userInteractions();
+    console.log("jeg er inde!");
     res.json(interactions);
   }catch (error) {
     console.error(error);

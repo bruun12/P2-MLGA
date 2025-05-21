@@ -64,10 +64,10 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
 });
 
 // Let user login
-document.getElementById("loginForm").addEventListener("submit", function (e) {
+document.getElementById("submitBtn").addEventListener("submit", function (e) {
     e.preventDefault();
     loginUser();
-    window.location.href = "https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/profile";
+    window.location.href = "profile";
 });
 
 // Check if user repeated password is the same as the first password

@@ -271,10 +271,12 @@ async function recommendProducts() {
 
             // Show recommended products.
             let recdiv = document.querySelector('#recommendations');
-            recdiv.style.display = 'grid';
+            let recitems = document.querySelector('#rec');
+            recdiv.style.display = 'block';
+            recitems.style.display = 'grid';
 
             for (const item of data2) {
-                displayItem(item.title, item.price, item.img, item.id, 'recommendations');
+                displayItem(item.title, item.price, item.img, item.id, 'rec');
             }
         } else {
             console.log("No similar users found for recommendation.")

@@ -3,52 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/create-account.css">
+
+
     <title>Create Profile</title>
-    <script src="../js/login.js" defer></script>
+    <script type="module" src="js/login.js" defer></script>
+    <script type="module" src="js/global-html.js" defer></script>
+    <link rel="stylesheet" href="css/create-account.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
 </head>
 <body>
-    <div class="header">
-        <h1> Create Profile </h1>
-        <h2>Frontpage/Create Profile</h2>
-    </div>
-    <form id="registerForm">
-        <div class="input-container">
-            <label for="registerEmail">Email:</label>
-            <input type="email" id="registerEmail" name="email" required>
-            <img src="../images/mail_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Email icon">
+
+    <main>
+        <div id ="contentdiv">
+            <div class="header">
+                <h1> Create Profile </h1>
+                <h2>Frontpage/Create Profile</h2>
+            </div>
+            <form id="registerForm">
+                <div class="input-container">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                    <img src="images/mail_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Email icon">
+                </div>
+                <div class="input-container">
+                    <label for="registerFirstname">Firstname:</label>
+                    <input type="text" id="registerFirstname" name="firstname" required>
+                    <img src="images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+                </div>
+                <div class="input-container">
+                    <label for="registerLastname">Lastname:</label>
+                    <input type="text" id="registerLastname" name="lastname" required>
+                    <img src="images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+                </div>
+                <div class="input-container">
+                    <label for="registerPhone">Phone:</label>
+                    <input type="tel" id="registerPhone" name="phone" required>
+                </div>
+                <div class="input-container">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="password" minlength="8" required>
+                    <img src="images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+                </div>
+                <div class="input-container">
+                    <label for="repeatPassword">Repeat Password:</label>
+                    <input type="password" id="repeatPassword" name="password" minlength="8" required>
+                    <img src="images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
+                </div>
+                <button id="submitBtn" type="submit">Create Account
+                    <img src="images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
+                </button> <br> <br>
+                <div class="profil">
+                    <h3>Do you already have a profile? <a href="login">Login here!</a></h3>
+                </div>
+            </form>
         </div>
-        <div class="input-container">
-            <label for="registerFirstname">Firstname:</label>
-            <input type="text" id="registerFirstname" name="firstname" required>
-            <img src="../images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
-        </div>
-        <div class="input-container">
-            <label for="registerLastname">Lastname:</label>
-            <input type="text" id="registerLastname" name="lastname" required>
-            <img src="../images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
-        </div>
-        <div class="input-container">
-            <label for="registerPhone">Phone:</label>
-            <input type="tel" id="registerPhone" name="phone" required>
-        </div>
-        <div class="input-container">
-            <label for="registerPassword">Password:</label>
-            <input type="password" id="registerPassword" name="password" minlength="8" required>
-            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
-        </div>
-        <div class="input-container">
-            <label for="repeatPassword">Repeat Password:</label>
-            <input type="password" id="repeatPassword" name="password" minlength="8" required>
-            <img src="../images/lock_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Password icon">
-        </div>
-        <button type="submit">Create Account
-            <img src="../images/login_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png" alt="Login icon">
-        </button> <br> <br>
-        <div class="profil">
-            <h3>Do you already have a profile? <a href="login">Login here!</a></h3>
-        </div>
-    </form>
+    </main>
+    
 </body>
 </html>
 

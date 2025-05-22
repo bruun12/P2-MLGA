@@ -45,7 +45,7 @@ export const storeEvents = async (req, res) => {
 
 export const createEvent = async (req, res) => {
   const { storeId, eventImage, eventTitle, eventDescription, eventDate, addressId, memberId } = req.body;
-
+  console.log("hej");
   try {
       // Call the model function to insert the event
       const result = await insertEvent(storeId, eventImage, eventTitle, eventDescription, eventDate, addressId, memberId);

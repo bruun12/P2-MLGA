@@ -1,9 +1,7 @@
 @import 'variables.css';
 
 body {
-    background-image: url('../images/Mr.grey.jpg');
-    background-size: cover;
-    background-position: center;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,6 +9,10 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: var(--spacing-lg);
+}
+
+#contentdiv {
+    padding-bottom: 10rem;
 }
 
 .header {
@@ -26,28 +28,29 @@ body {
 }
 
 .header h1 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-large);
     margin-bottom: var(--spacing-sm);
     text-shadow: var(--shadow-md);
 }
 
 .header h2 {
-    color: var(--text-light);
+    color: var(--text-color);
     font-size: var(--font-size-base);
     margin-bottom: var(--spacing-md);
     text-shadow: var(--shadow-sm);
 }
 
-form {
+#registerForm {
     background-color: var(--text-light);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 350px;
+    max-width: 400px;
     text-align: center;
-    margin-top: 120px; /* Add space for the header */
+    margin: 0 auto;
+    position: relative;
 }
 
 .input-container {
@@ -55,6 +58,25 @@ form {
     flex-direction: column;
     margin-bottom: var(--spacing-md);
     width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-right: 40px; /* Space for the icon */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--text-light);
+    color: var(--text-color);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.input-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 .input-container label {
@@ -77,32 +99,10 @@ form {
     width: 100%;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="tel"],
-input[type="email"] {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    padding-right: 40px; /* Space for the icon */
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm);
-    background-color: var(--text-light);
-    color: var(--text-color);
-    font-size: var(--font-size-base);
-    transition: all var(--transition-fast);
-    box-sizing: border-box;
-}
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus,
-input[type="email"]:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
-}
 
-button,
+
+#submitBtn,
 input[type="submit"] {
     width: 100%;
     padding: var(--spacing-md);
@@ -119,12 +119,12 @@ input[type="submit"] {
     transition: background-color var(--transition-fast);
 }
 
-button:hover,
+#submitBtn:hover,
 input[type="submit"]:hover {
     background-color: var(--primary-hover);
 }
 
-button img {
+#submitBtn img {
     margin-left: var(--spacing-sm);
     width: 20px;
     height: 20px;

@@ -71,15 +71,19 @@ h1 {
 }
 
 /* Main content area */
-#rec {
+#recommendations {
     margin-left: 300px;
     padding: 20px;
     display: none;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     background-color: var(--secondary-color);
     margin-top: 60px;
     /* padding-bottom: 200px; */ /* Add padding at bottom to prevent footer overlap */
+}
+
+#rec {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 #displayer {

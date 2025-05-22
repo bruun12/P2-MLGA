@@ -4,8 +4,10 @@ import { formatDates } from '../js/dom-utils.js';
 const eventTmpl = (event) =>
     `
     <div class="mySlides fade">
+    <a href="detail?type=event&id=${event.id}">
     <img class="slide-image" src="${event.img}">
     <p class="text"><span>${event.description + ' - ' + event.localDate}</span></p>
+    </a>
     </div>
     `;
 
@@ -22,14 +24,14 @@ let slidesContainer = document.querySelector('.slideshow-container');
 let dotContainer = document.querySelector('.dot-container')
 async function fetchEventData() {
     try {
-        const response = await fetch('/allEvents');
+        const response = await fetch('allEvents');
         const data = await response.json();
         console.log(data);
 
         // Get current date and date in three weeks.
         const now = new Date(); // Current date in ISO UTC format: "2015-06-13T22:00:00.000Z"
         const inXDays = new Date(); // Variable for date in X days.
-        const days = 1500; // Variable used to add to current date.
+        const days = 100; // Variable used to add to current date.
         inXDays.setDate(now.getDate() + days); // inXDays = current date + x days. (If days = 7, it will be set to next week)
 
         // Filter events between now and x days.

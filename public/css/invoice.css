@@ -26,6 +26,7 @@ aside {
   padding: var(--spacing-lg);
   margin: 1rem;
   border: 1px solid black;
+  padding-bottom: 10rem;
 }
 
 .infoChild {
@@ -92,7 +93,7 @@ body {
 }
 
 /* Form styling */
-form {
+#infoChildForm {
   background-color: var(--text-light);
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
@@ -100,13 +101,10 @@ form {
   width: 40%;
   margin: 0;
   border: 1px solid var(--border-color);
+
 }
 
-/* Input fields and buttons */
-input[type="text"],
-input[type="password"],
-input[type="submit"],
-button {
+#infoChildForm input, .formBtn {  
   width: 100%;
   padding: var(--spacing-md);
   margin: var(--spacing-sm) 0 var(--spacing-md) 0;
@@ -120,15 +118,14 @@ button {
   color: var(--text-color);
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus {
+#infoChildForm input:focus, .formBtn {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(4, 170, 109, 0.1);
 }
 
 input[type="submit"],
-button {
+.formBtn {
   background-color: var(--primary-color);
   color: var(--text-light);
   cursor: pointer;
@@ -138,7 +135,7 @@ button {
 }
 
 input[type="submit"]:hover,
-button:hover {
+.formBtn:hover {
   background-color: var(--primary-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
@@ -154,7 +151,7 @@ label {
 /* Responsive Design */
 @media (max-width: 768px) {
   aside, form {
-    width: 90%;
+    width: 100%;
     float: none;
     margin: var(--spacing-md) auto;
   }

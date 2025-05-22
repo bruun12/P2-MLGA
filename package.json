@@ -7,7 +7,6 @@
     "start": "node --env-file=.env server",
     "dev": "node --watch-path ./ --env-file=.env server",
     "test": "jest"
-  
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,7 @@
   "homepage": "https://github.com/bruun12/P2-MLGA#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "dawa-autocomplete2": "^1.1.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
@@ -43,6 +43,3 @@
   },
   "description": ""
 }
-
-
-

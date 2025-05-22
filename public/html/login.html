@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Login - ByHjerte</title>
-    <script type="module" src="../js/login.js" defer></script>
-    <script type="module" src="../js/global-html.js" defer></script>
+    <script type="module" src="js/login.js" defer></script>
+    <script type="module" src="js/global-html.js" defer></script>
 </head>
 <body>
     <main>
@@ -16,7 +16,7 @@
             <div class="header">
                 <h1>Login</h1>
             </div>
-            <form id="loginform" onsubmit="event.preventDefault(); loginUser();">
+            <form id="loginform">
                 <div class="input-container">
                     <label for="loginEmail">Email:</label>
                     <div class="input-wrapper">
@@ -46,7 +46,7 @@
                 </div>
                 <div class="admin">
                     <h3>Are you administrator?</h3>
-                    <a href="../html/adminFrontPage.html" class="admin-link">Login</a>
+                    <a href="html/adminFrontPage.html" class="admin-link">Login</a>
                 </div>
             </form>
         </div>

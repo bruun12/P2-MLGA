@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("userEmail").innerText = `Email: ${user.email}`;
 
             // Fetch user favorites
-            const favoritesResponse = await fetch(`http://localhost:3350/get-favorites?userId=${userId}`, {
+            const favoritesResponse = await fetch(`get-favorites?userId=${userId}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
-            window.location.href = "/html/login.html"; // Updated path
+            window.location.href = "html/login.html"; // Updated path
         }
     } else {
         // If user data is not found, redirect user to login page
         alert("User not found. Please log in again.");
-        window.location.href = "/html/login.html"; // Updated path
+        window.location.href = "html/login.html"; // Updated path
     }
 });

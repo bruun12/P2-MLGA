@@ -6,7 +6,7 @@ import url from 'url';
 //Importing database functions
 import { getProducts, getCategories, getFilteredProducts, getSearchedProducts, getProductItemById, getUserInteractions, getRecommendedProducts } from '../controllers/product-controller.js';
 
-import { getEvents, getStoresWithEvents, storeEvents } from '../controllers/event-controller.js';
+import { getEvents, getStoresWithEvents, storeEvents, createEvent } from '../controllers/event-controller.js';
 import { getStores } from "../controllers/store-controller.js";
 
 import { getAccounts, getAllProductItems, getProductDetails, getVariationData } from '../controllers/product-controller4Tim.js'
@@ -112,6 +112,8 @@ router.get("/product/:id/allItems", getAllProductItems);
 router.get("/event/:id", getEventDetails);
 router.get("/event/:id/address", getAddressJoinEvent);
 router.get("/event/:id/accounts", getAccounts);
+
+router.post('/events', createEvent);
 
 //============
 router.post("/event/:id/eventMember", insertEventMember);

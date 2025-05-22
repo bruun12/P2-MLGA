@@ -390,6 +390,7 @@ function renderStoreOptsFromMatches(variationMatchedItems) {
   //console.log("in renderStoreOptsFromMatches",variationMatchedItems);
   if (variationMatchedItems.length == 0) {
     selectElement.disabled = true;
+    selectElement.value = null;
     return;
   }
   

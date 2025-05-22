@@ -330,6 +330,7 @@ function filterFromVariationSelection() {
   // The value of the <select> may change, ensure global variable selectedStoreId is up to date
   const storeSelect = document.querySelector("#selectStore");
   selectedStoreId = storeSelect?.value || null;
+  console.log("selectedStoreId", selectedStoreId);
 
   //4. Since variationMatched item has changed stores might have changed also
   filterFinalMatchAndRender();
@@ -387,28 +388,28 @@ function isProductItemMatch(selectedVariationOptions, productItem) {
 function renderStoreOptsFromMatches(variationMatchedItems) {
   let selectElement = document.querySelector("#selectStore");
   
-  //console.log("in renderStoreOptsFromMatches",variationMatchedItems);
+   // Clear old options to avoid stale data
+  while (selectElement.options.length > 0) {
+    selectElement.remove(0);
+  }
+
+  // Handle "no matches" case — disable and exit
   if (variationMatchedItems.length == 0) {
     selectElement.disabled = true;
     selectElement.value = null;
     return;
   }
-  
+
+  // Ensure selector is enabled, now that we know options will be added
   selectElement.disabled = false;
   
-  // Clear old options clearing doesnt work
-  while (selectElement.options.length > 0) {
-    selectElement.remove(0);
-  }
-  
+  // Add new <option> elements
   variationMatchedItems.forEach( item => {
     renderOptionElem(item.store_id, item.store_name +` - Price: ${item.price}`+ ` - Stock: ${item.stock_qty}`, selectElement);
   });
   
-  //Store options have been updated, meaning may have been updated
-  if (selectElement.options.length > 0) {
-    selectElement.selectedIndex = 0;
-  }
+  //Explicitly set first option selected to ensure consistent behavior across browsers - or implement other logic later
+  selectElement.selectedIndex = 0;
 }
 
 

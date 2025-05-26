@@ -4,14 +4,7 @@ This repository contains our 2nd semester project for the Software program at Aa
 
 ## Project Overview
 
-**Make Local Great Again!** is a web-based platform designed to strengthen local communities by enabling small businesses to present their products online and connect with each other. The goal is to promote local commerce and collaboration in a user-friendly and accessible way.
-
-## Features
-
-- Businesses can register and manage their own storefronts  
-- Admins can manage users and content through a dedicated interface  
-- Public-facing product pages for local customers  
-- Internal communication between registered businesses  
+**Make Local Great Again!** is a web-based platform designed to strengthen local communities by enabling small businesses to present their products online and connect with each other. The goal is to promote local commerce and collaboration in a user-friendly and accessible way. 
 
 ## Technologies Used
 
@@ -19,8 +12,14 @@ This repository contains our 2nd semester project for the Software program at Aa
 - **HTML/CSS/JavaScript** – Frontend  
 - **File-based data storage** 
 - **MySQL** 
+- **Stripe**
+- **Bcrypt**
+- **Dawa**
 
 ## Getting Started
+
+To see the project online, go to this website:
+https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/
 
 To run the project locally, follow these steps:
 

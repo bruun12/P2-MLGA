@@ -389,7 +389,7 @@ async function fetchStoreOverview() {
         
         // Display stores
         for (const store of data) {
-            displayItem(store.name, "Tel: " + store.phone, store.img, store.id, 'displayer')
+            displayItem(store.name, "Phone: " + store.phone, store.img, store.id, 'displayer')
         }
     } catch (error) {
         console.error("Error fetching or processing data", error);

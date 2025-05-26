@@ -36,9 +36,9 @@ const navTmpl = (event) =>
         </div>
         <div class="listCart"> <p id="finalPrice"> </p> </div>
         <div class="btn">
-            <button class="closeCart">Close Basket</button>
+            <button class="closeCart">Close Cart</button>
             <a href="basket"><button class="checkOut">Check Out</button></a>
-            <button class="closeCart" id="clearBasket">Clear Basket</button>
+            <button class="closeCart" id="clearBasket">Clear Cart</button>
 
         </div>
     </div>

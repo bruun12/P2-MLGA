@@ -7,3 +7,5 @@ import { router } from 'html-routes.js';
 
 //Endpoint used in product-overview.js. Receives internal get request and routes it to getProducts from the product-controller, which handles it.
 router.get("/allProducts", getProducts);
+
+router.get("/product/:id", getProduct);

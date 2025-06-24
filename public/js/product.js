@@ -80,9 +80,11 @@ async function fetchProductVariations(productId) {
   try {
     const response = await fetch(`product/${productId}/variations`);
     const data = await response.json();
+    //console.dir(data, { depth: null });
     
     //Proccess flat array into grouped and return it
     const groupedVariations = groupVariations(data);
+    //console.dir(groupedVariations, { depth: null });
     return groupedVariations;
 
   } catch (error) {
@@ -362,22 +364,23 @@ function findVariationMatches(selectedVariationOptions, allProductItems) {
  * @returns {boolean} - true if it matches, false otherwise
 */
 function isProductItemMatch(selectedVariationOptions, productItem) {
+  //The productItem`s variation mapping
   const config = productItem.variation_config;
   
-  //if the amount of selected options don't match the length of a productItems variations, they cant match
-  
+  //Ensure both objects define the same number of variationIds, for symmetry  
   if (Object.keys(selectedVariationOptions).length !== Object.keys(config).length) {
     console.log("Length of selected options, dont match length of productitem")
     return false;
   }
   
   for (let variationId in selectedVariationOptions) {
-    //Immediately false on the first mismatch found
+    //Item lacks this variationId (config[variationId] --> undefined)
+    //Or selected... and item map this variationId to different optionIds
     if (selectedVariationOptions[variationId] !== config[variationId]) {
       return false; 
     }
   }
-  //Not a single mismatch -> all matched
+  //All variationId-to-optionId mappings match exactly
   return true;
 }
 

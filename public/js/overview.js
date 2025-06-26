@@ -72,16 +72,16 @@ function makeSubCategoryDiv(id, category){
 
 function setHeaders(name, id){
     if (urlParams.get('sortId') == id){
-        document.querySelector("#categoryHeader").innerHTML = name;
+        document.querySelector("#categoryHeader").innerText = name;
     } else if (urlParams.get('sortId') == undefined){
         if (urlParams.get('type') === "product"){
-            document.querySelector("#categoryHeader").innerHTML = "Products";
+            document.querySelector("#categoryHeader").innerText = "Products";
         }
         if (urlParams.get('type') === "event"){
-            document.querySelector("#categoryHeader").innerHTML = "Events";
+            document.querySelector("#categoryHeader").innerText = "Events";
         }
         if (urlParams.get('type' === "store")) {
-            document.querySelector("#categoryHeader").innerHTML = "Stores";
+            document.querySelector("#categoryHeader").innerText = "Stores";
         }
     }
 }
@@ -118,7 +118,7 @@ function subCategoryDisplay(name, id, parent_id){
     console.error(`No element found with ID: subCatDivId${parent_id}`);
     }
     
-    subCategoryA.innerHTML = name;
+    subCategoryA.innerText = name;
 
     subCategoryA.href = `overview?type=${urlParams.get('type')}&sortId=${id}`;
 
@@ -127,7 +127,7 @@ function subCategoryDisplay(name, id, parent_id){
 
 function sidebar(categories) {
     if (categories.id === urlParams.get('sortId')){
-        document.querySelector("#categoryHeader").innerHTML = categories.name;
+        document.querySelector("#categoryHeader").innerText = categories.name;
     }
     
     for (let i = 0; i < categories.length; i++){

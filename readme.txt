@@ -2,11 +2,11 @@
 
 This repository contains our 2nd semester project for the Software program at Aalborg University.
 
-## Project Overview
+### Project Overview
 
 **Make Local Great Again!** is a web-based platform designed to strengthen local communities by enabling small businesses to present their products online and connect with each other. The goal is to promote local commerce and collaboration in a user-friendly and accessible way. 
 
-## Technologies Used
+### Technologies Used
 
 - **Node.js** + **Express.js** – Backend server  
 - **HTML/CSS/JavaScript** – Frontend  
@@ -16,7 +16,7 @@ This repository contains our 2nd semester project for the Software program at Aa
 - **Bcrypt**
 - **Dawa**
 
-## Getting Started
+### Getting Started
 
 To see the project online, go to this website:
 https://cs-25-sw-2-05.p2datsw.cs.aau.dk/node0/

@@ -28,8 +28,7 @@
     "mysql2": "^3.14.0",
     "nodemailer": "^6.10.1",
     "session": "^0.1.0",
-    "stripe": "^18.0.0",
-    "//": "comment?"
+    "stripe": "^18.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",
